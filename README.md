@@ -27,10 +27,16 @@ G6_REPOSITORIO/
 │   │   └── G6_REGISTRO_CAMBIOS.md
 │   └── Informe/
 │       └── G6_JUSTIFICACION_LINEAS_BASE.md
-├── 01_Notas_Clase/
+├── 01_Clase/
+│   ├── Notas/
+│   ├── Actividades/
+│   └── Material_Practico/
+│
 ├── 02_Catedra/
-│   ├── Libros/
-│   ├── Clases/
+│   ├── Bibliografia/
+│   │   ├── Libros/
+│   │   ├── Papers/
+│   ├── Presentaciones/
 │   ├── Templates/
 │   ├── Consignas/
 │   ├── Planificacion/
@@ -39,10 +45,14 @@ G6_REPOSITORIO/
 │   ├── Minutas/
 │   ├── Ejercicios/
 │   ├── Resumenes/
+│   ├── Apuntes/
 │   ├── Codigo/
+│   │   ├── NombreProyecto/
 │   └── Hojas_Calculo/
 └── 04_Trabajos_Practicos/
     ├── Evaluables/
+    │    ├── TP01/
+    │    ├── TP02/ 
     ├── No_Evaluables/
     └── Investigacion/
 ~~~
@@ -53,7 +63,7 @@ La carpeta 00_Gestion_Configuracion se incorpora para guardar la documentación 
 
 | Directorio | Contenido |
 | --- | --- |
-| 01_Notas_Clase | Notas tomadas durante la clase y presentaciones subrayadas o anotadas por los estudiantes. |
+| 01_Clase | Notas tomadas durante la clase y presentaciones subrayadas o anotadas por los estudiantes. |
 | 02_Catedra | Material limpio y oficial proporcionado por los docentes o publicado en la UV. |
 | 03_Produccion_Propia | Resúmenes, ejercicios, minutas, código, hojas de cálculo y notas elaboradas fuera de clase. |
 | 04_Trabajos_Practicos | Entregables evaluables, no evaluables y trabajos de investigación. |
@@ -80,7 +90,7 @@ La carpeta 00_Gestion_Configuracion se incorpora para guardar la documentación 
 | Trabajo de Investigación | G6_TI<NUMERO>.pdf | 04_Trabajos_Practicos/Investigacion |
 | Ejercicio | G6_EJ_<AUTOR>_<EJERCICIO>.pdf | 03_Produccion_Propia/Ejercicios |
 | Resumen | G6_RE_<AUTOR>.pdf | 03_Produccion_Propia/Resumenes |
-| Nota de Clase | G6_NC_<AUTOR>_<FECHA_MM-DD>.pdf | 01_Notas_Clase |
+| Nota de Clase | G6_NC_<AUTOR>_<FECHA_MM-DD>.pdf | 01_Clase |
 | Libro | G6_LI_U<UNIDAD>_<LIBRO>.pdf | 02_Catedra/Libros |
 | Clase de cátedra | G6_CL<NUMERO>_U<UNIDAD>.pdf | 02_Catedra/Clases |
 | Código | G6_COD_<NOMBRE_COMPONENTE>_TPE<NUMERO>.<extension> | 03_Produccion_Propia/Codigo |

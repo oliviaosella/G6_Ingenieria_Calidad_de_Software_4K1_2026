@@ -36,7 +36,7 @@ Si una de estas condiciones no se cumple, el contenido permanece como borrador o
 
 | Línea Base         | Momento de establecimiento                                                                                                  | Alcance mínimo                                                                               | Justificación                                                                                                                      |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `LB_INICIAL_final` | Después de aprobar la estructura, el README, el inventario y las reglas de nombrado.                                        | Documentación de gestión y árbol inicial.                                                    | Fija un punto común de partida y evita que cada integrante organice o nombre los archivos de manera diferente.                     |
+| `LB_INICIAL` | Después de aprobar la estructura, el README, el inventario y las reglas de nombrado.                                        | Documentación de gestión y árbol inicial.                                                    | Fija un punto común de partida y evita que cada integrante organice o nombre los archivos de manera diferente.                     |
 | `LB_TP01_final`    | Al finalizar el Trabajo Práctico 01, una vez incorporados, revisados y aprobados todos los ítems correspondientes.          | Consigna, documentación, entregables, código, anexos y demás ítems correspondientes al TP01. | Permite conservar una referencia estable del estado final del primer Trabajo Práctico y facilita su recuperación y auditoría.      |
 | `LB_TP02_final`    | Al finalizar el Trabajo Práctico 02, una vez incorporados, revisados y aprobados todos los ítems correspondientes.          | Consigna, documentación, entregables, código, anexos y demás ítems correspondientes al TP02. | Permite conservar una referencia estable del estado final del segundo Trabajo Práctico y mantener trazabilidad sobre su evolución. |
 | `LB_TP03_final`    | Al finalizar el Trabajo Práctico 03, una vez incorporados, revisados y aprobados todos los ítems correspondientes.          | Consigna, documentación, entregables, código, anexos y demás ítems correspondientes al TP03. | Permite identificar y recuperar el estado aprobado del tercer Trabajo Práctico.                                                    |
@@ -57,7 +57,7 @@ La nomenclatura identifica directamente el Trabajo Práctico al que pertenece la
 
 Por ejemplo:
 
-* `LB_INICIAL_final`
+* `LB_INICIAL`
 * `LB_TP01_final`
 * `LB_TP02_final`
 * `LB_TP03_final`
@@ -75,10 +75,7 @@ La palabra `final` indica que se trata de la versión aprobada correspondiente a
 
 Las etiquetas de una Línea Base ya publicada son inmutables: no se eliminan, no se mueven a otro commit y no se reutilizan.
 
-En caso de que un Trabajo Práctico deba ser modificado posteriormente a su establecimiento como Línea Base, se debe utilizar una nueva etiqueta que permita identificar la nueva versión sin modificar la etiqueta original. Por ejemplo:
 
-* `LB_TP04_final`
-* `LB_TP04_final_v2`
 
 De esta manera se conserva la referencia histórica de la versión originalmente aprobada.
 

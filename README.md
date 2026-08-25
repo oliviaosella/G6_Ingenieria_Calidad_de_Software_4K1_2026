@@ -42,11 +42,11 @@ G6_REPOSITORIO/
 │
 │
 └── 04_Trabajos_Practicos/  
-├── Evaluables/         
-│   ├── TP01/          
-│   └── TP02/          
-├── No_Evaluables/     
-└── Investigacion/     
+    ├── Evaluables/         
+    │   ├── TP01/          
+    │   └── TP02/          
+    ├── No_Evaluables/     
+    └── Investigacion/     
          └── G6_TI_LineamientosGenerales.pdf 
 
 ~~~

@@ -123,7 +123,6 @@ Todo cambio solicitado sobre un ítem incluido en una Línea Base debe:
 
 6. Generar una nueva etiqueta si modifica el contenido de referencia de una Línea Base.
 
-Por ejemplo, si luego de establecer `LB_TP04_final` se detecta una modificación necesaria en uno de sus ítems, la etiqueta original se conserva y, una vez aprobada la modificación, se establece una nueva versión, como `LB_TP04_final_v2`.
 
 No requieren una nueva Línea Base los commits de trabajo, los borradores incompletos ni las pruebas que todavía no fueron aprobadas.
 

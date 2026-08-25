@@ -123,7 +123,6 @@ Todo cambio solicitado sobre un ítem incluido en una Línea Base debe:
 
 6. Generar una nueva etiqueta si modifica el contenido de referencia de una Línea Base.
 
-Por ejemplo, si luego de establecer `LB_TP04_final` se detecta una modificación necesaria en uno de sus ítems, la etiqueta original se conserva y, una vez aprobada la modificación, se establece una nueva versión, como `LB_TP04_final_v2`.
 
 No requieren una nueva Línea Base los commits de trabajo, los borradores incompletos ni las pruebas que todavía no fueron aprobadas.
 
@@ -155,4 +154,4 @@ Por último, la Línea Base inicial permite establecer las reglas generales de o
 
 En todos los casos, el establecimiento de una Línea Base exige que los archivos estén completos, correctamente nombrados y ubicados, revisados por el responsable y por al menos otro integrante, integrados en la rama principal y registrados en el inventario. La Línea Base se identifica mediante una etiqueta anotada de Git asociada a un commit específico. Una vez publicada, esa etiqueta no se elimina ni se reasigna.
 
-Cualquier modificación posterior debe tramitarse mediante el control de cambios y, si altera la referencia aprobada, debe originar una nueva versión de la Línea Base correspondiente. De esta manera, los momentos seleccionados permiten mantener una referencia estable de cada Trabajo Práctico, conservar evidencia de los hitos importantes y garantizar la trazabilidad de los cambios realizados durante el proyecto.
+Cualquier modificación posterior debe tramitarse mediante el control de cambios y, si altera la referencia aprobada, debe originar una nueva versión de la Línea Base correspondiente. De esta manera, los momentos seleccionados permiten mantener una referencia estable de cada Trabajo Práctico, conservar evidencia de los hitos importantes y garantizar la trazabilidad de los cambios realizados durante el proyecto. 

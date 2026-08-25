@@ -13,48 +13,42 @@ Este repositorio centraliza los ítems de configuración de la materia y estable
 ## Estructura
 
 ~~~text
-G6_REPOSITORIO/
-├── README.md
-├── .gitignore
-├── 00_Gestion_Configuracion/
-│   ├── Inventario_IC/
-│   │   └── G6_INVENTARIO_IC.md
-│   ├── Lineas_Base/
-│   │   ├── G6_CRITERIOS_LINEAS_BASE.md
-│   │   ├── G6_REGISTRO_LINEAS_BASE.md
-│   │   └── Registros/
-│   ├── Control_Cambios/
-│   │   └── G6_REGISTRO_CAMBIOS.md
-│   └── Informe/
-│       └── G6_JUSTIFICACION_LINEAS_BASE.md
-├── 01_Clase/
-│   ├── Notas/
-│   ├── Actividades/
-│   └── Material_Practico/
+G6_REPOSITORIO/             
+├── README.md              
+├── .gitignore             
+├── 00_Gestion_Configuracion/ 
+│   ├── Lineas_Base/        
+│   │   ├─G6_CRITERIOS_LINEAS_BASE.md 
 │
-├── 02_Catedra/
-│   ├── Bibliografia/
-│   │   ├── Libros/
-│   │   ├── Papers/
-│   ├── Presentaciones/
-│   ├── Templates/
-│   ├── Consignas/
-│   ├── Planificacion/
-│   └── Clases_Grabadas/
-├── 03_Produccion_Propia/
-│   ├── Minutas/
-│   ├── Ejercicios/
-│   ├── Resumenes/
-│   ├── Apuntes/
-│   ├── Codigo/
-│   │   ├── NombreProyecto/
-│   └── Hojas_Calculo/
-└── 04_Trabajos_Practicos/
-    ├── Evaluables/
-    │    ├── TP01/
-    │    ├── TP02/ 
-    ├── No_Evaluables/
-    └── Investigacion/
+│
+├── 01_Clase/               
+│   ├── Notas/              
+│   └── Actividades/        
+│
+│
+├── 02_Catedra/             
+│   ├── Material/           
+│   ├── Libros/             
+│   ├── Templates/          
+│   └── Planificacion/      
+│
+│
+├── 03_Produccion_Propia/   
+│   ├── Minutas/            
+│   ├── Ejercicios/         
+│   ├── Resumenes/          
+│    └── Código/            
+│      └── NombreProyecto/ 
+│
+│
+└── 04_Trabajos_Practicos/  
+├── Evaluables/         
+│   ├── TP01/          
+│   └── TP02/          
+├── No_Evaluables/     
+└── Investigacion/     
+         └── G6_TI_LineamientosGenerales.pdf 
+
 ~~~
 
 La carpeta 00_Gestion_Configuracion se incorpora para guardar la documentación administrativa del repositorio. No modifica la clasificación académica definida en los lineamientos.
@@ -127,17 +121,21 @@ Ejemplos:
 Una Línea Base es un conjunto identificado, revisado y aprobado de ítems de configuración que se adopta como referencia estable. No equivale a un commit común: se establece solamente cuando existe un hito verificable y el contenido cumple los criterios de aceptación.
 
 Las Líneas Base definidas son:
+Una Línea Base es un conjunto identificado, revisado y aprobado de ítems de configuración que se adopta como referencia estable. No equivale a un commit común: se establece solamente cuando existe un hito verificable y el contenido cumple los criterios de aceptación.
+
+Las Líneas Base definidas son:
 
 | Momento | Etiqueta |
 | --- | --- |
-| Aprobación de estructura, README, inventario y reglas | LB_INICIAL_V1.0 |
-| Cierre del primer parcial | LB_P1_V1.0 |
-| Cierre del segundo parcial | LB_P2_V1.0 |
-| Auditoría y cierre final del repositorio | LB_FINAL_V1.0 |
+| Aprobación de estructura, README, inventario y reglas | LB_INICIAL |
+| Cierre y aprobación del Trabajo Práctico 01 | LB_TP01_final |
+| Cierre y aprobación del Trabajo Práctico 02 | LB_TP02_final |
+| Cierre y aprobación de cada TP posterior | LB_TP03_final, LB_TP04_final, etc. |
+| Auditoría y cierre final del repositorio | LB_FINAL |
 
-P1 y P2 significan Parcial 1 y Parcial 2. Los trabajos prácticos, las notas, el material de cátedra y el código se incorporan a la Línea Base del parcial que corresponda, por lo que no generan etiquetas independientes.
+Se crea una Línea Base independiente al concluir y aprobar cada Trabajo Práctico. El material de cátedra, las notas, la producción propia y el código asociado se integran en la Línea Base del TP correspondiente.
 
-El detalle de condiciones, responsables y procedimiento se encuentra en 00_Gestion_Configuracion/Lineas_Base/G6_CRITERIOS_LINEAS_BASE.md.
+El detalle de condiciones, responsables y procedimiento se encuentra en `00_Gestion_Configuracion/Lineas_Base/G6_CRITERIOS_LINEAS_BASE.md`.
 
 ## Procedimiento resumido para establecer una Línea Base
 

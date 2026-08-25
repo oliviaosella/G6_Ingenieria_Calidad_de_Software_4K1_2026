@@ -17,8 +17,8 @@ G6_REPOSITORIO/
 ├── README.md              
 ├── .gitignore             
 ├── 00_Gestion_Configuracion/ 
-│   ├── Lineas_Base/        
-│   │   ├─G6_CRITERIOS_LINEAS_BASE.md 
+│   └── Lineas_Base/        
+│       └──G6_CRITERIOS_LINEAS_BASE.md 
 │
 │
 ├── 01_Clase/               

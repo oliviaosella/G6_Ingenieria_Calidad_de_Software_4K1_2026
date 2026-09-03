@@ -48,6 +48,9 @@ Icon?
 .ai-context/
 .aider*
 .mcp.json
+.obsidian/
+.opencode/
+copilot/
 
 # Local-only AI instruction overrides
 AGENTS.local.md

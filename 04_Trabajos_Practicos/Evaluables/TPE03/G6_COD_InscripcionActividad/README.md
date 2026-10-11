@@ -2,7 +2,20 @@
 
 Implementación del TP03 con Python y FastAPI en el backend, y React con TypeScript en el frontend.
 
-## Preparación en cada computadora
+## Estructura del Backend
+```
+backend/
+├── main.py                 # Crea FastAPI y conecta las rutas
+├── app/
+│   ├── __init__.py
+│   └── inscripciones.py    # Lógica de inscripción
+├── tests/
+│   └── test_<funcionalidad>.py
+├── pyproject.toml
+└── uv.lock
+```
+
+## Inicialización del repositorio
 
 El proyecto se compone de dos partes independientes que se levantan por separado: `backend/` y `frontend/`. Para levantar el repositorio, se deben seguir los pasos correspondientes en cada una de estas carpetas.
 
@@ -34,9 +47,7 @@ npm run dev
 
 En resumen, la preparación para cada equipo queda unificada así: primero se instalan las dependencias del backend y luego las del frontend, ejecutando cada entorno en su respectiva carpeta.
 
-## Inicialización del proyecto
-
-### Backend
+## Comandos de creación ejecutados
 
 Desde `backend/` se ejecutaron:
 
@@ -45,8 +56,6 @@ uv init --bare
 uv add fastapi uvicorn
 uv add --dev pytest
 ```
-
-### Frontend
 
 Desde `frontend/` se ejecutaron:
 

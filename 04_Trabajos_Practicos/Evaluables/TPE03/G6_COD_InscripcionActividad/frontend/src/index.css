@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+:root {
+  --app-background: #ffffff;
+  --app-foreground: #111827;
+  --app-font: system-ui, sans-serif;
+
+  font-family: var(--app-font);
+  color: var(--app-foreground);
+  background: var(--app-background);
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  min-height: 100vh;
+}

@@ -55,7 +55,7 @@ La carpeta `00_Gestion_Configuracion` se incorpora para guardar la documentació
 | `01_Clase` | Material generado como resultado de las clases teóricas o prácticas, como notas personales y actividades realizadas durante la clase. |
 | `02_Catedra` | Material limpio y oficial proporcionado por los docentes o publicado en la UV, como bibliografía, presentaciones, templates, planificación y clases grabadas. |
 | `03_Produccion_Propia` | Material elaborado por los integrantes del grupo fuera de clase, como resúmenes, ejercicios, minutas, código fuente, apuntes y planillas de cálculo. |
-| `04_Trabajos_Practicos` | Trabajos Prácticos evaluables, no evaluables, trabajos de investigación, consignas y presentaciones asociadas. |
+| `04_Trabajos_Practicos` | Trabajos Prácticos evaluables, no evaluables, trabajos de investigación y sus entregables asociados, incluidos consignas, presentaciones e implementaciones de código. |
 | `00_Gestion_Configuracion` | Documentación utilizada para administrar los Ítems de Configuración, definir Líneas Base y controlar los cambios. |
 
 Cada Ítem de Configuración debe almacenarse únicamente en la ubicación correspondiente a su categoría y tipo.
@@ -98,6 +98,7 @@ Ningún archivo debe existir en más de una ubicación. Si un mismo contenido se
 | Minuta | `G6_MI_<TEMA>_<FECHA>.md` | `03_Produccion_Propia/Minutas/` |
 | Resumen | `G6_RE_<AUTOR>.pdf` | `03_Produccion_Propia/Resumenes/` |
 | Trabajo Práctico Evaluable | `G6_TPE<NUMERO>.pdf` | `04_Trabajos_Practicos/Evaluables/` |
+| Implementación de TP Evaluable | Carpeta `G6_COD_<NOMBRE_COMPONENTE>/`; sus archivos internos siguen las convenciones de cada lenguaje | `04_Trabajos_Practicos/Evaluables/TPE<NUMERO>/` |
 | Consigna TP Evaluable | `G6_CO_TPE<NUMERO>.pdf` | `04_Trabajos_Practicos/Evaluables/` |
 | Trabajo de Investigación | `G6_TI<NUMERO>.pdf` | `04_Trabajos_Practicos/Investigacion/` |
 | Consigna de Investigación | `G6_CO_TPI<NUMERO>.pdf` | `04_Trabajos_Practicos/Investigacion/` |

@@ -5,13 +5,17 @@ Implementación del TP03 con Python y FastAPI en el backend, y React con TypeScr
 ## Estructura del Backend
 ```
 backend/
-├── main.py                 # Crea FastAPI y conecta las rutas
 ├── app/
 │   ├── __init__.py
-│   └── inscripciones.py    # Lógica de inscripción
+│   ├── main.py                 # Crea la aplicación FastAPI y registra las rutas
+│   ├── schemas.py              # Define los datos de entrada y salida
+│   └── routers/
+│       ├── __init__.py
+│       └── inscripciones.py    # Expone las rutas de inscripción
 ├── tests/
-│   └── test_<funcionalidad>.py
+│   └── test_<funcionalidad>.py # Un archivo por funcionalidad o grupo de pruebas
 ├── pyproject.toml
+├── requirements.txt            # para instalar dependencias utilizando pip
 └── uv.lock
 ```
 

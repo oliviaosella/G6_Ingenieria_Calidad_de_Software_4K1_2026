@@ -1,4 +1,4 @@
-from app.errors import TerminosNoAceptadosError
+from app.errors import AceptacionDeOtraActividadError, TerminosNoAceptadosError
 from app.schemas import Actividad, AceptacionTerminos
 
 
@@ -8,3 +8,6 @@ def validar_aceptacion(
 ) -> None:
     if not aceptacion.aceptados:
         raise TerminosNoAceptadosError
+
+    if aceptacion.actividad != actividad:
+        raise AceptacionDeOtraActividadError

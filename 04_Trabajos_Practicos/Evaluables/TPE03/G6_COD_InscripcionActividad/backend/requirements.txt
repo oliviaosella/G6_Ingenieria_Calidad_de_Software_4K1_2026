@@ -3,3 +3,4 @@ uvicorn[standard]
 pytest
 httpx
 qrcode[pil]
+email-validator

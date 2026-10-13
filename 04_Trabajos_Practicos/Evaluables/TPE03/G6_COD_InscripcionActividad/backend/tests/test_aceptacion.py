@@ -5,6 +5,14 @@ from app.schemas import Actividad, AceptacionTerminos
 from app.services.aceptacion import validar_aceptacion
 
 
+ACTIVIDADES_DISTINTAS = [
+    (actividad, otra)
+    for actividad in Actividad
+    for otra in Actividad
+    if actividad != otra
+]
+
+
 @pytest.mark.parametrize("actividad", list(Actividad))
 def test_rechazar_terminos_no_aceptados(actividad):
     aceptacion = AceptacionTerminos(
@@ -28,12 +36,7 @@ def test_aceptar_terminos_de_la_actividad_elegida(actividad):
 
 @pytest.mark.parametrize(
     "actividad, actividad_aceptada",
-    [
-        (actividad, otra)
-        for actividad in Actividad
-        for otra in Actividad
-        if actividad != otra
-    ],
+    ACTIVIDADES_DISTINTAS,
 )
 def test_rechazar_aceptacion_de_otra_actividad(actividad, actividad_aceptada):
     aceptacion = AceptacionTerminos(
@@ -47,12 +50,7 @@ def test_rechazar_aceptacion_de_otra_actividad(actividad, actividad_aceptada):
 
 @pytest.mark.parametrize(
     "actividad, actividad_aceptada",
-    [
-        (actividad, otra)
-        for actividad in Actividad
-        for otra in Actividad
-        if actividad != otra
-    ],
+    ACTIVIDADES_DISTINTAS,
 )
 def test_priorizar_terminos_no_aceptados_si_la_actividad_tambien_difiere(
     actividad, actividad_aceptada

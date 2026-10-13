@@ -13,3 +13,12 @@ def test_rechazar_terminos_no_aceptados():
 
     with pytest.raises(TerminosNoAceptadosError):
         validar_aceptacion(Actividad.TIROLESA, aceptacion)
+
+
+def test_aceptar_terminos_de_la_actividad_elegida():
+    aceptacion = AceptacionTerminos(
+        actividad=Actividad.TIROLESA,
+        aceptados=True,
+    )
+
+    assert validar_aceptacion(Actividad.TIROLESA, aceptacion) is None

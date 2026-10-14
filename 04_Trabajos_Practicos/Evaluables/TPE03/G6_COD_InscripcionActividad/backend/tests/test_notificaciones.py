@@ -1,4 +1,4 @@
-from app.services.email_service import preparar_resumen
+from app.services.email_service import preparar_resumen, enviar_confirmacion
 
 def test_resumen_contiene_identificador_inscripcion_EXITO() -> None:
     #Preparar

@@ -15,4 +15,7 @@ def test_permite_reservar():
 def test_actualizar_cupos_disponibles():
     resultado = actualizar(10,3,2)
     assert resultado == 5
-    
+
+def test_cantidad_reservar_positiva():
+    resultado = puede_reservar(10,3,-1)
+    assert resultado == False

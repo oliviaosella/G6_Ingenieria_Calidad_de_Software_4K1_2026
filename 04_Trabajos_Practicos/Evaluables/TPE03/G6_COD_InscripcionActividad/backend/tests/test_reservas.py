@@ -102,7 +102,7 @@ def test_rechazar_reserva_con_cantidad_cero_o_negativa():
     # Precondiciones
     gestor = GestorReservas()
 
-    # Pasos: Intentamos reservar con cantidad 0, cantidad negativa (-1), y lista vacía
+    # Pasos: Intentamos reservar con cantidad 0, cantidad negativa (-2), y lista vacía
     res_cero = gestor.reservar(actividad="Tirolesa", horario_id=1, cantidad=0)
     res_negativo = gestor.reservar(actividad="Tirolesa", horario_id=1, cantidad=-2)
     res_vacia = gestor.crear_reserva(actividad="Tirolesa", horario_id=1, participantes=[])
@@ -111,4 +111,26 @@ def test_rechazar_reserva_con_cantidad_cero_o_negativa():
     assert res_cero is False
     assert res_negativo is False
     assert res_vacia is None
+    assert gestor.consultar_cupos(actividad="Tirolesa", horario_id=1) == 10
+
+
+def test_rechazar_si_cantidad_no_coincide_con_numero_de_participantes():
+    # Precondiciones
+    gestor = GestorReservas()
+    # Enviamos solo 2 personas en la lista
+    participantes = [
+        {"nombre": "Ana", "dni": "12345678", "edad": 25},
+        {"nombre": "Pedro", "dni": "87654321", "edad": 30},
+    ]
+
+    # Pasos: Se declara cantidad 3, pero se mandan 2 participantes
+    reserva = gestor.crear_reserva(
+        actividad="Tirolesa",
+        horario_id=1,
+        participantes=participantes,
+        cantidad_declarada=3,
+    )
+
+    # Resultado: Debe rechazarse por inconsistencia (None) y los cupos deben seguir en 10
+    assert reserva is None
     assert gestor.consultar_cupos(actividad="Tirolesa", horario_id=1) == 10

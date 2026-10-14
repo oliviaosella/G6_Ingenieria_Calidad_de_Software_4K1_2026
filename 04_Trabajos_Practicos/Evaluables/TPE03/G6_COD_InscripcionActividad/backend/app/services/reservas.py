@@ -38,9 +38,12 @@ class GestorReservas:
         actividad: str,
         horario_id: int,
         participantes: list[dict],
+        cantidad_declarada: int | None = None,
     ) -> dict | None:
         cantidad = len(participantes)
-        if not self.reservar(actividad, horario_id, cantidad):
+        cantidad_esperada = cantidad_declarada if cantidad_declarada is not None else cantidad
+
+        if cantidad != cantidad_esperada or not self.reservar(actividad, horario_id, cantidad):
             return None
 
         reserva = {

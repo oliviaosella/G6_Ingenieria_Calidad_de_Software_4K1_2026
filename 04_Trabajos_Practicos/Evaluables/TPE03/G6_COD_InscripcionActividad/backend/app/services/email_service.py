@@ -1,2 +1,2 @@
 def preparar_resumen(inscripcion):
-    return ""
+    return str(inscripcion["id"])

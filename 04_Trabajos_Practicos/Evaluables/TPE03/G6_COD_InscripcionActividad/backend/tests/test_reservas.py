@@ -1,3 +1,5 @@
+from concurrent.futures import ThreadPoolExecutor
+import time
 from app.services.reservas import GestorReservas
 
 
@@ -199,5 +201,51 @@ def test_persistencia_recuperar_reserva_por_id():
     assert reserva_recuperada["actividad"] == "Palestra"
     assert reserva_recuperada["horario_id"] == 2
     assert reserva_recuperada["participantes"][0]["nombre"] == "Laura"
-    # Y si buscamos un ID inexistente, devuelve None
     assert gestor.obtener_reserva(9999) is None
+
+
+def test_dos_solicitudes_simultaneas_por_ultimos_lugares_evita_sobreventa():
+    # Precondiciones: En Safari (8 cupos) se reservan 6 lugares. Quedan exactamente 2 cupos.
+    gestor = GestorReservas()
+    gestor.crear_reserva(
+        actividad="Safari",
+        horario_id=1,
+        participantes=[{"nombre": f"Ocupante_{i}", "dni": f"DNI_{i}", "edad": 20} for i in range(6)],
+    )
+    assert gestor.consultar_cupos(actividad="Safari", horario_id=1) == 2
+
+    # Pasos: Dos familias (cada una de 2 personas) intentan reservar los últimos 2 cupos en paralelo
+    solicitud_a = [
+        {"nombre": "A1", "dni": "1001", "edad": 20},
+        {"nombre": "A2", "dni": "1002", "edad": 21},
+    ]
+    solicitud_b = [
+        {"nombre": "B1", "dni": "2001", "edad": 22},
+        {"nombre": "B2", "dni": "2002", "edad": 23},
+    ]
+
+    def enviar_reserva(participantes):
+        return gestor.crear_reserva(
+            actividad="Safari",
+            horario_id=1,
+            participantes=participantes,
+        )
+
+    # Ejecución en hilos simultáneos (concurrencia)
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        futuro_a = executor.submit(enviar_reserva, solicitud_a)
+        futuro_b = executor.submit(enviar_reserva, solicitud_b)
+        res_a = futuro_a.result()
+        res_b = futuro_b.result()
+
+    # Resultado:
+    # 1. Exactamente una de las dos solicitudes debe tener éxito y la otra debe ser None
+    reservas_exitosas = [r for r in [res_a, res_b] if r is not None]
+    reservas_rechazadas = [r for r in [res_a, res_b] if r is None]
+
+    assert len(reservas_exitosas) == 1
+    assert len(reservas_rechazadas) == 1
+    # 2. Los cupos deben quedar exactamente en 0 (sin sobreventa)
+    assert gestor.consultar_cupos(actividad="Safari", horario_id=1) == 0
+    # 3. La clase debe contar con control de sincronización seguro (lock)
+    assert hasattr(gestor, "_lock")

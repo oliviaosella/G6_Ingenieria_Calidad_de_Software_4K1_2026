@@ -70,3 +70,29 @@ def test_rechazar_reserva_cuando_cupos_son_insuficientes():
     # Resultado: Debe rechazarse (False) y los cupos deben mantenerse intactos en 2
     assert resultado is False
     assert gestor.consultar_cupos(actividad="Safari", horario_id=1) == 2
+
+
+def test_crear_reserva_asocia_actividad_horario_y_participantes():
+    # Precondiciones
+    gestor = GestorReservas()
+    participantes = [
+        {"nombre": "Ana", "dni": "12345678", "edad": 25},
+        {"nombre": "Pedro", "dni": "87654321", "edad": 30},
+    ]
+
+    # Pasos: Creamos una reserva pasando la lista de participantes en Tirolesa horario 1
+    reserva = gestor.crear_reserva(
+        actividad="Tirolesa",
+        horario_id=1,
+        participantes=participantes,
+    )
+
+    # Resultado: La reserva tiene asignado un id, guarda la actividad, horario y todos los participantes
+    assert reserva is not None
+    assert reserva["id"] is not None
+    assert reserva["actividad"] == "Tirolesa"
+    assert reserva["horario_id"] == 1
+    assert len(reserva["participantes"]) == 2
+    assert reserva["participantes"][0]["nombre"] == "Ana"
+    # Y los cupos se descuentan según la cantidad de personas (10 - 2 = 8)
+    assert gestor.consultar_cupos(actividad="Tirolesa", horario_id=1) == 8

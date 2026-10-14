@@ -30,3 +30,6 @@ class GestorReservas:
         cupos_actuales = self.consultar_cupos(actividad, horario_id)
         self._cupos[clave] = cupos_actuales - cantidad
         return True
+
+    def crear_reserva(self, actividad: str, horario_id: int, participantes: list):
+        pass

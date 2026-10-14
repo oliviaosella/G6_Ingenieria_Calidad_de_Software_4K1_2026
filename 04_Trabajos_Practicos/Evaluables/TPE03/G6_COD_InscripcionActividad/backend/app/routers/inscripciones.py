@@ -8,7 +8,10 @@ def validar_participantes(
     participantes: list[dict],
     requiere_talle: bool,
 ) -> bool:
-    ...
+    if cantidad > 0:
+        return True
+    else:
+        return False
 
 def validar_participante(participante: Visitante) -> bool:
     ...

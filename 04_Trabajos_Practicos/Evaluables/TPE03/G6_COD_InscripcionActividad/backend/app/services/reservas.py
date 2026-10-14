@@ -11,6 +11,7 @@ class GestorReservas:
         self._cupos: dict[tuple[str, int], int] = {}
         self._next_id: int = 1
         self._dnis_por_horario: dict[int, set[str]] = {}
+        self._reservas: dict[int, dict] = {}
 
     def obtener_capacidad_inicial(self, actividad: str) -> int:
         return CAPACIDADES_INICIALES.get(actividad, 0)
@@ -47,6 +48,9 @@ class GestorReservas:
     def dni_esta_inscripto(self, horario_id: int, dni: str) -> bool:
         return dni in self._dnis_por_horario.get(horario_id, set())
 
+    def obtener_reserva(self, reserva_id: int) -> dict | None:
+        return self._reservas.get(reserva_id)
+
     def crear_reserva(
         self,
         actividad: str,
@@ -74,11 +78,13 @@ class GestorReservas:
         # Una vez garantizada la reserva, persistir los DNIs y emitir el ticket
         self._dnis_por_horario.setdefault(horario_id, set()).update(dnis_solicitud)
 
+        reserva_id = self._next_id
         reserva = {
-            "id": self._next_id,
+            "id": reserva_id,
             "actividad": actividad,
             "horario_id": horario_id,
             "participantes": list(participantes),
         }
+        self._reservas[reserva_id] = reserva
         self._next_id += 1
         return reserva

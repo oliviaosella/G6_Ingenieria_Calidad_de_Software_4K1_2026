@@ -96,3 +96,19 @@ def test_crear_reserva_asocia_actividad_horario_y_participantes():
     assert reserva["participantes"][0]["nombre"] == "Ana"
     # Y los cupos se descuentan según la cantidad de personas (10 - 2 = 8)
     assert gestor.consultar_cupos(actividad="Tirolesa", horario_id=1) == 8
+
+
+def test_rechazar_reserva_con_cantidad_cero_o_negativa():
+    # Precondiciones
+    gestor = GestorReservas()
+
+    # Pasos: Intentamos reservar con cantidad 0, cantidad negativa (-1), y lista vacía
+    res_cero = gestor.reservar(actividad="Tirolesa", horario_id=1, cantidad=0)
+    res_negativo = gestor.reservar(actividad="Tirolesa", horario_id=1, cantidad=-2)
+    res_vacia = gestor.crear_reserva(actividad="Tirolesa", horario_id=1, participantes=[])
+
+    # Resultado: Todas deben rechazarse y los cupos deben seguir intactos en 10
+    assert res_cero is False
+    assert res_negativo is False
+    assert res_vacia is None
+    assert gestor.consultar_cupos(actividad="Tirolesa", horario_id=1) == 10

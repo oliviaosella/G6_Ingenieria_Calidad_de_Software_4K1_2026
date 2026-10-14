@@ -9,6 +9,7 @@ CAPACIDADES_INICIALES: dict[str, int] = {
 class GestorReservas:
     def __init__(self) -> None:
         self._cupos: dict[tuple[str, int], int] = {}
+        self._next_id = 1
 
     def obtener_capacidad_inicial(self, actividad: str) -> int:
         return CAPACIDADES_INICIALES.get(actividad, 0)
@@ -32,4 +33,15 @@ class GestorReservas:
         return True
 
     def crear_reserva(self, actividad: str, horario_id: int, participantes: list):
-        pass
+        cantidad = len(participantes)
+        if not self.reservar(actividad, horario_id, cantidad):
+            return None
+
+        reserva = {
+            "id": self._next_id,
+            "actividad": actividad,
+            "horario_id": horario_id,
+            "participantes": participantes,
+        }
+        self._next_id += 1
+        return reserva

@@ -32,3 +32,13 @@ def test_validar_cantidad_valida():
     assert validar_participantes(-1, [], False) is False
     assert validar_participantes(1, [participante_01], False) is True
     assert validar_participantes(2, [participante_01, participante_02], True) is True
+
+def test_validar_cantidad_con_participantes_ingresados():
+    participante_01 = { "nombre": "Ana", "dni": "12345678", "edad": 25 }
+    participante_02 = { "nombre": "Esteban", "dni": "12345678", "edad": 10 }
+
+    assert validar_participantes(1, [], True) is False
+    assert validar_participantes(1, [participante_01], False) is True
+    assert validar_participantes(1, [participante_01, participante_02], False) is False
+    assert validar_participantes(3, [participante_01, participante_02], False) is False
+    assert validar_participantes(2, [participante_01, participante_02], False) is True

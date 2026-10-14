@@ -1,3 +1,5 @@
+from datetime import date
+
 class ActividadNoExisteError(ValueError):
     pass
 
@@ -19,3 +21,15 @@ def obtener_actividad(nombre):
     raise ActividadNoExisteError(
         f"La actividad '{nombre}' no existe"
     )
+
+
+def listar_turnos(actividad, fecha: date):
+    obtener_actividad(actividad)
+
+    return [
+        {
+            "actividad": actividad,
+            "fecha": fecha.isoformat(),
+            "hora": "10:00",
+        }
+    ]

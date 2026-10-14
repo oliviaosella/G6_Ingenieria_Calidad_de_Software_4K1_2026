@@ -52,3 +52,4 @@ def test_registrar_doble_reserva():
     resultado2 = registrar_reserva(actividad,2)
     assert resultado1 == True
     assert resultado2 == False
+    assert actividad["inscriptos"] == 9

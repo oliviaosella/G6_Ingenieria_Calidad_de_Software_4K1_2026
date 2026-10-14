@@ -20,6 +20,10 @@ class GestorReservas:
         return self._cupos[clave]
 
     def reservar(self, actividad: str, horario_id: int, cantidad: int) -> bool:
+        clave = (actividad, horario_id)
         cupos_actuales = self.consultar_cupos(actividad, horario_id)
-        self._cupos[(actividad, horario_id)] = cupos_actuales - cantidad
+        if cupos_actuales == 0:
+            return False
+
+        self._cupos[clave] = cupos_actuales - cantidad
         return True

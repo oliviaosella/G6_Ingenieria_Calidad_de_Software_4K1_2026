@@ -42,3 +42,17 @@ def test_independencia_de_cupos_entre_turnos_distintos():
     assert gestor.consultar_cupos(actividad="Tirolesa", horario_id=1) == 6
     assert gestor.consultar_cupos(actividad="Tirolesa", horario_id=2) == 10
     assert gestor.consultar_cupos(actividad="Safari", horario_id=1) == 8
+
+
+def test_rechazar_reserva_en_horario_sin_cupos():
+    # Precondiciones: En Safari (8 cupos) se reservan los 8 lugares disponibles
+    gestor = GestorReservas()
+    gestor.reservar(actividad="Safari", horario_id=1, cantidad=8)
+    assert gestor.consultar_cupos(actividad="Safari", horario_id=1) == 0
+
+    # Pasos: Se intenta reservar 1 lugar en ese horario ya agotado
+    resultado = gestor.reservar(actividad="Safari", horario_id=1, cantidad=1)
+
+    # Resultado: Debe rechazarse (False) y los cupos deben seguir en 0 (no quedar en -1)
+    assert resultado is False
+    assert gestor.consultar_cupos(actividad="Safari", horario_id=1) == 0

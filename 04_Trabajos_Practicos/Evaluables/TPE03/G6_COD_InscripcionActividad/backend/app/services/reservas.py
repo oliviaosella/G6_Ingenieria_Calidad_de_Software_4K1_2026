@@ -10,6 +10,7 @@ class GestorReservas:
     def __init__(self) -> None:
         self._cupos: dict[tuple[str, int], int] = {}
         self._next_id: int = 1
+        self._dnis_por_horario: dict[int, set[str]] = {}
 
     def obtener_capacidad_inicial(self, actividad: str) -> int:
         return CAPACIDADES_INICIALES.get(actividad, 0)
@@ -33,6 +34,9 @@ class GestorReservas:
         self._cupos[clave] = cupos_actuales - cantidad
         return True
 
+    def _extraer_dnis(self, participantes: list[dict]) -> set[str]:
+        return {p["dni"] for p in participantes if p.get("dni")}
+
     def crear_reserva(
         self,
         actividad: str,
@@ -43,8 +47,20 @@ class GestorReservas:
         cantidad = len(participantes)
         cantidad_esperada = cantidad_declarada if cantidad_declarada is not None else cantidad
 
-        if cantidad != cantidad_esperada or not self.reservar(actividad, horario_id, cantidad):
+        if cantidad != cantidad_esperada:
             return None
+
+        dnis_solicitud = self._extraer_dnis(participantes)
+        dnis_existentes = self._dnis_por_horario.get(horario_id, set())
+
+        # Si hay intersección de DNIs, existe superposición en el mismo horario
+        if dnis_solicitud & dnis_existentes:
+            return None
+
+        if not self.reservar(actividad, horario_id, cantidad):
+            return None
+
+        self._dnis_por_horario.setdefault(horario_id, set()).update(dnis_solicitud)
 
         reserva = {
             "id": self._next_id,

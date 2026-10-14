@@ -117,7 +117,6 @@ def test_rechazar_reserva_con_cantidad_cero_o_negativa():
 def test_rechazar_si_cantidad_no_coincide_con_numero_de_participantes():
     # Precondiciones
     gestor = GestorReservas()
-    # Enviamos solo 2 personas en la lista
     participantes = [
         {"nombre": "Ana", "dni": "12345678", "edad": 25},
         {"nombre": "Pedro", "dni": "87654321", "edad": 30},
@@ -134,3 +133,24 @@ def test_rechazar_si_cantidad_no_coincide_con_numero_de_participantes():
     # Resultado: Debe rechazarse por inconsistencia (None) y los cupos deben seguir en 10
     assert reserva is None
     assert gestor.consultar_cupos(actividad="Tirolesa", horario_id=1) == 10
+
+
+def test_rechazar_inscripcion_de_mismo_dni_en_horarios_superpuestos():
+    # Precondiciones: Ana ya tiene reserva en Tirolesa en el horario 1
+    gestor = GestorReservas()
+    gestor.crear_reserva(
+        actividad="Tirolesa",
+        horario_id=1,
+        participantes=[{"nombre": "Ana", "dni": "12345678", "edad": 25}],
+    )
+
+    # Pasos: Intentamos anotar a Ana en Safari en el mismo horario 1
+    reserva_solapada = gestor.crear_reserva(
+        actividad="Safari",
+        horario_id=1,
+        participantes=[{"nombre": "Ana", "dni": "12345678", "edad": 25}],
+    )
+
+    # Resultado: Debe rechazarse (None) y no ocupar cupos en Safari (deben seguir siendo 8)
+    assert reserva_solapada is None
+    assert gestor.consultar_cupos(actividad="Safari", horario_id=1) == 8

@@ -2,6 +2,7 @@ from inspect import signature
 from app.routers.inscripciones import validar_participantes
 from app.routers.inscripciones import validar_participante
 
+from app.schemas import Visitante
 
 def test_validar_participantes() -> None:
     assert callable(validar_participantes)
@@ -42,3 +43,20 @@ def test_validar_cantidad_con_participantes_ingresados():
     assert validar_participantes(1, [participante_01, participante_02], False) is False
     assert validar_participantes(3, [participante_01, participante_02], False) is False
     assert validar_participantes(2, [participante_01, participante_02], False) is True
+
+def test_validar_nombre():
+    participante_01 = Visitante(nombre="", dni="12345678", edad=13)
+    participante_02 = Visitante(nombre=" ", dni="12345678", edad=13)
+    participante_03 = Visitante(nombre="-", dni="12345678", edad=13)
+    participante_04 = Visitante(nombre=". Luis", dni="12345678", edad=13)
+    participante_05 = Visitante(nombre="123 - Yonaguni", dni="12345678", edad=13)
+    participante_06 = Visitante(nombre="Luis", dni="12345678", edad=13)
+    participante_07 = Visitante(nombre="Luis Yonaguni", dni="12345678", edad=13)
+
+    assert validar_participante(participante_01) is False
+    assert validar_participante(participante_02) is False
+    assert validar_participante(participante_03) is False
+    assert validar_participante(participante_04) is False
+    assert validar_participante(participante_05) is False
+    assert validar_participante(participante_06) is True
+    assert validar_participante(participante_07) is True

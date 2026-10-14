@@ -37,6 +37,12 @@ class GestorReservas:
     def _extraer_dnis(self, participantes: list[dict]) -> set[str]:
         return {p["dni"] for p in participantes if p.get("dni")}
 
+    def obtener_proximo_id(self) -> int:
+        return self._next_id
+
+    def dni_esta_inscripto(self, horario_id: int, dni: str) -> bool:
+        return dni in self._dnis_por_horario.get(horario_id, set())
+
     def crear_reserva(
         self,
         actividad: str,

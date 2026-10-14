@@ -177,3 +177,27 @@ def test_reserva_rechazada_no_persiste_datos_ni_modifica_cupos():
     assert gestor.obtener_proximo_id() == 1
     # 4. Ningún DNI de la solicitud fallida debe quedar bloqueado
     assert gestor.dni_esta_inscripto(horario_id=1, dni="0") is False
+
+
+def test_persistencia_recuperar_reserva_por_id():
+    # Precondiciones
+    gestor = GestorReservas()
+    participantes = [{"nombre": "Laura", "dni": "99999999", "edad": 29}]
+    reserva_creada = gestor.crear_reserva(
+        actividad="Palestra",
+        horario_id=2,
+        participantes=participantes,
+    )
+    reserva_id = reserva_creada["id"]
+
+    # Pasos: Recuperamos la reserva persistida usando su ID
+    reserva_recuperada = gestor.obtener_reserva(reserva_id)
+
+    # Resultado: La reserva recuperada es idéntica a la creada y contiene todos los datos
+    assert reserva_recuperada is not None
+    assert reserva_recuperada["id"] == reserva_id
+    assert reserva_recuperada["actividad"] == "Palestra"
+    assert reserva_recuperada["horario_id"] == 2
+    assert reserva_recuperada["participantes"][0]["nombre"] == "Laura"
+    # Y si buscamos un ID inexistente, devuelve None
+    assert gestor.obtener_reserva(9999) is None

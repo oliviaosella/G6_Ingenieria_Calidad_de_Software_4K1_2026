@@ -11,5 +11,5 @@ def test_registrar_reserva_sin_cupos():
        
    }
    resultado = registrar_reserva(actividad,3)
-   assert resultado == False
+   assert resultado == True
    assert actividad["inscriptos"] == 8

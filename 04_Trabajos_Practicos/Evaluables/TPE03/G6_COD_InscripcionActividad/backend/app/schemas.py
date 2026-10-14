@@ -13,6 +13,15 @@ class Actividad(str, Enum):
     JARDINERIA = "Jardinería"
 """
 
+class TalleVestimenta(str, Enum):
+    XS = "XS"
+    S = "S"
+    M = "M"
+    L = "L"
+    XL = "XL"
+    XXL = "XXL"
+
+
 class Visitante(BaseModel):
     nombre: str
     dni: str

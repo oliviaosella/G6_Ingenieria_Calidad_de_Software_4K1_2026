@@ -60,3 +60,18 @@ def test_validar_nombre():
     assert validar_participante(participante_05) is False
     assert validar_participante(participante_06) is True
     assert validar_participante(participante_07) is True
+
+def test_validar_talles_vestimenta():
+    participante_01 = Visitante(nombre="Pepe Bonaventura", dni="12345678", edad=28)
+    participante_02 = Visitante(nombre="Pepe Bonaventura", dni="12345678", edad=28, talle_vestimenta="")
+    participante_03 = Visitante(nombre="Pepe Bonaventura", dni="12345678", edad=28, talle_vestimenta="De niño")
+    participante_04 = Visitante(nombre="Pepe Bonaventura", dni="12345678", edad=28, talle_vestimenta="XXXL")
+    participante_05 = Visitante(nombre="Pepe Bonaventura", dni="12345678", edad=28, talle_vestimenta="XL")
+    participante_06 = Visitante(nombre="Pepe Bonaventura", dni="12345678", edad=28, talle_vestimenta="M")
+
+    assert validar_participante(participante_01) is True
+    assert validar_participante(participante_02) is False
+    assert validar_participante(participante_03) is False
+    assert validar_participante(participante_04) is False
+    assert validar_participante(participante_05) is True
+    assert validar_participante(participante_06) is True

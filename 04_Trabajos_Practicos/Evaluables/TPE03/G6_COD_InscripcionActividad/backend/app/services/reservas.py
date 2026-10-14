@@ -19,11 +19,14 @@ class GestorReservas:
             self._cupos[clave] = self.obtener_capacidad_inicial(actividad)
         return self._cupos[clave]
 
+    def puede_reservar(self, actividad: str, horario_id: int, cantidad: int) -> bool:
+        return cantidad <= self.consultar_cupos(actividad, horario_id)
+
     def reservar(self, actividad: str, horario_id: int, cantidad: int) -> bool:
-        clave = (actividad, horario_id)
-        cupos_actuales = self.consultar_cupos(actividad, horario_id)
-        if cupos_actuales == 0:
+        if not self.puede_reservar(actividad, horario_id, cantidad):
             return False
 
+        clave = (actividad, horario_id)
+        cupos_actuales = self.consultar_cupos(actividad, horario_id)
         self._cupos[clave] = cupos_actuales - cantidad
         return True

@@ -56,3 +56,17 @@ def test_rechazar_reserva_en_horario_sin_cupos():
     # Resultado: Debe rechazarse (False) y los cupos deben seguir en 0 (no quedar en -1)
     assert resultado is False
     assert gestor.consultar_cupos(actividad="Safari", horario_id=1) == 0
+
+
+def test_rechazar_reserva_cuando_cupos_son_insuficientes():
+    # Precondiciones: En Safari (8 cupos) se reservan 6 lugares, dejando exactamente 2 cupos disponibles
+    gestor = GestorReservas()
+    gestor.reservar(actividad="Safari", horario_id=1, cantidad=6)
+    assert gestor.consultar_cupos(actividad="Safari", horario_id=1) == 2
+
+    # Pasos: Se intenta reservar para 3 personas (supera los 2 cupos disponibles)
+    resultado = gestor.reservar(actividad="Safari", horario_id=1, cantidad=3)
+
+    # Resultado: Debe rechazarse (False) y los cupos deben mantenerse intactos en 2
+    assert resultado is False
+    assert gestor.consultar_cupos(actividad="Safari", horario_id=1) == 2

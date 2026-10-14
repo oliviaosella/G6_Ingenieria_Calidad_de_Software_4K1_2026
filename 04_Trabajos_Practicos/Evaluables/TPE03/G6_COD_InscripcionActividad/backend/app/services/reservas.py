@@ -49,7 +49,8 @@ class GestorReservas:
         return dni in self._dnis_por_horario.get(horario_id, set())
 
     def obtener_reserva(self, reserva_id: int) -> dict | None:
-        return self._reservas.get(reserva_id)
+        reserva = self._reservas.get(reserva_id)
+        return dict(reserva) if reserva is not None else None
 
     def crear_reserva(
         self,
@@ -87,4 +88,4 @@ class GestorReservas:
         }
         self._reservas[reserva_id] = reserva
         self._next_id += 1
-        return reserva
+        return dict(reserva)

@@ -28,3 +28,17 @@ def test_reserva_valida_descuenta_cupos_correctamente():
     # Resultado: La reserva fue exitosa y ahora quedan 8 cupos (10 - 2)
     assert resultado is True
     assert gestor.consultar_cupos(actividad="Tirolesa", horario_id=1) == 8
+
+
+def test_independencia_de_cupos_entre_turnos_distintos():
+    # Precondiciones
+    gestor = GestorReservas()
+
+    # Pasos: Reservamos 4 lugares en Tirolesa horario 1
+    resultado = gestor.reservar(actividad="Tirolesa", horario_id=1, cantidad=4)
+
+    # Resultado: Solo el horario 1 de Tirolesa baja a 6; el horario 2 y Safari quedan intactos
+    assert resultado is True
+    assert gestor.consultar_cupos(actividad="Tirolesa", horario_id=1) == 6
+    assert gestor.consultar_cupos(actividad="Tirolesa", horario_id=2) == 10
+    assert gestor.consultar_cupos(actividad="Safari", horario_id=1) == 8

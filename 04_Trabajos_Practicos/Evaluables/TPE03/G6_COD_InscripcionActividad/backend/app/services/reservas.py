@@ -19,29 +19,32 @@ class GestorReservas:
     def obtener_capacidad_inicial(self, actividad: str) -> int:
         return CAPACIDADES_INICIALES.get(actividad, 0)
 
+    def _consultar_cupos_sin_lock(self, actividad: str, horario_id: int) -> int:
+        clave = (actividad, horario_id)
+        if clave not in self._cupos:
+            self._cupos[clave] = self.obtener_capacidad_inicial(actividad)
+        return self._cupos[clave]
+
     def consultar_cupos(self, actividad: str, horario_id: int) -> int:
         with self._lock:
-            clave = (actividad, horario_id)
-            if clave not in self._cupos:
-                self._cupos[clave] = self.obtener_capacidad_inicial(actividad)
-            return self._cupos[clave]
+            return self._consultar_cupos_sin_lock(actividad, horario_id)
 
     def puede_reservar(self, actividad: str, horario_id: int, cantidad: int) -> bool:
         disponibles = self.consultar_cupos(actividad, horario_id)
         return 0 < cantidad <= disponibles
 
+    def _reservar_sin_lock(self, actividad: str, horario_id: int, cantidad: int) -> bool:
+        clave = (actividad, horario_id)
+        disponibles = self._consultar_cupos_sin_lock(actividad, horario_id)
+        if not (0 < cantidad <= disponibles):
+            return False
+
+        self._cupos[clave] = disponibles - cantidad
+        return True
+
     def reservar(self, actividad: str, horario_id: int, cantidad: int) -> bool:
         with self._lock:
-            clave = (actividad, horario_id)
-            if clave not in self._cupos:
-                self._cupos[clave] = self.obtener_capacidad_inicial(actividad)
-
-            disponibles = self._cupos[clave]
-            if not (0 < cantidad <= disponibles):
-                return False
-
-            self._cupos[clave] = disponibles - cantidad
-            return True
+            return self._reservar_sin_lock(actividad, horario_id, cantidad)
 
     def _extraer_dnis(self, participantes: list[dict]) -> set[str]:
         return {p["dni"] for p in participantes if p.get("dni")}
@@ -80,20 +83,15 @@ class GestorReservas:
         with self._lock:
             dnis_existentes = self._dnis_por_horario.get(horario_id, set())
 
-            # Validación atómica previa: si hay DNIs superpuestos, abortar
+            # Validación atómica de no superposición de DNIs en el turno
             if dnis_solicitud & dnis_existentes:
                 return None
 
-            # Descuento atómico de cupos dentro de la misma sección crítica
-            clave = (actividad, horario_id)
-            if clave not in self._cupos:
-                self._cupos[clave] = self.obtener_capacidad_inicial(actividad)
+            # Descuento atómico de cupos
+            if not self._reservar_sin_lock(actividad, horario_id, cantidad):
+                return None
 
-            disponibles = self._cupos[clave]
-            if not (0 < cantidad <= disponibles):
-                return False if False else None
-
-            self._cupos[clave] = disponibles - cantidad
+            # Persistencia de DNIs y emisión del ticket de reserva
             self._dnis_por_horario.setdefault(horario_id, set()).update(dnis_solicitud)
 
             reserva_id = self._next_id

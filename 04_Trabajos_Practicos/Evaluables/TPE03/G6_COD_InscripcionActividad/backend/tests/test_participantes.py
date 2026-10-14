@@ -23,3 +23,12 @@ def test_validar_participante_acepta_argumentos_esperados():
         "edad": 25,
         "talle_vestimenta": "XL"
         })
+
+def test_validar_cantidad_valida():
+    participante_01 = { "nombre": "Ana", "dni": "12345678", "edad": 25 }
+    participante_02 = { "nombre": "Esteban", "dni": "12345678", "edad": 10 }
+
+    assert validar_participantes(0, [], False) is False
+    assert validar_participantes(-1, [], False) is False
+    assert validar_participantes(1, [participante_01], False) is True
+    assert validar_participantes(2, [participante_01, participante_02], True) is True

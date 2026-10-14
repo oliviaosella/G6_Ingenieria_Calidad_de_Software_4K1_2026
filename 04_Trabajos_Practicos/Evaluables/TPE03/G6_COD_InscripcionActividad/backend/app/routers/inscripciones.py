@@ -8,7 +8,7 @@ def validar_participantes(
     participantes: list[dict],
     requiere_talle: bool,
 ) -> bool:
-    return cantidad > 0
+    return cantidad > 0 and cantidad == len(participantes)
 
 def validar_participante(participante: Visitante) -> bool:
     ...

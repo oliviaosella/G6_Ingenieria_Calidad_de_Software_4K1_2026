@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from ..schemas import Visitante
 
 router = APIRouter(prefix="/inscripciones", tags=["inscripciones"])
 
@@ -9,10 +10,5 @@ def validar_participantes(
 ) -> bool:
     ...
 
-def validar_participante(
-    nombre: str,
-    dni: str,
-    edad: int,
-    talle_vestimenta: str | None = None,
-) -> bool:
+def validar_participante(participante: Visitante) -> bool:
     ...

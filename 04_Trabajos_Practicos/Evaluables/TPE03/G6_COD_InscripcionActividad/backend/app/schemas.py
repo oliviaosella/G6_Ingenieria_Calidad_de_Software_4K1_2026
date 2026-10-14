@@ -11,10 +11,10 @@ class Actividad(str, Enum):
     SAFARI = "Safari"
     PALESTRA = "Palestra"
     JARDINERIA = "Jardinería"
+"""
 
 class Visitante(BaseModel):
     nombre: str
     dni: str
     edad: int
     talle_vestimenta: str | None = None
-"""

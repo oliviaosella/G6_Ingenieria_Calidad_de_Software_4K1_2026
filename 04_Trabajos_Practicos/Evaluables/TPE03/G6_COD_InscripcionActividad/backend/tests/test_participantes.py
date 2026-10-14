@@ -17,9 +17,9 @@ def test_validar_participantes_acepta_argumentos_esperados():
     )
 
 def test_validar_participante_acepta_argumentos_esperados():
-    signature(validar_participante).bind(
-        nombre="Ana",
-        dni="12345678",
-        edad=25,
-        talle_vestimenta="XL",
-    )
+    signature(validar_participante).bind({
+        "nombre": "Ana",
+        "dni": "12345678",
+        "edad": 25,
+        "talle_vestimenta": "XL"
+        })

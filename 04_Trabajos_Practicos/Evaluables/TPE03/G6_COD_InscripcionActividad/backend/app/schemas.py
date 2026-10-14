@@ -1,10 +1,8 @@
 from datetime import datetime
 from enum import Enum
 
-from pydantic import BaseModel, EmailStr, Field
-"""
-# Clase de ejemplo incompleta
-# Usar pydantic Field para validación
+from pydantic import BaseModel
+
 
 class Actividad(str, Enum):
     TIROLESA = "Tirolesa"
@@ -12,9 +10,10 @@ class Actividad(str, Enum):
     PALESTRA = "Palestra"
     JARDINERIA = "Jardinería"
 
-class Visitante(BaseModel):
-    nombre: str
-    dni: str
-    edad: int
-    talle_vestimenta: str | None = None
-"""
+
+class HorarioDisponible(BaseModel):
+    horario_id: int
+    actividad: Actividad
+    inicio: datetime
+    fin: datetime
+    cupos_disponibles: int

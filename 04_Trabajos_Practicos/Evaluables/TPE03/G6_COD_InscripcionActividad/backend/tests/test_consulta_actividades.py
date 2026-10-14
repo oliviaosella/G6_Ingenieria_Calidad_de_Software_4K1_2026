@@ -29,3 +29,15 @@ def test_safari_tiene_un_turno_disponible_a_las_diez():
         turno["hora"]
         for turno in resultado
     } >= {"10:00"}
+
+    
+def test_safari_tiene_un_turno_a_las_nueve():
+    resultado = listar_turnos(
+        actividad="Safari",
+        fecha=date(2026, 10, 14),
+    )
+
+    assert {
+        turno["hora"]
+        for turno in resultado
+    } >= {"09:00"}

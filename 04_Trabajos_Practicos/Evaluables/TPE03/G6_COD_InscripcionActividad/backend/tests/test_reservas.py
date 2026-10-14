@@ -154,3 +154,26 @@ def test_rechazar_inscripcion_de_mismo_dni_en_horarios_superpuestos():
     # Resultado: Debe rechazarse (None) y no ocupar cupos en Safari (deben seguir siendo 8)
     assert reserva_solapada is None
     assert gestor.consultar_cupos(actividad="Safari", horario_id=1) == 8
+
+
+def test_reserva_rechazada_no_persiste_datos_ni_modifica_cupos():
+    # Precondiciones: Horario 1 con capacidad inicial
+    gestor = GestorReservas()
+
+    # Pasos: Se intenta una reserva que falla (por ejemplo, pidiendo 15 cupos en Tirolesa que tiene 10)
+    participantes_exceso = [{"nombre": f"Persona_{i}", "dni": f"{i}", "edad": 20} for i in range(15)]
+    reserva_fallida = gestor.crear_reserva(
+        actividad="Tirolesa",
+        horario_id=1,
+        participantes=participantes_exceso,
+    )
+
+    # Resultado:
+    # 1. La reserva debe ser rechazada (None)
+    assert reserva_fallida is None
+    # 2. Los cupos deben seguir intactos en 10
+    assert gestor.consultar_cupos(actividad="Tirolesa", horario_id=1) == 10
+    # 3. El contador de reservas no debe avanzar (el próximo ID disponible debe seguir siendo 1)
+    assert gestor.obtener_proximo_id() == 1
+    # 4. Ningún DNI de la solicitud fallida debe quedar bloqueado
+    assert gestor.dni_esta_inscripto(horario_id=1, dni="0") is False

@@ -37,8 +37,12 @@ class GestorReservas:
     def _extraer_dnis(self, participantes: list[dict]) -> set[str]:
         return {p["dni"] for p in participantes if p.get("dni")}
 
-    def obtener_proximo_id(self) -> int:
+    @property
+    def proximo_id(self) -> int:
         return self._next_id
+
+    def obtener_proximo_id(self) -> int:
+        return self.proximo_id
 
     def dni_esta_inscripto(self, horario_id: int, dni: str) -> bool:
         return dni in self._dnis_por_horario.get(horario_id, set())
@@ -59,13 +63,15 @@ class GestorReservas:
         dnis_solicitud = self._extraer_dnis(participantes)
         dnis_existentes = self._dnis_por_horario.get(horario_id, set())
 
-        # Si hay intersección de DNIs, existe superposición en el mismo horario
+        # Validación atómica previa: si hay DNIs superpuestos, abortar sin tocar nada
         if dnis_solicitud & dnis_existentes:
             return None
 
+        # Validación y descuento atómico de cupos
         if not self.reservar(actividad, horario_id, cantidad):
             return None
 
+        # Una vez garantizada la reserva, persistir los DNIs y emitir el ticket
         self._dnis_por_horario.setdefault(horario_id, set()).update(dnis_solicitud)
 
         reserva = {

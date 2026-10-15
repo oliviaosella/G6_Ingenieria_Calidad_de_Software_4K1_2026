@@ -30,9 +30,10 @@ def listar_turnos(
 ):
     obtener_actividad(actividad)
 
-    if fecha.weekday() == 0:
+    if fecha.weekday() == 0 or (
+        fecha.month == 12 and fecha.day == 25
+    ):
         return []
-
     turnos = []
 
     for hora_numero in range(9, 18):

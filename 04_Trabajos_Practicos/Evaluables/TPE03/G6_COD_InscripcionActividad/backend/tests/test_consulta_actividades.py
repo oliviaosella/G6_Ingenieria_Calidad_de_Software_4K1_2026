@@ -108,3 +108,35 @@ def test_consulta_cupos_de_un_turno_especifico():
 
     # Verificar: Safari tiene 8 lugares y quedan 5.
     assert resultado == 5
+
+def test_lista_turnos_con_sus_cupos_disponibles():
+    # Preparar: cada turno de Safari tiene distinta ocupacion.
+    fecha = date(2026, 10, 14)
+
+    ocupados_por_turno = {
+        ("Safari", fecha, "09:00"): 2,
+        ("Safari", fecha, "10:00"): 3,
+        ("Safari", fecha, "17:00"): 0,
+    }
+
+    def consultar_ocupados_simulado(actividad, fecha, hora):
+        return ocupados_por_turno[(actividad, fecha, hora)]
+
+    # Actuar: listar turnos usando el servicio simulado.
+    resultado = modulo.listar_turnos(
+        actividad="Safari",
+        fecha=fecha,
+        consultar_ocupados=consultar_ocupados_simulado,
+    )
+
+    # Verificar: los ocupados de un turno no afectan a los otros.
+    cupos_por_hora = {
+        turno["hora"]: turno["cupos_disponibles"]
+        for turno in resultado
+    }
+
+    assert cupos_por_hora == {
+        "09:00": 6,
+        "10:00": 5,
+        "17:00": 8,
+    }

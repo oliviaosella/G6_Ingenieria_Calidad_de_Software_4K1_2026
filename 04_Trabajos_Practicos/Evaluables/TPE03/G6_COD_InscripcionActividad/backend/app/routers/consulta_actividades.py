@@ -23,7 +23,6 @@ def obtener_actividad(nombre):
     )
 
 
-
 def listar_turnos(actividad, fecha: date):
     obtener_actividad(actividad)
 
@@ -38,4 +37,10 @@ def listar_turnos(actividad, fecha: date):
             "fecha": fecha.isoformat(),
             "hora": "10:00",
         },
+        {
+            "actividad": actividad,
+            "fecha": fecha.isoformat(),
+            "hora": "17:00",
+        },
     ]
+

@@ -1,7 +1,7 @@
 import pytest
 from app.routers.consulta_actividades import *
-from datetime import date
 from app.routers import consulta_actividades as modulo
+from datetime import date, datetime
 
 def test_muestra_las_actividades_con_sus_cupos():
     resultado = listar_actividades()
@@ -217,3 +217,18 @@ def test_no_hay_turnos_el_1_de_enero():
     )
 
     assert resultado == []
+
+
+def test_no_muestra_turno_si_faltan_menos_de_quince_minutos():
+    resultado = listar_turnos(
+        actividad="Safari",
+        fecha=date(2026, 10, 14),
+        hora_actual=datetime(2026, 10, 14, 9, 46),
+    )
+
+    horas = {
+        turno["hora"]
+        for turno in resultado
+    }
+
+    assert "10:00" not in horas

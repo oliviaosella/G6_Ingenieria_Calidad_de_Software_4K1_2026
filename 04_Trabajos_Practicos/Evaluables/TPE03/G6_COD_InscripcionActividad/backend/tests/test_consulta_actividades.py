@@ -200,3 +200,11 @@ def test_hay_un_turno_por_hora_entre_las_nueve_y_las_diecisiete():
         "16:00",
         "17:00",
     }
+
+def test_no_hay_turnos_el_25_de_diciembre():
+    resultado = listar_turnos(
+        actividad="Safari",
+        fecha=date(2026, 12, 25),
+    )
+
+    assert resultado == []

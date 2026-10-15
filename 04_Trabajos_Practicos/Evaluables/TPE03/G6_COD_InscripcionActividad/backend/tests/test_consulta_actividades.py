@@ -1,7 +1,7 @@
 import pytest
 from app.routers.consulta_actividades import *
 from datetime import date
-
+from app.routers import consulta_actividades as modulo
 
 def test_muestra_las_actividades_con_sus_cupos():
     resultado = listar_actividades()
@@ -74,3 +74,17 @@ def test_no_hay_turnos_los_lunes():
     )
 
     assert resultado == []
+
+def test_safari_con_tres_cupos_ocupados_muestra_cinco_disponibles():
+    # Preparar: Safari tiene 8 lugares y 3 ya están ocupados.
+    # El número de ocupados simula el dato recibido del grupo 5.
+    ocupados = 3
+
+    # Actuar: consultar los lugares restantes.
+    resultado = modulo.consultar_cupos(
+        actividad="Safari",
+        ocupados=ocupados,
+    )
+
+    # Verificar: quedan 8 - 3 = 5 lugares.
+    assert resultado == 5

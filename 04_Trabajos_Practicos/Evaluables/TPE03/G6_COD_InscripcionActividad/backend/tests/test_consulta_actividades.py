@@ -96,8 +96,10 @@ def test_consulta_cupos_de_un_turno_especifico():
     }
 
     def consultar_ocupados_simulado(actividad, fecha, hora):
-        return ocupados_por_turno.get((actividad, fecha, hora), 0)
-
+        return ocupados_por_turno.get(
+            (actividad, fecha, hora),
+            0,
+        )
     # Actuar: consultar Safari para esa fecha y hora.
     resultado = modulo.consultar_cupos_turno(
         actividad="Safari",
@@ -120,7 +122,10 @@ def test_lista_turnos_con_sus_cupos_disponibles():
     }
 
     def consultar_ocupados_simulado(actividad, fecha, hora):
-        return ocupados_por_turno[(actividad, fecha, hora)]
+        return ocupados_por_turno.get(
+            (actividad, fecha, hora),
+            0,
+        )
 
     # Actuar: listar turnos usando el servicio simulado.
     resultado = modulo.listar_turnos(
@@ -138,6 +143,12 @@ def test_lista_turnos_con_sus_cupos_disponibles():
     assert cupos_por_hora == {
         "09:00": 6,
         "10:00": 5,
+        "11:00": 8,
+        "12:00": 8,
+        "13:00": 8,
+        "14:00": 8,
+        "15:00": 8,
+        "16:00": 8,
         "17:00": 8,
     }
 
@@ -145,9 +156,15 @@ def test_lista_turnos_con_sus_cupos_disponibles():
 def test_turno_lleno_informa_sin_cupos_y_no_esta_disponible():
     fecha = date(2026, 10, 14)
 
+    ocupados_por_turno = {
+        ("Safari", fecha, "10:00"): 8,
+    }
+
     def consultar_ocupados_simulado(actividad, fecha, hora):
-        # Safari tiene sus 8 lugares ocupados a las 10:00.
-        return 8 if hora == "10:00" else 0
+        return ocupados_por_turno.get(
+            (actividad, fecha, hora),
+            0,
+        )
 
     resultado = modulo.listar_turnos(
         actividad="Safari",

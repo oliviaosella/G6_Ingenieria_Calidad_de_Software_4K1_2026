@@ -23,9 +23,6 @@ def obtener_actividad(nombre):
     )
 
 
-
-
-
 def listar_turnos(
     actividad,
     fecha: date,
@@ -38,7 +35,9 @@ def listar_turnos(
 
     turnos = []
 
-    for hora in ("09:00", "10:00", "17:00"):
+    for hora_numero in range(9, 18):
+        hora = f"{hora_numero:02d}:00"
+
         turno = {
             "actividad": actividad,
             "fecha": fecha.isoformat(),
@@ -60,6 +59,7 @@ def listar_turnos(
         turnos.append(turno)
 
     return turnos
+
 
 def consultar_cupos(actividad, ocupados):
     datos_actividad = obtener_actividad(actividad)

@@ -44,3 +44,27 @@ def listar_turnos(actividad, fecha: date):
         },
     ]
 
+
+def listar_turnos(actividad, fecha: date):
+    obtener_actividad(actividad)
+
+    if fecha.weekday() == 0:
+        return []
+
+    return [
+        {
+            "actividad": actividad,
+            "fecha": fecha.isoformat(),
+            "hora": "09:00",
+        },
+        {
+            "actividad": actividad,
+            "fecha": fecha.isoformat(),
+            "hora": "10:00",
+        },
+        {
+            "actividad": actividad,
+            "fecha": fecha.isoformat(),
+            "hora": "17:00",
+        },
+    ]

@@ -58,6 +58,7 @@ def listar_turnos(
             "hora": hora,
         }
 
+
         if consultar_ocupados is not None:
             cupos = consultar_cupos_turno(
                 actividad=actividad,

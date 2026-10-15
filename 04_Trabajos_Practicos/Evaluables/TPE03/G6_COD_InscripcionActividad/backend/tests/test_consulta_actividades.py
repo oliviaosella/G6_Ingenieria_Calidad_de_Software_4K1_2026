@@ -232,3 +232,19 @@ def test_no_muestra_turno_si_faltan_menos_de_quince_minutos():
     }
 
     assert "10:00" not in horas
+
+
+def test_no_muestra_turnos_a_mas_de_24_horas():
+    resultado = listar_turnos(
+        actividad="Safari",
+        fecha=date(2026, 10, 15),
+        hora_actual=datetime(2026, 10, 14, 9, 0),
+    )
+
+    horas = {
+        turno["hora"]
+        for turno in resultado
+    }
+
+    assert "09:00" in horas
+    assert "10:00" not in horas

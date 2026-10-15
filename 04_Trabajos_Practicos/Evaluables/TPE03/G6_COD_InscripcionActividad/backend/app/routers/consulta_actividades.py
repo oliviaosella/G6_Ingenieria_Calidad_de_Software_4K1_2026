@@ -31,7 +31,8 @@ def listar_turnos(
     obtener_actividad(actividad)
 
     if fecha.weekday() == 0 or (
-        fecha.month == 12 and fecha.day == 25
+        (fecha.month == 12 and fecha.day == 25)
+        or (fecha.month == 1 and fecha.day == 1)
     ):
         return []
     turnos = []

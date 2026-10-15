@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime, time, timedelta
 
 class ActividadNoExisteError(ValueError):
     pass
@@ -27,6 +27,7 @@ def listar_turnos(
     actividad,
     fecha: date,
     consultar_ocupados=None,
+    hora_actual: datetime | None = None,
 ):
     obtener_actividad(actividad)
 
@@ -39,6 +40,17 @@ def listar_turnos(
 
     for hora_numero in range(9, 18):
         hora = f"{hora_numero:02d}:00"
+
+        if hora_actual is not None:
+            inicio_turno = datetime.combine(
+                fecha,
+                time(hora_numero, 0),
+            )
+
+            tiempo_hasta_el_turno = inicio_turno - hora_actual
+
+            if tiempo_hasta_el_turno < timedelta(minutes=15):
+                continue
 
         turno = {
             "actividad": actividad,

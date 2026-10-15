@@ -49,7 +49,10 @@ def listar_turnos(
 
             tiempo_hasta_el_turno = inicio_turno - hora_actual
 
-            if tiempo_hasta_el_turno < timedelta(minutes=15):
+            if (
+                tiempo_hasta_el_turno < timedelta(minutes=15)
+                or tiempo_hasta_el_turno > timedelta(hours=24)
+            ):
                 continue
 
         turno = {

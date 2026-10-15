@@ -46,12 +46,16 @@ def listar_turnos(
         }
 
         if consultar_ocupados is not None:
-            turno["cupos_disponibles"] = consultar_cupos_turno(
+            cupos = consultar_cupos_turno(
                 actividad=actividad,
                 fecha=fecha,
                 hora=hora,
                 consultar_ocupados=consultar_ocupados,
             )
+
+            turno["cupos_disponibles"] = cupos
+            turno["disponible"] = cupos > 0
+            turno["motivo"] = "sin cupos" if cupos == 0 else None
 
         turnos.append(turno)
 

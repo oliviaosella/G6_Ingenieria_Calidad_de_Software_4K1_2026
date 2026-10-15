@@ -140,3 +140,26 @@ def test_lista_turnos_con_sus_cupos_disponibles():
         "10:00": 5,
         "17:00": 8,
     }
+
+#Turno lleno
+def test_turno_lleno_informa_sin_cupos_y_no_esta_disponible():
+    fecha = date(2026, 10, 14)
+
+    def consultar_ocupados_simulado(actividad, fecha, hora):
+        # Safari tiene sus 8 lugares ocupados a las 10:00.
+        return 8 if hora == "10:00" else 0
+
+    resultado = modulo.listar_turnos(
+        actividad="Safari",
+        fecha=fecha,
+        consultar_ocupados=consultar_ocupados_simulado,
+    )
+
+    turno_lleno = next(
+        turno for turno in resultado
+        if turno["hora"] == "10:00"
+    )
+
+    assert turno_lleno["cupos_disponibles"] == 0
+    assert turno_lleno["disponible"] is False
+    assert turno_lleno["motivo"] == "sin cupos"

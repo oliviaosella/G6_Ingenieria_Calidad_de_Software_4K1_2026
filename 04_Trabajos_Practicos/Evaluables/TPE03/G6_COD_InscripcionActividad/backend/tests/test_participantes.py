@@ -75,3 +75,4 @@ def test_validar_talles_vestimenta():
     assert validar_participante(participante_04) is False
     assert validar_participante(participante_05) is True
     assert validar_participante(participante_06) is True
+

@@ -36,32 +36,24 @@ def listar_turnos(
     if fecha.weekday() == 0:
         return []
 
-    turnos = [
-        {
-            "actividad": actividad,
-            "fecha": fecha.isoformat(),
-            "hora": "09:00",
-        },
-        {
-            "actividad": actividad,
-            "fecha": fecha.isoformat(),
-            "hora": "10:00",
-        },
-        {
-            "actividad": actividad,
-            "fecha": fecha.isoformat(),
-            "hora": "17:00",
-        },
-    ]
+    turnos = []
 
-    if consultar_ocupados is not None:
-        for turno in turnos:
+    for hora in ("09:00", "10:00", "17:00"):
+        turno = {
+            "actividad": actividad,
+            "fecha": fecha.isoformat(),
+            "hora": hora,
+        }
+
+        if consultar_ocupados is not None:
             turno["cupos_disponibles"] = consultar_cupos_turno(
                 actividad=actividad,
                 fecha=fecha,
-                hora=turno["hora"],
+                hora=hora,
                 consultar_ocupados=consultar_ocupados,
             )
+
+        turnos.append(turno)
 
     return turnos
 

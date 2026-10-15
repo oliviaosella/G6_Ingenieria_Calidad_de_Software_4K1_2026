@@ -68,3 +68,8 @@ def listar_turnos(actividad, fecha: date):
             "hora": "17:00",
         },
     ]
+
+def consultar_cupos(actividad, ocupados):
+    datos_actividad = obtener_actividad(actividad)
+
+    return datos_actividad["cupo_maximo"] - ocupados

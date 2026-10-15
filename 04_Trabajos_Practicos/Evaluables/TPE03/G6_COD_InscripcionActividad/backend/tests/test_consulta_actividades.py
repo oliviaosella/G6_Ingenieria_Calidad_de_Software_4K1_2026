@@ -163,3 +163,23 @@ def test_turno_lleno_informa_sin_cupos_y_no_esta_disponible():
     assert turno_lleno["cupos_disponibles"] == 0
     assert turno_lleno["disponible"] is False
     assert turno_lleno["motivo"] == "sin cupos"
+
+def test_hay_un_turno_por_hora_entre_las_nueve_y_las_diecisiete():
+    resultado = listar_turnos(
+        actividad="Safari",
+        fecha=date(2026, 10, 14),
+    )
+
+    horas = {turno["hora"] for turno in resultado}
+
+    assert horas == {
+        "09:00",
+        "10:00",
+        "11:00",
+        "12:00",
+        "13:00",
+        "14:00",
+        "15:00",
+        "16:00",
+        "17:00",
+    }

@@ -88,3 +88,23 @@ def test_safari_con_tres_cupos_ocupados_muestra_cinco_disponibles():
 
     # Verificar: quedan 8 - 3 = 5 lugares.
     assert resultado == 5
+
+def test_consulta_cupos_de_un_turno_especifico():
+    # Preparar: el servicio simulado informa ocupados por turno.
+    ocupados_por_turno = {
+        ("Safari", date(2026, 10, 14), "10:00"): 3,
+    }
+
+    def consultar_ocupados_simulado(actividad, fecha, hora):
+        return ocupados_por_turno.get((actividad, fecha, hora), 0)
+
+    # Actuar: consultar Safari para esa fecha y hora.
+    resultado = modulo.consultar_cupos_turno(
+        actividad="Safari",
+        fecha=date(2026, 10, 14),
+        hora="10:00",
+        consultar_ocupados=consultar_ocupados_simulado,
+    )
+
+    # Verificar: Safari tiene 8 lugares y quedan 5.
+    assert resultado == 5

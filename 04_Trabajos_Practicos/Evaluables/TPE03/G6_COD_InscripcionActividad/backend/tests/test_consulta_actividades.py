@@ -208,3 +208,12 @@ def test_no_hay_turnos_el_25_de_diciembre():
     )
 
     assert resultado == []
+
+
+def test_no_hay_turnos_el_1_de_enero():
+    resultado = listar_turnos(
+        actividad="Safari",
+        fecha=date(2027, 1, 1),
+    )
+
+    assert resultado == []

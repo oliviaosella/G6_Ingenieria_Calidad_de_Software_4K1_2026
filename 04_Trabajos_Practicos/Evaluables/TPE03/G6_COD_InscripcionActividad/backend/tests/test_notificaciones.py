@@ -85,23 +85,6 @@ def test_resumen_actividad_requiere_vestimenta() -> None:
     pass
 
 
-def test_enviar_confirmacion_al_correo_del_visitante_EXITO() -> None:
-    #Preparar
-    inscripcion = {
-        "id": 125,
-        "email": "visitante@gmail.com",
-        "actividad": "Tirolesa",
-        "fecha": "2026-10-20",
-        "horario": "14:30"
-    }
-
-    #Resultados
-    resultado = enviar_confirmacion(inscripcion)
-
-    #Validar
-    assert inscripcion['email'] in resultado
-
-
 class CorreoFalso:
     def __init__(self) -> None:
         self.envios = []

@@ -98,5 +98,5 @@ def test_validar_actividad_segun_talle_requerido() -> None:
     assert validar_participantes(1, [participante], actividad_palestra) is True
     
 def test_validar_dni_participante():
-    participante = { "nombre": "Ana", "dni": "11.a.111", "edad": 25, "talle_vestimenta": "M" }
+    participante = { "nombre": "Ana", "dni": "44444444", "edad": 25, "talle_vestimenta": "M" }
     assert validar_dni_participante(participante["dni"]) is True

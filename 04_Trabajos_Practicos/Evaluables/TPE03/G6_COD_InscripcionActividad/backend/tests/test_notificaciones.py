@@ -128,3 +128,32 @@ def test_confirmacion_se_envia_al_visitante() -> None:
     assert correo_falso.envios[0]["destinatario"] == (
         "visitante@gmail.com"
     )
+
+
+def test_confirmacion_incluye_qr() -> None:
+    # ARRANGE
+    inscripcion = {
+        "id": 125,
+        "email": "visitante@gmail.com",
+        "actividad": "Tirolesa",
+        "fecha": "2026-10-20",
+        "horario": "14:30"
+    }
+
+    correo_falso = CorreoFalso()
+
+    servicio = ServicioNotificaciones(
+        emisor_correo=correo_falso
+    )
+
+    # ACT
+    servicio.enviar_confirmacion(inscripcion)
+
+    # ASSERT
+    assert len(correo_falso.envios) == 1
+    assert correo_falso.envios[0]["destinatario"] == (
+        "visitante@gmail.com"
+    )
+    assert "qr" in correo_falso.envios[0]  
+    assert isinstance(correo_falso.envios[0]["qr"], bytes)
+

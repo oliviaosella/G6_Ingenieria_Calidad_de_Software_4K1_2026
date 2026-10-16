@@ -30,6 +30,20 @@ def validar_participantes(
             if participante["edad"] < actividad.edad_minima:
                 return False
 
+    # 4. Validar que el DNI no se repita entre participantes
+    dnis = []
+    for participante in participantes:
+        if isinstance(participante, dict):
+            dnis.append(participante.get("dni"))
+        else:
+            dnis.append(getattr(participante, "dni", None))
+
+    if len(dnis) != len(set(dnis)):
+        return False
+
+    # 5. Validar que el DNI sea unico
+    
+
     return True
 
 

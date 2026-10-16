@@ -38,10 +38,6 @@ def validar_participantes(
         else:
             dnis.append(getattr(participante, "dni", None))
 
-    if len(dnis) != len(set(dnis)):
-        return False
-
-    # 5. Validar que el DNI sea unico
     
 
     return True

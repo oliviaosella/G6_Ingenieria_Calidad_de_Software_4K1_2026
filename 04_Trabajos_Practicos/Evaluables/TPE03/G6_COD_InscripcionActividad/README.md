@@ -30,7 +30,7 @@ Desde la raíz del repositorio, entrar en `backend/` y ejecutar:
 ```bash
 cd backend
 uv sync
-uv run uvicorn main:app --reload
+uv run uvicorn app.main:app --reload
 ```
 
 Esto instala las dependencias indicadas en `pyproject.toml` y `uv.lock`.

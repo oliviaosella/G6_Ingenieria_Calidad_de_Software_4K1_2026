@@ -3,7 +3,12 @@ class ServicioNotificaciones:
         self.emisor_correo = emisor_correo
 
     def enviar_confirmacion(self, inscripcion: dict) -> None:
-        pass
+        self.emisor_correo.enviar(
+            destinatario=inscripcion['email'],
+            asunto="Confirmación de inscripción",
+            contenido="",
+            qr=b""
+        )
 
 
 def preparar_resumen(inscripcion):

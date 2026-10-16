@@ -1,6 +1,7 @@
 from app.services.email_service import (
     preparar_resumen, 
-    enviar_confirmacion
+    enviar_confirmacion,
+    ServicioNotificaciones
 )
 
 
@@ -99,3 +100,48 @@ def test_enviar_confirmacion_al_correo_del_visitante_EXITO() -> None:
 
     #Validar
     assert inscripcion['email'] in resultado
+
+
+class CorreoFalso:
+    def __init__(self) -> None:
+        self.envios = []
+
+    def enviar(
+        self,
+        destinatario: str,
+        asunto: str,
+        contenido: str,
+        qr: bytes
+    ) -> None:
+        self.envios.append({
+            "destinatario": destinatario,
+            "asunto": asunto,
+            "contenido": contenido,
+            "qr": qr
+        })
+
+
+def test_confirmacion_se_envia_al_visitante() -> None:
+    # ARRANGE
+    inscripcion = {
+        "id": 125,
+        "email": "visitante@gmail.com",
+        "actividad": "Tirolesa",
+        "fecha": "2026-10-20",
+        "horario": "14:30"
+    }
+
+    correo_falso = CorreoFalso()
+
+    servicio = ServicioNotificaciones(
+        emisor_correo=correo_falso
+    )
+
+    # ACT
+    servicio.enviar_confirmacion(inscripcion)
+
+    # ASSERT
+    assert len(correo_falso.envios) == 1
+    assert correo_falso.envios[0]["destinatario"] == (
+        "visitante@gmail.com"
+    )

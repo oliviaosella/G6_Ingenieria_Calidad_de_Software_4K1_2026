@@ -24,6 +24,12 @@ def validar_participantes(
         elif talle and talle not in talles_validos:
             return False
 
+    # 3. Validar edad segun la actividad
+    if not actividad.edad_minima == 0:
+        for participante in participantes:
+            if participante.edad < actividad.edad_minima:
+                return False
+
     return True
 
 
@@ -39,3 +45,4 @@ def validar_participante(participante: Visitante) -> bool:
 
 def validar_dni_participante(dni: str) -> bool:
     return isinstance(dni, str) and dni.isdigit() and 1 <= int(dni) <= 999_999_999
+

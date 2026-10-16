@@ -38,7 +38,8 @@ def validar_participantes(
         else:
             dnis.append(getattr(participante, "dni", None))
 
-    
+    if len(dnis) != len(set(dnis)):
+        return False
 
     return True
 

@@ -30,12 +30,12 @@ def test_validar_participante_acepta_argumentos_esperados() -> None:
 
 def test_validar_nombre() -> None:
     participante_01 = Visitante(nombre="", dni="12345678", edad=12)
-    participante_02 = Visitante(nombre=" ", dni="12345678", edad=12)
-    participante_03 = Visitante(nombre="-", dni="12345678", edad=12)
-    participante_04 = Visitante(nombre=". Luis", dni="12345678", edad=12)
-    participante_05 = Visitante(nombre="123 - Yonaguni", dni="12345678", edad=12)
-    participante_06 = Visitante(nombre="Luis", dni="12345678", edad=12)
-    participante_07 = Visitante(nombre="Luis Yonaguni", dni="12345678", edad=12)
+    participante_02 = Visitante(nombre=" ", dni="7434", edad=12)
+    participante_03 = Visitante(nombre="-", dni="78678", edad=12)
+    participante_04 = Visitante(nombre=". Luis", dni="3478", edad=12)
+    participante_05 = Visitante(nombre="123 - Yonaguni", dni="786334", edad=12)
+    participante_06 = Visitante(nombre="Luis", dni="9345", edad=12)
+    participante_07 = Visitante(nombre="Luis Yonaguni", dni="487", edad=12)
 
     assert validar_participante(participante_01) is False
     assert validar_participante(participante_02) is False
@@ -47,11 +47,11 @@ def test_validar_nombre() -> None:
 
 def test_validar_talles_vestimenta() -> None:
     participante_01 = Visitante(nombre="Pepe Bonaventura", dni="12345678", edad=28)
-    participante_02 = Visitante(nombre="Pepe Bonaventura", dni="12345678", edad=28, talle_vestimenta="")
-    participante_03 = Visitante(nombre="Pepe Bonaventura", dni="12345678", edad=28, talle_vestimenta="De niño")
-    participante_04 = Visitante(nombre="Pepe Bonaventura", dni="12345678", edad=28, talle_vestimenta="XXXL")
-    participante_05 = Visitante(nombre="Pepe Bonaventura", dni="12345678", edad=28, talle_vestimenta="XL")
-    participante_06 = Visitante(nombre="Pepe Bonaventura", dni="12345678", edad=28, talle_vestimenta="M")
+    participante_02 = Visitante(nombre="Pepe Bonaventura", dni="4789", edad=28, talle_vestimenta="")
+    participante_03 = Visitante(nombre="Pepe Bonaventura", dni="416", edad=28, talle_vestimenta="De niño")
+    participante_04 = Visitante(nombre="Pepe Bonaventura", dni="789674", edad=28, talle_vestimenta="XXXL")
+    participante_05 = Visitante(nombre="Pepe Bonaventura", dni="45678", edad=28, talle_vestimenta="XL")
+    participante_06 = Visitante(nombre="Pepe Bonaventura", dni="67864", edad=28, talle_vestimenta="M")
 
     assert validar_participante(participante_01) is True
     assert validar_participante(participante_02) is False
@@ -62,7 +62,7 @@ def test_validar_talles_vestimenta() -> None:
 
 def test_validar_cantidad_valida() -> None:
     participante_01 = { "nombre": "Ana", "dni": "12345678", "edad": 25, "talle_vestimenta": "L" }
-    participante_02 = { "nombre": "Esteban", "dni": "12345678", "edad": 10, "talle_vestimenta": "M" }
+    participante_02 = { "nombre": "Esteban", "dni": "6787", "edad": 10, "talle_vestimenta": "M" }
 
     actividad_safari = Actividad.SAFARI
 
@@ -73,7 +73,7 @@ def test_validar_cantidad_valida() -> None:
 
 def test_validar_cantidad_con_participantes_ingresados() -> None:
     participante_01 = { "nombre": "Ana", "dni": "12345678", "edad": 25, "talle_vestimenta": "" }
-    participante_02 = { "nombre": "Esteban", "dni": "12345678", "edad": 10, "talle_vestimenta": "L" }
+    participante_02 = { "nombre": "Esteban", "dni": "7897", "edad": 10, "talle_vestimenta": "L" }
 
     actividad_safari = Actividad.SAFARI
 

@@ -41,4 +41,4 @@ def validar_dni_participante(dni: str) -> bool:
     if not isinstance(dni, str) or not dni.isdigit():
         return False
 
-    return 0 <= int(dni) <= 999_999_999
+    return 1 <= int(dni) <= 999_999_999

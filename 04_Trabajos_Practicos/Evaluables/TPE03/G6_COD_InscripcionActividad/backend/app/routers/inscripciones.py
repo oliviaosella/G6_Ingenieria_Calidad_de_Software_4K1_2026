@@ -27,7 +27,7 @@ def validar_participantes(
     # 3. Validar edad segun la actividad
     if not actividad.edad_minima == 0:
         for participante in participantes:
-            if participante.edad < actividad.edad_minima:
+            if participante["edad"] < actividad.edad_minima:
                 return False
 
     return True

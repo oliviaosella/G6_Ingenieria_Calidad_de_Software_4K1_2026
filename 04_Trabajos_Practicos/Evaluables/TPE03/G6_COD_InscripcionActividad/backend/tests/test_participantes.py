@@ -29,10 +29,10 @@ def test_validar_participante_acepta_argumentos_esperados() -> None:
 
 
 def test_validar_nombre() -> None:
-    participante_01 = Visitante(nombre="", dni="12345678", edad=13)
+    participante_01 = Visitante(nombre="", dni="12345678", edad=1)
     participante_02 = Visitante(nombre=" ", dni="12345678", edad=13)
-    participante_03 = Visitante(nombre="-", dni="12345678", edad=13)
-    participante_04 = Visitante(nombre=". Luis", dni="12345678", edad=13)
+    participante_03 = Visitante(nombre="-", dni="12345678", edad=1)
+    participante_04 = Visitante(nombre=". Luis", dni="12345678", edad=1)
     participante_05 = Visitante(nombre="123 - Yonaguni", dni="12345678", edad=13)
     participante_06 = Visitante(nombre="Luis", dni="12345678", edad=13)
     participante_07 = Visitante(nombre="Luis Yonaguni", dni="12345678", edad=13)

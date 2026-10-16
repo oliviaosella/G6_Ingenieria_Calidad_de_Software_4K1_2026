@@ -4,10 +4,12 @@ version = "0.1.0"
 requires-python = ">=3.13"
 dependencies = [
     "fastapi>=0.143.0",
+    "qrcode[pil]>=8.2",
     "uvicorn>=0.54.0",
 ]
 
 [dependency-groups]
 dev = [
+    "opencv-python-headless>=5.0.0.93",
     "pytest>=9.1.1",
 ]

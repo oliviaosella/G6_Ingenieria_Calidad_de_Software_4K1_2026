@@ -1,3 +1,16 @@
+class ServicioNotificaciones:
+    def __init__(self, emisor_correo):
+        self.emisor_correo = emisor_correo
+
+    def enviar_confirmacion(self, inscripcion: dict) -> None:
+        self.emisor_correo.enviar(
+            destinatario=inscripcion['email'],
+            asunto="Confirmación de inscripción",
+            contenido="",
+            qr=b""
+        )
+
+
 def preparar_resumen(inscripcion):
     return f"""Id inscripción: {inscripcion['id']} - Actividad: {inscripcion['actividad']}\n
                 Fecha: {inscripcion['fecha']} - Horario: {inscripcion['horario']}\n

@@ -1,4 +1,9 @@
-from app.services.email_service import preparar_resumen, enviar_confirmacion
+from app.services.email_service import (
+    preparar_resumen, 
+    enviar_confirmacion,
+    ServicioNotificaciones
+)
+
 
 def test_resumen_contiene_identificador_inscripcion_EXITO() -> None:
     #Preparar
@@ -35,7 +40,7 @@ def test_resumen_contiene_actividad_inscripcion() -> None:
 
 
 def test_resumen_contiene_datos_inscripcion() -> None:
-    # ARRANGE
+    # Preparar
     inscripcion = {
         "id": 125,
         "email": "visitante@gmail.com",
@@ -59,10 +64,10 @@ def test_resumen_contiene_datos_inscripcion() -> None:
 
     }
 
-    # ACT
+    # Resultados
     resumen = preparar_resumen(inscripcion)
 
-    # ASSERT
+    # Validar
     assert "125" in resumen
     assert "Tirolesa" in resumen
     assert "2026-10-20" in resumen
@@ -80,8 +85,27 @@ def test_resumen_actividad_requiere_vestimenta() -> None:
     pass
 
 
-def test_enviar_confirmacion_al_correo_del_visitante_EXITO() -> None:
-    #Preparar
+class CorreoFalso:
+    def __init__(self) -> None:
+        self.envios = []
+
+    def enviar(
+        self,
+        destinatario: str,
+        asunto: str,
+        contenido: str,
+        qr: bytes
+    ) -> None:
+        self.envios.append({
+            "destinatario": destinatario,
+            "asunto": asunto,
+            "contenido": contenido,
+            "qr": qr
+        })
+
+
+def test_confirmacion_se_envia_al_visitante() -> None:
+    # ARRANGE
     inscripcion = {
         "id": 125,
         "email": "visitante@gmail.com",
@@ -90,8 +114,17 @@ def test_enviar_confirmacion_al_correo_del_visitante_EXITO() -> None:
         "horario": "14:30"
     }
 
-    resultado = enviar_confirmacion(inscripcion)
-    #Resultados
+    correo_falso = CorreoFalso()
 
-    #Verificar
-    assert inscripcion['email'] in resultado
+    servicio = ServicioNotificaciones(
+        emisor_correo=correo_falso
+    )
+
+    # ACT
+    servicio.enviar_confirmacion(inscripcion)
+
+    # ASSERT
+    assert len(correo_falso.envios) == 1
+    assert correo_falso.envios[0]["destinatario"] == (
+        "visitante@gmail.com"
+    )

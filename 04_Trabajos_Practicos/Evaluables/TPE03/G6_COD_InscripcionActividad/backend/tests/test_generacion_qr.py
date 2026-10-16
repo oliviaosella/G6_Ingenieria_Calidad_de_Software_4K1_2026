@@ -1,19 +1,61 @@
-# tests/test_qr.py
-from io import BytesIO
-
-from PIL import Image
-
 from app.services.qr_service import generar_qr
+import cv2
+import numpy as np
 
 
-def test_genera_qr_png_con_la_url_de_validacion():
-    url = "https://ecoharmony.example/inscripciones/125/validacion"
+def test_generar_qr_inscripcion_exitosa() -> None:
+    # Preparar
+    inscripcion = {
+        "id": 125,
+        "email": "visitante@gmail.com",
+        "actividad": "Tirolesa",
+        "fecha": "2026-10-20",
+        "horario": "14:30"
+    }
 
-    resultado = generar_qr(url)
+    # Resultados
+    qr = generar_qr(inscripcion)
 
-    assert resultado.startswith(b"\x89PNG\r\n\x1a\n")
+    # Validar
+    assert isinstance(qr, bytes)
+    assert qr.startswith(b"\x89PNG\r\n\x1a\n")
 
-    imagen = Image.open(BytesIO(resultado))
-    assert imagen.format == "PNG"
-    assert imagen.size[0] > 0
-    assert imagen.size[1] > 0
+
+def test_qr_contiene_identificador_inscripcion() -> None:
+    # Preparar
+    inscripcion = {
+        "id": 125,
+        "email": "visitante@gmail.com",
+        "actividad": "Tirolesa",
+        "fecha": "2026-10-20",
+        "horario": "14:30"
+    }
+
+    # Resultados
+    qr = generar_qr(inscripcion)
+
+    # Validar
+    imagen = cv2.imdecode(
+        np.frombuffer(qr, dtype=np.uint8),
+        cv2.IMREAD_GRAYSCALE
+    )
+
+    assert imagen is not None
+
+    detector = cv2.QRCodeDetector()
+    contenido, _, _ = detector.detectAndDecode(imagen)
+
+    assert contenido == "RESERVA-125"
+
+
+def test_qr_es_diferente_para_cada_inscripcion() -> None:
+    # Preparar
+    inscripcion_1 = {"id": 125}
+    inscripcion_2 = {"id": 250}
+
+    # Resultados
+    qr_1 = generar_qr(inscripcion_1)
+    qr_2 = generar_qr(inscripcion_2)
+
+    # Validar
+    assert qr_1 != qr_2

@@ -9,7 +9,7 @@ def validar_participantes(
     actividad: Actividad,
 ) -> bool:
     # 1. Validar cantidad de participantes
-    if cantidad != len(participantes):
+    if cantidad != len(participantes) or cantidad <= 0:
         return False
 
     talles_validos = {talle.value for talle in TalleVestimenta}
@@ -27,7 +27,6 @@ def validar_participantes(
     return True
 
 
-
 def validar_participante(participante: Visitante) -> bool:
     partes_nombre = participante.nombre.split()
     nombre_valido = bool(partes_nombre) and all(parte.isalpha() for parte in partes_nombre)
@@ -36,3 +35,10 @@ def validar_participante(participante: Visitante) -> bool:
     talle = participante.talle_vestimenta
 
     return nombre_valido and (talle is None or talle in talles_validos)
+
+
+def validar_dni_participante(dni: str) -> bool:
+    if not isinstance(dni, str) or not dni.isdigit():
+        return False
+
+    return 0 <= int(dni) <= 999_999_999

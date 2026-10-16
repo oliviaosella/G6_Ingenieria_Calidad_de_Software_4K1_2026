@@ -1,3 +1,4 @@
+from app.routers.inscripciones import validar_dni_participante
 from app.schemas import Actividad
 from inspect import signature
 from app.routers.inscripciones import validar_participantes
@@ -96,5 +97,6 @@ def test_validar_actividad_segun_talle_requerido() -> None:
     assert validar_participantes(1, [participante], actividad_jardineria) is True
     assert validar_participantes(1, [participante], actividad_palestra) is True
     
-    
-    
+def test_validar_dni_participante():
+    participante = { "nombre": "Ana", "dni": "", "edad": 25, "talle_vestimenta": "M" }
+    assert validar_dni_participante(participante.dni) is True

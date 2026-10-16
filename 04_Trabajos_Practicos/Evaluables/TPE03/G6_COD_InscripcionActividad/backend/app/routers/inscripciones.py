@@ -51,7 +51,7 @@ def validar_participante(participante: Visitante) -> bool:
     talles_validos = {talle.value for talle in TalleVestimenta}
     talle = participante.talle_vestimenta
 
-    return nombre_valido and (talle is None or talle in talles_validos)
+    return nombre_valido and (talle is None or talle in talles_validos) and validar_edad_positiva(participante.edad) and validar_dni_participante(participante.dni)
 
 
 def validar_dni_participante(dni: str) -> bool:

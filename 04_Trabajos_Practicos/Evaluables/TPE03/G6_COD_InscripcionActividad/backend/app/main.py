@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+# pyrefly: ignore[missing-import]
 from routers.inscripciones import router as inscripciones_router
 from fastapi.middleware.cors import CORSMiddleware
 

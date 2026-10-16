@@ -1,3 +1,4 @@
+from app.schemas import Actividad
 from inspect import signature
 from app.routers.inscripciones import validar_participantes
 from app.routers.inscripciones import validar_participante
@@ -14,7 +15,7 @@ def test_validar_participantes_acepta_argumentos_esperados():
     signature(validar_participantes).bind(
         cantidad=1,
         participantes=[{"datos": "datos del participante"}],
-        requiere_talle=False,
+        actividad=Actividad.SAFARI,
     )
 
 def test_validar_participante_acepta_argumentos_esperados():
@@ -25,24 +26,6 @@ def test_validar_participante_acepta_argumentos_esperados():
         "talle_vestimenta": "XL"
         })
 
-def test_validar_cantidad_valida():
-    participante_01 = { "nombre": "Ana", "dni": "12345678", "edad": 25 }
-    participante_02 = { "nombre": "Esteban", "dni": "12345678", "edad": 10 }
-
-    assert validar_participantes(0, [], False) is False
-    assert validar_participantes(-1, [], False) is False
-    assert validar_participantes(1, [participante_01], False) is True
-    assert validar_participantes(2, [participante_01, participante_02], True) is True
-
-def test_validar_cantidad_con_participantes_ingresados():
-    participante_01 = { "nombre": "Ana", "dni": "12345678", "edad": 25 }
-    participante_02 = { "nombre": "Esteban", "dni": "12345678", "edad": 10 }
-
-    assert validar_participantes(1, [], True) is False
-    assert validar_participantes(1, [participante_01], False) is True
-    assert validar_participantes(1, [participante_01, participante_02], False) is False
-    assert validar_participantes(3, [participante_01, participante_02], False) is False
-    assert validar_participantes(2, [participante_01, participante_02], False) is True
 
 def test_validar_nombre():
     participante_01 = Visitante(nombre="", dni="12345678", edad=13)
@@ -76,3 +59,42 @@ def test_validar_talles_vestimenta():
     assert validar_participante(participante_05) is True
     assert validar_participante(participante_06) is True
 
+def test_validar_cantidad_valida():
+    participante_01 = { "nombre": "Ana", "dni": "12345678", "edad": 25, "talle_vestimenta": "L" }
+    participante_02 = { "nombre": "Esteban", "dni": "12345678", "edad": 10, "talle_vestimenta": "M" }
+
+    actividad_safari = Actividad.SAFARI
+
+    assert validar_participantes(0, [], actividad_safari) is False
+    assert validar_participantes(-1, [], actividad_safari) is False
+    assert validar_participantes(1, [participante_01], actividad_safari) is True
+    assert validar_participantes(2, [participante_01, participante_02],actividad_safari ) is True
+
+def test_validar_cantidad_con_participantes_ingresados():
+    participante_01 = { "nombre": "Ana", "dni": "12345678", "edad": 25, "talle_vestimenta": "" }
+    participante_02 = { "nombre": "Esteban", "dni": "12345678", "edad": 10, "talle_vestimenta": "L" }
+
+    actividad_safari = Actividad.SAFARI
+
+    assert validar_participantes(1, [], True) is False
+    assert validar_participantes(1, [participante_01], actividad_safari) is True
+    assert validar_participantes(1, [participante_01, participante_02], actividad_safari) is False
+    assert validar_participantes(3, [participante_01, participante_02], actividad_safari) is False
+    assert validar_participantes(2, [participante_01, participante_02], actividad_safari) is True
+
+def test_validar_actividad_segun_talle_requerido():
+    participante_01 = { "nombre": "Ana", "dni": "12345678", "edad": 25, "talle_vestimenta": "" }
+
+
+    actividad_safari = Actividad.SAFARI
+    actividad_tirolesa = Actividad.TIROLESA
+    actividad_jardineria = Actividad.JARDINERIA
+    actividad_palestra = Actividad.PALESTRA
+    
+    assert validar_participantes(1, [participante_01], actividad_safari) is True
+    assert validar_participantes(1, [participante_01], actividad_tirolesa) is True
+    assert validar_participantes(1, [participante_01], actividad_jardineria) is True
+    assert validar_participantes(1, [participante_01], actividad_palestra) is True
+    
+    
+    

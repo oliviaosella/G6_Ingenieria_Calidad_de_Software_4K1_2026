@@ -1,14 +1,32 @@
 from fastapi import APIRouter
-from ..schemas import TalleVestimenta, Visitante
+from ..schemas import Actividad, TalleVestimenta, Visitante
 
 router = APIRouter(prefix="/inscripciones", tags=["inscripciones"])
 
 def validar_participantes(
     cantidad: int,
     participantes: list[dict],
-    requiere_talle: bool,
+    actividad: Actividad,
 ) -> bool:
-    return cantidad > 0 and cantidad == len(participantes)
+    # 1. Validar cantidad de participantes
+    if cantidad <= 0 or cantidad != len(participantes):
+        return False
+
+    talles_validos = {talle.value for talle in TalleVestimenta}
+
+    # 2. Validar talle según la actividad
+    for p in participantes:
+        talle = p.get("talle_vestimenta")
+
+        if actividad.talle_obligatorio:
+            if not talle or talle not in talles_validos:
+                return False
+        else:
+            if talle and talle not in talles_validos:
+                return False
+
+    return True
+
 
 
 def validar_participante(participante: Visitante) -> bool:

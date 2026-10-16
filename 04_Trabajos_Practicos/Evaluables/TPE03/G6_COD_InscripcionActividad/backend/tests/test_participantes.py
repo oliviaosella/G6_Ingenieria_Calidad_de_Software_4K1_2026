@@ -83,7 +83,7 @@ def test_validar_cantidad_con_participantes_ingresados():
     assert validar_participantes(2, [participante_01, participante_02], actividad_safari) is True
 
 def test_validar_actividad_segun_talle_requerido():
-    participante_01 = { "nombre": "Ana", "dni": "12345678", "edad": 25, "talle_vestimenta": "" }
+    participante_01 = { "nombre": "Ana", "dni": "12345678", "edad": 25, "talle_vestimenta": "M" }
 
 
     actividad_safari = Actividad.SAFARI

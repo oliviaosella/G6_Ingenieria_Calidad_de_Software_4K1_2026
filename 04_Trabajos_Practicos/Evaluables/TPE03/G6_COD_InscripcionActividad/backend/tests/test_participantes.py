@@ -11,14 +11,14 @@ def test_validar_participantes() -> None:
 def test_validar_participante() -> None:
     assert callable(validar_participante)
 
-def test_validar_participantes_acepta_argumentos_esperados():
+def test_validar_participantes_acepta_argumentos_esperados() -> None:
     signature(validar_participantes).bind(
         cantidad=1,
         participantes=[{"datos": "datos del participante"}],
         actividad=Actividad.SAFARI,
     )
 
-def test_validar_participante_acepta_argumentos_esperados():
+def test_validar_participante_acepta_argumentos_esperados() -> None:
     signature(validar_participante).bind({
         "nombre": "Ana",
         "dni": "12345678",
@@ -27,7 +27,7 @@ def test_validar_participante_acepta_argumentos_esperados():
         })
 
 
-def test_validar_nombre():
+def test_validar_nombre() -> None:
     participante_01 = Visitante(nombre="", dni="12345678", edad=13)
     participante_02 = Visitante(nombre=" ", dni="12345678", edad=13)
     participante_03 = Visitante(nombre="-", dni="12345678", edad=13)
@@ -44,7 +44,7 @@ def test_validar_nombre():
     assert validar_participante(participante_06) is True
     assert validar_participante(participante_07) is True
 
-def test_validar_talles_vestimenta():
+def test_validar_talles_vestimenta() -> None:
     participante_01 = Visitante(nombre="Pepe Bonaventura", dni="12345678", edad=28)
     participante_02 = Visitante(nombre="Pepe Bonaventura", dni="12345678", edad=28, talle_vestimenta="")
     participante_03 = Visitante(nombre="Pepe Bonaventura", dni="12345678", edad=28, talle_vestimenta="De niño")
@@ -59,7 +59,7 @@ def test_validar_talles_vestimenta():
     assert validar_participante(participante_05) is True
     assert validar_participante(participante_06) is True
 
-def test_validar_cantidad_valida():
+def test_validar_cantidad_valida() -> None:
     participante_01 = { "nombre": "Ana", "dni": "12345678", "edad": 25, "talle_vestimenta": "L" }
     participante_02 = { "nombre": "Esteban", "dni": "12345678", "edad": 10, "talle_vestimenta": "M" }
 
@@ -70,7 +70,7 @@ def test_validar_cantidad_valida():
     assert validar_participantes(1, [participante_01], actividad_safari) is True
     assert validar_participantes(2, [participante_01, participante_02],actividad_safari ) is True
 
-def test_validar_cantidad_con_participantes_ingresados():
+def test_validar_cantidad_con_participantes_ingresados() -> None:
     participante_01 = { "nombre": "Ana", "dni": "12345678", "edad": 25, "talle_vestimenta": "" }
     participante_02 = { "nombre": "Esteban", "dni": "12345678", "edad": 10, "talle_vestimenta": "L" }
 
@@ -82,19 +82,19 @@ def test_validar_cantidad_con_participantes_ingresados():
     assert validar_participantes(3, [participante_01, participante_02], actividad_safari) is False
     assert validar_participantes(2, [participante_01, participante_02], actividad_safari) is True
 
-def test_validar_actividad_segun_talle_requerido():
-    participante_01 = { "nombre": "Ana", "dni": "12345678", "edad": 25, "talle_vestimenta": "M" }
+def test_validar_actividad_segun_talle_requerido() -> None:
+    participante = { "nombre": "Ana", "dni": "12345678", "edad": 25, "talle_vestimenta": "M" }
 
 
     actividad_safari = Actividad.SAFARI
-    actividad_tirolesa = Actividad.TIROLESA
+    actividad_tirolesa = Actividad.TIROLESA 
     actividad_jardineria = Actividad.JARDINERIA
     actividad_palestra = Actividad.PALESTRA
     
-    assert validar_participantes(1, [participante_01], actividad_safari) is True
-    assert validar_participantes(1, [participante_01], actividad_tirolesa) is True
-    assert validar_participantes(1, [participante_01], actividad_jardineria) is True
-    assert validar_participantes(1, [participante_01], actividad_palestra) is True
+    assert validar_participantes(1, [participante], actividad_safari) is True
+    assert validar_participantes(1, [participante], actividad_tirolesa) is True
+    assert validar_participantes(1, [participante], actividad_jardineria) is True
+    assert validar_participantes(1, [participante], actividad_palestra) is True
     
     
     

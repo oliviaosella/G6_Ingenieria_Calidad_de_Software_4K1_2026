@@ -9,21 +9,20 @@ def validar_participantes(
     actividad: Actividad,
 ) -> bool:
     # 1. Validar cantidad de participantes
-    if cantidad <= 0 or cantidad != len(participantes):
+    if cantidad != len(participantes):
         return False
 
     talles_validos = {talle.value for talle in TalleVestimenta}
 
     # 2. Validar talle según la actividad
-    for p in participantes:
-        talle = p.get("talle_vestimenta")
+    for participante in participantes:
+        talle = participante.get("talle_vestimenta")
 
         if actividad.talle_obligatorio:
             if not talle or talle not in talles_validos:
                 return False
-        else:
-            if talle and talle not in talles_validos:
-                return False
+        elif talle and talle not in talles_validos:
+            return False
 
     return True
 

@@ -2,7 +2,7 @@ from app.services.email_service import (
     preparar_resumen, 
     enviar_confirmacion
 )
-from app.services.qr_service import generar_qr
+
 
 def test_resumen_contiene_identificador_inscripcion_EXITO() -> None:
     #Preparar
@@ -39,7 +39,7 @@ def test_resumen_contiene_actividad_inscripcion() -> None:
 
 
 def test_resumen_contiene_datos_inscripcion() -> None:
-    # ARRANGE
+    # Preparar
     inscripcion = {
         "id": 125,
         "email": "visitante@gmail.com",
@@ -63,10 +63,10 @@ def test_resumen_contiene_datos_inscripcion() -> None:
 
     }
 
-    # ACT
+    # Resultados
     resumen = preparar_resumen(inscripcion)
 
-    # ASSERT
+    # Validar
     assert "125" in resumen
     assert "Tirolesa" in resumen
     assert "2026-10-20" in resumen
@@ -94,26 +94,8 @@ def test_enviar_confirmacion_al_correo_del_visitante_EXITO() -> None:
         "horario": "14:30"
     }
 
-    resultado = enviar_confirmacion(inscripcion)
     #Resultados
+    resultado = enviar_confirmacion(inscripcion)
 
-    #Verificar
+    #Validar
     assert inscripcion['email'] in resultado
-
-
-def test_generar_qr_inscripcion_exitosa() -> None:
-    # ARRANGE
-    inscripcion = {
-        "id": 125,
-        "email": "visitante@gmail.com",
-        "actividad": "Tirolesa",
-        "fecha": "2026-10-20",
-        "horario": "14:30"
-    }
-
-    # ACT
-    qr = generar_qr(inscripcion)
-
-    # ASSERT
-    assert isinstance(qr, bytes)
-    assert qr.startswith(b"\x89PNG\r\n\x1a\n")

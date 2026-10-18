@@ -111,3 +111,53 @@ En cada ciclo: RED con fallo por el motivo esperado; GREEN con implementación
 mínima; REFACTOR solo cuando exista una mejora concreta, manteniendo las
 pruebas aprobadas. Registrar evidencia real de cada etapa, sin reconstruirla
 retrospectivamente.
+
+## Ciclo: cantidad de participantes no supera el cupo — 2026-10-18
+
+Regla: la cantidad de participantes no puede superar el cupo máximo de la
+actividad (Safari 8, Palestra 12, Jardinería 12, Tirolesa 10; ya definidos en
+`Actividad`). El cupo disponible por turno corresponde al Grupo 1 y queda
+fuera de este ciclo.
+
+### Línea base
+`uv run pytest -q` desde `backend/`: **10 pruebas aprobadas**.
+
+### RED — commit `869d75a`
+- Test: `test_validar_cantidad_no_supera_cupo_de_actividad`. Safari, 9
+  participantes con DNI distinto, sin talle y con edad 25, para que el cupo sea
+  el único motivo posible de rechazo.
+- Casos: 8 participantes aceptados (borde inclusivo, ya pasaba) y 9 rechazados.
+- Resultado: **1 fallida, 10 aprobadas**. Fallo esperado:
+  `AssertionError: assert True is False` en la llamada con 9 participantes.
+
+### Incidente durante el RED
+Una corrida intermedia mostró 3 fallos. Dos eran de `test_validar_nombre` y
+`test_validar_talles_vestimenta`: `schemas.py` tenía cambios sin commitear
+(`Field` con longitud mínima de nombre, DNI de 7 a 8 caracteres y `talle`
+tipado como enum), por lo que `Visitante(...)` lanzaba `ValidationError` antes
+de llegar a la función. Esas restricciones no tenían un RED que las
+justificara y contradicen la decisión de no inventar longitudes de DNI ni
+restricciones de nombre. El origen probable fue un asistente del editor; el
+cambio se revirtió y la línea base volvió a 10 aprobadas.
+
+### GREEN — commit `44b78a2`
+- Cambio: `actividad.cupo < cantidad` se agregó a la condición de cantidad de
+  `validar_participantes`, evaluada al final del `or`.
+- Resultado: **11 pruebas aprobadas**.
+- Hallazgo: al ubicar la condición del cupo primero, falló
+  `test_validar_cantidad_con_participantes_ingresados` con
+  `AttributeError: 'bool' object has no attribute 'cupo'`. Ese test llama
+  `validar_participantes(1, [], True)`: pasa un booleano donde la firma espera
+  una `Actividad` (resto de cuando el parámetro era `requiere_talle`). Con el
+  cupo al final, `cantidad != len(participantes)` corta el `or` y la rama del
+  cupo no se ejecuta con ese dato, por lo que el defecto de la prueba sigue
+  oculto.
+
+### Pendiente
+- REFACTOR: corregir el `True` del test mencionado por una `Actividad`.
+- Regla 8: parametrizar la creación de participantes en las pruebas
+  (DNI hardcodeados, diccionarios repetidos) y evaluar unificar `dict` y
+  `Visitante`.
+- Limpieza: líneas en blanco con espacios al inicio de
+  `validar_participantes`.
+- Integración con G1: el cupo disponible por turno todavía no se recibe.

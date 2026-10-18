@@ -6,6 +6,21 @@ from app.routers.inscripciones import validar_participante
 
 from app.schemas import Visitante
 
+
+def crear_participante(
+    dni: str = "12345678",
+    edad: int = 25,
+    talle_vestimenta: str | None = "M",
+    nombre: str = "Ana",
+) -> dict:
+    return {
+        "nombre": nombre,
+        "dni": dni,
+        "edad": edad,
+        "talle_vestimenta": talle_vestimenta,
+    }
+
+
 def test_validar_participantes() -> None:
     assert callable(validar_participantes)
 
@@ -61,8 +76,8 @@ def test_validar_talles_vestimenta() -> None:
     assert validar_participante(participante_06) is True
 
 def test_validar_cantidad_valida() -> None:
-    participante_01 = { "nombre": "Ana", "dni": "12345678", "edad": 25, "talle_vestimenta": "L" }
-    participante_02 = { "nombre": "Esteban", "dni": "6787", "edad": 10, "talle_vestimenta": "M" }
+    participante_01 = crear_participante()
+    participante_02 = crear_participante(dni="6787")
 
     actividad_safari = Actividad.SAFARI
 
@@ -72,8 +87,8 @@ def test_validar_cantidad_valida() -> None:
     assert validar_participantes(2, [participante_01, participante_02],actividad_safari ) is True
 
 def test_validar_cantidad_con_participantes_ingresados() -> None:
-    participante_01 = { "nombre": "Ana", "dni": "12345678", "edad": 25, "talle_vestimenta": "" }
-    participante_02 = { "nombre": "Esteban", "dni": "7897", "edad": 10, "talle_vestimenta": "L" }
+    participante_01 = crear_participante()
+    participante_02 =crear_participante(dni="6777")
 
     actividad_safari = Actividad.SAFARI
 
@@ -84,7 +99,7 @@ def test_validar_cantidad_con_participantes_ingresados() -> None:
     assert validar_participantes(2, [participante_01, participante_02], actividad_safari) is True
 
 def test_validar_actividad_segun_talle_requerido() -> None:
-    participante = { "nombre": "Ana", "dni": "12345678", "edad": 25, "talle_vestimenta": "M" }
+    participante = crear_participante()
 
 
     actividad_safari = Actividad.SAFARI
@@ -103,7 +118,7 @@ def test_validar_dni_participante() -> None:
 def test_validar_cantidad_no_supera_cupo_de_actividad() -> None:
     actividad_safari = Actividad.SAFARI
     participantes = [
-        {"nombre": "Ana", "dni": str(10_000_000 + i), "edad": 25}
+        crear_participante(dni=str(10_000_000 + i))
         for i in range(9)
     ]
     assert validar_participantes(8, participantes[:8], actividad_safari) is True

@@ -8,8 +8,10 @@ def validar_participantes(
     participantes: list[dict],
     actividad: Actividad,
 ) -> bool:
+    
+    
     # 1. Validar cantidad de participantes
-    if cantidad != len(participantes) or cantidad <= 0:
+    if cantidad != len(participantes) or cantidad <= 0 or actividad.cupo < cantidad:
         return False
 
     talles_validos = {talle.value for talle in TalleVestimenta}

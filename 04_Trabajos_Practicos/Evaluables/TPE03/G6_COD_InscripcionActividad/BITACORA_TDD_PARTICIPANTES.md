@@ -122,7 +122,7 @@ fuera de este ciclo.
 ### Línea base
 `uv run pytest -q` desde `backend/`: **10 pruebas aprobadas**.
 
-### RED — commit `869d75a`
+### RED — commit `a4ab194`
 - Test: `test_validar_cantidad_no_supera_cupo_de_actividad`. Safari, 9
   participantes con DNI distinto, sin talle y con edad 25, para que el cupo sea
   el único motivo posible de rechazo.
@@ -140,7 +140,7 @@ justificara y contradicen la decisión de no inventar longitudes de DNI ni
 restricciones de nombre. El origen probable fue un asistente del editor; el
 cambio se revirtió y la línea base volvió a 10 aprobadas.
 
-### GREEN — commit `44b78a2`
+### GREEN — commit `cf3c3e3`
 - Cambio: `actividad.cupo < cantidad` se agregó a la condición de cantidad de
   `validar_participantes`, evaluada al final del `or`.
 - Resultado: **11 pruebas aprobadas**.
@@ -153,11 +153,100 @@ cambio se revirtió y la línea base volvió a 10 aprobadas.
   cupo no se ejecuta con ese dato, por lo que el defecto de la prueba sigue
   oculto.
 
-### Pendiente
-- REFACTOR: corregir el `True` del test mencionado por una `Actividad`.
-- Regla 8: parametrizar la creación de participantes en las pruebas
-  (DNI hardcodeados, diccionarios repetidos) y evaluar unificar `dict` y
-  `Visitante`.
+Nota: los hashes de RED y GREEN corresponden al historial local luego de
+reescribir mensajes de commit que todavía no habían sido publicados.
+
+### REFACTOR 1 — commit `7525dae`
+- Motivo: `test_validar_cantidad_con_participantes_ingresados` llamaba
+  `validar_participantes(1, [], True)`, con un booleano donde la firma espera
+  una `Actividad`.
+- Cambio: se reemplazó `True` por `actividad_safari`. Solo prueba.
+- Resultado: **11 pruebas aprobadas** antes y después; el comportamiento no
+  cambia. El test pasaba solo porque `cantidad != len(participantes)` cortaba
+  el `or` antes de usar la actividad.
+
+### REFACTOR 2 (regla 8, parametrización) — commit `9514c3a`
+- Motivo: `test_validar_dni_participante` armaba un participante completo
+  (nombre, edad, talle) y usaba únicamente el DNI. Esos datos eran relleno.
+- Cambio: la llamada pasa a `validar_dni_participante("44444444")`, con el
+  mismo valor de entrada que antes. Solo prueba.
+- Resultado: **11 pruebas aprobadas** antes y después.
+- Descartado durante el paso: usar un DNI con guiones (`"999-999-99"`)
+  cambiaría el dato de entrada y fallaría, porque `str.isdigit()` rechaza los
+  guiones. Un refactor conserva el valor original.
+
+### Hallazgo de diseño
+Un participante se representa de dos formas: `Visitante` (modelo Pydantic,
+acceso por atributo) y `dict` (acceso por clave). `validar_participante`
+recibe el primero y `validar_participantes` anota `list[dict]`, pero la regla
+de DNI repetido usa `isinstance(participante, dict)` con `getattr` como
+alternativa, y la de edad accede con `participante["edad"]`. La firma y el
+comportamiento no coinciden. Unificar el tipo toca código de producción; se
+deja como paso aparte.
+
+Origen (según el historial, sin intención declarada por el autor): las firmas
+se definieron por separado en `32f5e82`; `eb49391` cambió solo
+`validar_participante` para recibir `Visitante`, y `validar_participantes`
+quedó con `list[dict]`. Los tests siguieron cada firma: diccionarios en los de
+cantidad (`f5abcef`) y `Visitante` en los de nombre (`8e1a4c6`). Fue un
+crecimiento por ciclos mínimos sin una etapa posterior de unificación.
+
+### Regla 8: qué se entendió por "parametrizar a los participantes"
+El material de la consigna indica «HAY QUE PARAMETRIZAR A LOS PARTICIPANTES →
+Refactor» sin detallar el alcance. Interpretación adoptada, **a confirmar con
+el equipo**: dejar de escribir a mano y repetir los datos de cada participante
+en cada prueba, y definirlos en un solo lugar donde cada test indique solo
+el dato que lo distingue. Es un refactor: no agrega comportamiento y la suite
+debe seguir igual de aprobada.
+
+Qué había que resolver:
+- Los diccionarios de 4 campos se repetían en varios tests y el DNI estaba
+  escrito a mano (`"12345678"`, `"6787"`, etc.).
+- Cada participante de una misma inscripción necesita un DNI distinto (regla
+  de DNI repetido); los demás datos pueden coincidir.
+- Con 9 o 13 participantes para probar el cupo, escribir cada uno a mano no
+  es viable.
+
+### REFACTOR 3 — `crear_participante` (sin commit al momento de esta entrada)
+- Se agregó el helper de pruebas `crear_participante(dni, edad,
+  talle_vestimenta, nombre)` con valores por defecto válidos para cualquier
+  actividad (edad 25, talle `"M"`), y devuelve un `dict`, el formato que
+  espera `validar_participantes`.
+- Se aplicó en `test_validar_cantidad_valida`,
+  `test_validar_cantidad_con_participantes_ingresados`,
+  `test_validar_actividad_segun_talle_requerido` y el test de cupo, que genera
+  9 participantes variando solo el DNI.
+- Resultado: **11 pruebas aprobadas** antes y después.
+- Efecto colateral: al simplificar
+  `test_validar_cantidad_con_participantes_ingresados` se quitó el talle `""`.
+  Esa prueba cubría sin intención que `validar_participantes` acepta talle
+  vacío en una actividad sin talle obligatorio. No existe hoy un test propio.
+
+### Decisiones y criterio
+
+| Opción | Ventaja | Desventaja |
+| --- | --- | --- |
+| Helper `crear_participante` (elegida para los tests de cantidad y cupo) | Cada test escribe solo lo que cambia; el formato queda en un único lugar | Es código de pruebas; no resuelve la doble representación |
+| `Visitante(...)` directo | Es el modelo real | `nombre`, `dni` y `edad` son obligatorios y sin valor por defecto; hay que repetirlos en cada participante |
+| Valores por defecto en `Visitante` | Menos código en los tests | Cambia producción: un visitante sin nombre ni DNI pasaría a ser válido |
+
+Criterio: usar `Visitante` directo cuando el test depende de cada campo
+(`test_validar_nombre`, `test_validar_talles_vestimenta`) y el helper cuando
+solo hace falta «un participante válido» que cambia a lo sumo un dato.
+
+### Pendiente (decisión del equipo; no se aplicó)
+- **Unificar `dict` y `Visitante`.** Propuesta, cada paso con la suite
+  aprobada: (1) migrar todos los participantes de `validar_participantes` al
+  helper (hecho en REFACTOR 3); (2) RED: que el helper devuelva `Visitante` y
+  fallen los tests con `AttributeError: 'Visitante' object has no attribute
+  'get'`; (3) GREEN: `validar_participantes` lee atributos en lugar de
+  `.get(...)` y `["edad"]`; (4) REFACTOR: firma `list[Visitante]` y eliminar
+  `isinstance`/`getattr`. Se empieza siempre por producción. No agregar
+  restricciones de longitud en `Visitante` sin decisión del PO.
+- **Talle vacío `""`:** `validar_participante` lo rechaza y
+  `validar_participantes` lo acepta en actividades sin talle obligatorio.
+  Definir con el PO cuál es la regla; recién entonces escribir el RED.
 - Limpieza: líneas en blanco con espacios al inicio de
-  `validar_participantes`.
+  `validar_participantes`; espacio faltante en `=crear_participante(...)`.
+- Parametrizar los tests de nombre y talle, que todavía repiten datos.
 - Integración con G1: el cupo disponible por turno todavía no se recibe.

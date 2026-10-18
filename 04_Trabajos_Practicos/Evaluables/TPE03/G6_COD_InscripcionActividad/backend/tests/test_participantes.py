@@ -100,3 +100,19 @@ def test_validar_actividad_segun_talle_requerido() -> None:
 def test_validar_dni_participante() -> None:
     participante = { "nombre": "Ana", "dni": "44444444", "edad": 25, "talle_vestimenta": "M" }
     assert validar_dni_participante(participante["dni"]) is True
+    
+def test_validar_cantidad_no_supera_cupo_de_actividad() -> None:
+    # RED: Safari tiene cupo 8. No exige talle ni edad minima, asi que el
+    # unico motivo posible de rechazo es superar el cupo.
+    actividad_safari = Actividad.SAFARI
+
+    # 9 participantes validos; cambia solo el DNI para que no se repita
+    participantes = [
+        {"nombre": "Ana", "dni": str(10_000_000 + i), "edad": 25}
+        for i in range(9)
+    ]
+
+    # Borde inclusivo: 8 entran (hoy ya pasa)
+    assert validar_participantes(8, participantes[:8], actividad_safari) is True
+    # 9 superan el cupo: hoy devuelve True, por eso este assert falla (RED)
+    assert validar_participantes(9, participantes, actividad_safari) is False

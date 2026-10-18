@@ -77,7 +77,7 @@ def test_validar_cantidad_con_participantes_ingresados() -> None:
 
     actividad_safari = Actividad.SAFARI
 
-    assert validar_participantes(1, [], True) is False
+    assert validar_participantes(1, [], actividad_safari) is False
     assert validar_participantes(1, [participante_01], actividad_safari) is True
     assert validar_participantes(1, [participante_01, participante_02], actividad_safari) is False
     assert validar_participantes(3, [participante_01, participante_02], actividad_safari) is False

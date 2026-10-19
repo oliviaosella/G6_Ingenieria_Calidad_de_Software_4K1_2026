@@ -1,8 +1,9 @@
 from app.services.email_service import (
-    preparar_resumen, 
+    preparar_resumen,
     enviar_confirmacion,
     ServicioNotificaciones
 )
+
 from app.services.qr_service import generar_qr
 
 
@@ -53,7 +54,8 @@ def test_resumen_contiene_datos_inscripcion() -> None:
             "nombre": "Juan",
             "apellido": "Pérez",
             "dni": "12345678",
-            "talla_vestimenta": None
+            "edad": 25,
+            "talla_vestimenta": "M"
         },
         {
             "nombre": "María",
@@ -76,14 +78,29 @@ def test_resumen_contiene_datos_inscripcion() -> None:
     assert "Juan" in resumen
     assert "Pérez" in resumen
     assert "12345678" in resumen
+    assert "1. Juan Pérez" in resumen
+    assert "Edad: 25" in resumen
+    assert "Talle de vestimenta: M" in resumen
     assert "María" in resumen
     assert "Gómez" in resumen
     assert "87654321" in resumen
+    assert "2. María Gómez" in resumen
+    assert "{'nombre':" not in resumen
 
 
-def test_resumen_actividad_requiere_vestimenta() -> None:
-    # TODO: Implementar test para verificar que el resumen de la inscripcion incluya información sobre la vestimenta si la actividad lo requería.
-    pass
+def test_resumen_indica_cuando_no_hay_participantes() -> None:
+    inscripcion = {
+        "id": 125,
+        "actividad": "Tirolesa",
+        "fecha": "2026-10-20",
+        "horario": "14:30",
+        "participantes": [],
+    }
+
+    resumen = preparar_resumen(inscripcion)
+
+    assert "PARTICIPANTES (0)" in resumen
+    assert "No se informaron participantes." in resumen
 
 
 class CorreoFalso:

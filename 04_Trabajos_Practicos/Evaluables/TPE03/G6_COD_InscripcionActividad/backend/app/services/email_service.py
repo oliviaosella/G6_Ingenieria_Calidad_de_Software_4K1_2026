@@ -1,9 +1,12 @@
-from .qr_service import generar_qr
 import smtplib
-from email.message import EmailMessage
 import os
 from pathlib import Path
+
 from dotenv import load_dotenv
+_RUTA_ENV = Path(__file__).resolve().parents[2] / ".env"
+
+from .qr_service import generar_qr
+from email.message import EmailMessage
 
 
 class ServicioNotificaciones:
@@ -20,11 +23,49 @@ class ServicioNotificaciones:
 
 
 def preparar_resumen(inscripcion):
-    return f"""INSCRIPCION CONFIRMADA A ACTIVIDAD: \n- Id inscripción: {inscripcion['id']} \n- Actividad: {inscripcion['actividad']}\n- Fecha: {inscripcion['fecha']} \n- Horario: {inscripcion['horario']}\nParticipantes: {inscripcion.get('participantes', [])}\n"""
+    participantes = inscripcion.get("participantes", [])
+    lineas_participantes = []
 
+    for numero, participante in enumerate(participantes, start=1):
+        nombre_completo = " ".join(
+            dato
+            for dato in (
+                participante.get("nombre"),
+                participante.get("apellido"),
+            )
+            if dato
+        )
+        lineas_participantes.append(f"{numero}. {nombre_completo or 'Sin nombre'}")
 
-def enviar_confirmacion(inscripcion):
-    return inscripcion['email']
+        for etiqueta, campo in (
+            ("DNI", "dni"),
+            ("Edad", "edad"),
+            ("Talle de vestimenta", "talla_vestimenta"),
+        ):
+            valor = participante.get(campo)
+            if valor is not None and valor != "":
+                lineas_participantes.append(f"   {etiqueta}: {valor}")
+
+    detalle_participantes = (
+        "\n".join(lineas_participantes)
+        if lineas_participantes
+        else "No se informaron participantes."
+    )
+
+    return (
+        "¡Inscripción confirmada!\n"
+        "\n"
+        "DETALLES DE LA ACTIVIDAD\n"
+        "------------------------------------\n"
+        f"Número de inscripción: {inscripcion['id']}\n"
+        f"Actividad: {inscripcion['actividad']}\n"
+        f"Fecha: {inscripcion['fecha']}\n"
+        f"Horario: {inscripcion['horario']}\n"
+        "\n"
+        f"PARTICIPANTES ({len(participantes)})\n"
+        "------------------------------------\n"
+        f"{detalle_participantes}\n"
+    )
 
 
 class CorreoSMTP:
@@ -70,8 +111,6 @@ class CorreoSMTP:
             servidor.send_message(mensaje)
 
 
-_RUTA_ENV = Path(__file__).resolve().parents[2] / ".env"
-
 def _crear_emisor_correo() -> CorreoSMTP:
     load_dotenv(_RUTA_ENV)
     return CorreoSMTP(
@@ -85,5 +124,6 @@ def _crear_emisor_correo() -> CorreoSMTP:
 
 
 def enviar_confirmacion(inscripcion: dict) -> None:
+    """Contrato definido para enviar un correo de confirmación de inscripción a un visitante sin depender de detalles del servicio smtp. Se utiliza para desacoplar la lógica de envío de correos de la lógica de negocio de la aplicación."""
     servicio = ServicioNotificaciones(emisor_correo=_crear_emisor_correo())
     servicio.enviar_confirmacion(inscripcion)

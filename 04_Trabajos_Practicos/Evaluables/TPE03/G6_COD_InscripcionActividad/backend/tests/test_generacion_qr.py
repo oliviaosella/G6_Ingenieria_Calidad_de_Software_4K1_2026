@@ -1,6 +1,7 @@
-from app.services.qr_service import generar_qr
 import cv2
 import numpy as np
+
+from app.services.qr_service import generar_qr
 
 
 def test_generar_qr_inscripcion_exitosa() -> None:

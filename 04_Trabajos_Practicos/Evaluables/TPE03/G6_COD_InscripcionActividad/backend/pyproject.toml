@@ -10,7 +10,6 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "numpy>=2.5.4",
     "opencv-python-headless>=5.0.0.93",
     "pytest>=9.1.1",
 ]

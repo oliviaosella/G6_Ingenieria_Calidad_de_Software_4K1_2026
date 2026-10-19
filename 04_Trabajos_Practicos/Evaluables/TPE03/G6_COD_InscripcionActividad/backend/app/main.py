@@ -17,4 +17,3 @@ app.include_router(inscripciones_router)
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
- #main.py: ruta temporal para probar el envío

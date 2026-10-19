@@ -1,5 +1,3 @@
-from app.services.qr_service import generar_qr
-
 class ServicioNotificaciones:
     def __init__(self, emisor_correo):
         self.emisor_correo = emisor_correo
@@ -9,7 +7,7 @@ class ServicioNotificaciones:
             destinatario=inscripcion['email'],
             asunto="Confirmación de inscripción",
             contenido="",
-            qr=generar_qr(inscripcion)
+            qr=b""
         )
 
 

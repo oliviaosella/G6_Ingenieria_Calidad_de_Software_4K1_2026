@@ -1,6 +1,9 @@
 from .qr_service import generar_qr
 import smtplib
 from email.message import EmailMessage
+import os
+from pathlib import Path
+from dotenv import load_dotenv
 
 
 class ServicioNotificaciones:
@@ -17,10 +20,7 @@ class ServicioNotificaciones:
 
 
 def preparar_resumen(inscripcion):
-    return f"""INSCRIPCION CONFIRMADA A ACTIVIDAD \n
-                Id inscripción: {inscripcion['id']} - Actividad: {inscripcion['actividad']}\n
-                Fecha: {inscripcion['fecha']} - Horario: {inscripcion['horario']}\n
-                Inscriptos: {inscripcion.get('participantes', [])}\n"""
+    return f"""INSCRIPCION CONFIRMADA A ACTIVIDAD: \n- Id inscripción: {inscripcion['id']} \n- Actividad: {inscripcion['actividad']}\n- Fecha: {inscripcion['fecha']} \n- Horario: {inscripcion['horario']}\nParticipantes: {inscripcion.get('participantes', [])}\n"""
 
 
 def enviar_confirmacion(inscripcion):
@@ -68,3 +68,22 @@ class CorreoSMTP:
                 servidor.starttls()
             servidor.login(self.usuario, self.contrasena)
             servidor.send_message(mensaje)
+
+
+_RUTA_ENV = Path(__file__).resolve().parents[2] / ".env"
+
+def _crear_emisor_correo() -> CorreoSMTP:
+    load_dotenv(_RUTA_ENV)
+    return CorreoSMTP(
+        host=os.environ["SMTP_HOST"],
+        puerto=int(os.getenv("SMTP_PORT", "587")),
+        usuario=os.environ["SMTP_USER"],
+        contrasena=os.environ["SMTP_PASSWORD"],
+        remitente=os.getenv("SMTP_FROM", os.environ["SMTP_USER"]),
+        usar_tls=os.getenv("SMTP_USE_TLS", "true").lower() == "true",
+    )
+
+
+def enviar_confirmacion(inscripcion: dict) -> None:
+    servicio = ServicioNotificaciones(emisor_correo=_crear_emisor_correo())
+    servicio.enviar_confirmacion(inscripcion)

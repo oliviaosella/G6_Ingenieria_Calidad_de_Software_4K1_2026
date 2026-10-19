@@ -6,13 +6,14 @@ class ServicioNotificaciones:
         self.emisor_correo.enviar(
             destinatario=inscripcion['email'],
             asunto="Confirmación de inscripción",
-            contenido="",
+            contenido=preparar_resumen(inscripcion),
             qr=b""
         )
 
 
 def preparar_resumen(inscripcion):
-    return f"""Id inscripción: {inscripcion['id']} - Actividad: {inscripcion['actividad']}\n
+    return f"""INSCRIPCION CONFIRMADA A ACTIVIDAD \n
+                Id inscripción: {inscripcion['id']} - Actividad: {inscripcion['actividad']}\n
                 Fecha: {inscripcion['fecha']} - Horario: {inscripcion['horario']}\n
                 Inscriptos: {inscripcion.get('participantes', [])}\n"""
 

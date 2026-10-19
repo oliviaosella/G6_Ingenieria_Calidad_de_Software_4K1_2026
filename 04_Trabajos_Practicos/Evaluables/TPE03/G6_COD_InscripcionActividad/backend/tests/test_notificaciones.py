@@ -128,3 +128,28 @@ def test_confirmacion_se_envia_al_visitante() -> None:
     assert correo_falso.envios[0]["destinatario"] == (
         "visitante@gmail.com"
     )
+
+
+def test_correo_contiene_resumen_inscripcion() -> None:
+    # ARRANGE
+    inscripcion = {
+        "id": 125,
+        "email": "visitante@gmail.com",
+        "actividad": "Tirolesa",
+        "fecha": "2026-10-20",
+        "horario": "14:30"
+    }
+
+    correo_falso = CorreoFalso()
+    servicio = ServicioNotificaciones(emisor_correo=correo_falso)
+
+    # ACT
+    servicio.enviar_confirmacion(inscripcion)
+
+    # ASSERT
+    assert len(correo_falso.envios) == 1
+    contenido = correo_falso.envios[0]["contenido"]
+    assert "125" in contenido
+    assert "Tirolesa" in contenido
+    assert "2026-10-20" in contenido
+    assert "14:30" in contenido

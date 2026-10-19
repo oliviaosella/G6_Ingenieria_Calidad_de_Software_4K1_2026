@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 168" fill="none" role="img" aria-label="Eco Harmony Park">
+  <defs>
+    <linearGradient id="wood" x1="18" y1="22" x2="149" y2="154" gradientUnits="userSpaceOnUse"><stop stop-color="#21674D"/><stop offset="1" stop-color="#143C31"/></linearGradient>
+    <clipPath id="letter"><path fill-rule="evenodd" clip-rule="evenodd" d="M83 16C43 16 15 46 15 85c0 40 29 68 70 68 28 0 51-12 65-34l-27-17c-9 13-20 20-37 20-18 0-31-9-36-25h103c2-8 2-13 2-18 0-36-29-63-72-63ZM50 69c5-15 17-24 34-24s29 9 34 24H50Z"/></clipPath>
+  </defs>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M83 16C43 16 15 46 15 85c0 40 29 68 70 68 28 0 51-12 65-34l-27-17c-9 13-20 20-37 20-18 0-31-9-36-25h103c2-8 2-13 2-18 0-36-29-63-72-63ZM50 69c5-15 17-24 34-24s29 9 34 24H50Z" fill="url(#wood)"/>
+  <g clip-path="url(#letter)" stroke="#77A47F" stroke-width="1.5" opacity=".45"><path d="M-4 37c36-14 71-8 107 4 27 10 50 7 76-6M-2 56c42-13 69-7 107 3 28 8 51 5 77-8M-2 76c42-11 70-7 107 3 27 7 53 5 77-8M-2 98c40-11 70-7 107 2 28 7 52 5 77-7M-2 119c39-11 70-7 107 2 28 7 52 5 77-7M-2 140c40-10 71-7 107 2 28 7 52 5 77-7"/></g>
+  <path d="M113 16c8-9 20-13 33-12-1 14-9 26-20 30-6 2-13 1-18-2 0-6 1-11 5-16Z" fill="#A8C978"/><path d="M111 31c8-9 18-16 32-23" stroke="#32664A" stroke-width="2" stroke-linecap="round"/>
+</svg>

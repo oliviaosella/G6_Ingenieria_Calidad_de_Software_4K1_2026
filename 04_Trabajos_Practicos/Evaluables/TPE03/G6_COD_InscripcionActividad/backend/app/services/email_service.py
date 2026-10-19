@@ -40,7 +40,7 @@ def preparar_resumen(inscripcion):
         for etiqueta, campo in (
             ("DNI", "dni"),
             ("Edad", "edad"),
-            ("Talle de vestimenta", "talla_vestimenta"),
+            ("Talle de vestimenta", "talle_vestimenta"),
         ):
             valor = participante.get(campo)
             if valor is not None and valor != "":

@@ -55,13 +55,13 @@ def test_resumen_contiene_datos_inscripcion() -> None:
             "apellido": "Pérez",
             "dni": "12345678",
             "edad": 25,
-            "talla_vestimenta": "M"
+            "talle_vestimenta": "M"
         },
         {
             "nombre": "María",
             "apellido": "Gómez",
             "dni": "87654321",
-            "talla_vestimenta": None
+            "talle_vestimenta": None
         }
         ]
 
@@ -194,3 +194,28 @@ def test_correo_incluye_qr_inscripcion() -> None:
     qr_enviado = correo_falso.envios[0]["qr"]
     assert qr_enviado != b""
     assert qr_enviado == generar_qr(inscripcion)
+
+
+def test_enviar_confirmacion_abstrae_dependencias(monkeypatch) -> None:
+    inscripcion = {
+        "id": 125,
+        "email": "visitante@gmail.com",
+        "actividad": "Tirolesa",
+        "fecha": "2026-10-20",
+        "horario": "14:30"
+    }
+    correo_falso = CorreoFalso()
+
+    #Permite extender, cambiar o sobrescribir el comportamiento de una función en tiempo de ejecución, sin tocar ni modificar su código fuente original. Es para simular (mock) funciones, llamadas a una API o comportamientos
+    monkeypatch.setattr(
+        "app.services.email_service._crear_emisor_correo",
+        lambda: correo_falso,
+    )
+
+    enviar_confirmacion(inscripcion)
+
+    assert len(correo_falso.envios) == 1
+    envio = correo_falso.envios[0]
+    assert envio["destinatario"] == "visitante@gmail.com"
+    assert "125" in envio["contenido"]
+    assert envio["qr"] != b""

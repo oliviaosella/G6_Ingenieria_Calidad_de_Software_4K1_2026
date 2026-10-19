@@ -3,6 +3,7 @@ from app.services.email_service import (
     enviar_confirmacion,
     ServicioNotificaciones
 )
+from app.services.qr_service import generar_qr
 
 
 def test_resumen_contiene_identificador_inscripcion_EXITO() -> None:
@@ -153,3 +154,26 @@ def test_correo_contiene_resumen_inscripcion() -> None:
     assert "Tirolesa" in contenido
     assert "2026-10-20" in contenido
     assert "14:30" in contenido
+
+
+def test_correo_incluye_qr_inscripcion() -> None:
+    # ARRANGE
+    inscripcion = {
+        "id": 125,
+        "email": "visitante@gmail.com",
+        "actividad": "Tirolesa",
+        "fecha": "2026-10-20",
+        "horario": "14:30"
+    }
+
+    correo_falso = CorreoFalso()
+    servicio = ServicioNotificaciones(emisor_correo=correo_falso)
+
+    # ACT
+    servicio.enviar_confirmacion(inscripcion)
+
+    # ASSERT
+    assert len(correo_falso.envios) == 1
+    qr_enviado = correo_falso.envios[0]["qr"]
+    assert qr_enviado != b""
+    assert qr_enviado == generar_qr(inscripcion)

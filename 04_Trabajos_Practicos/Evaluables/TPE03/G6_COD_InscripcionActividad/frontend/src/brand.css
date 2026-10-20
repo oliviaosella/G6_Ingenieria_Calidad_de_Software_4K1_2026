@@ -172,3 +172,20 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 .guia-celebration .guia-mascot{position:relative;z-index:2;width:min(100%,310px);aspect-ratio:380/470;filter:drop-shadow(3px 4px 0 #263c3433)}
 .guia-celebration:before,.guia-celebration:after{z-index:3}
 @media(max-width:650px){.guia-celebration{height:315px;margin-bottom:16px}.success-landscape{height:215px}.guia-celebration .guia-mascot{width:min(75%,255px)}}
+.confirmation-scene{display:block;width:100%;height:100%}
+.confirmation-tree{transform-box:fill-box;transform-origin:50% 100%;animation:confirmationSway 4.5s ease-in-out infinite alternate}
+.confirmation-tree.tree-right{animation-delay:-2s}
+.confirmation-flags{transform-origin:50% 0;animation:confirmationFlags 3.2s ease-in-out infinite alternate}
+.confirmation-butterfly{animation:confirmationFlutter 4s ease-in-out infinite alternate}
+.confirmation-sparkles{animation:confirmationTwinkle 2.2s ease-in-out infinite alternate}
+.confirmation-emblem{animation:confirmationEmblem 3s ease-in-out infinite alternate}
+@keyframes confirmationSway{to{transform:rotate(2deg)}}
+@keyframes confirmationFlags{to{transform:translateY(3px)}}
+@keyframes confirmationFlutter{to{transform:translate(-18px,-12px) rotate(-7deg)}}
+@keyframes confirmationTwinkle{to{opacity:.35;transform:scale(.94)}}
+@keyframes confirmationEmblem{to{transform:translateY(-4px)}}
+.success-actions{gap:14px;margin-top:25px}
+.success-actions .button{min-height:60px;padding:16px 24px;font-size:16px;gap:11px}
+.success-actions .button svg{width:21px;height:21px}
+@media(max-width:650px){.success-actions .button{min-height:58px;font-size:16px}}
+@media(prefers-reduced-motion:reduce){.confirmation-scene *{animation:none!important}}

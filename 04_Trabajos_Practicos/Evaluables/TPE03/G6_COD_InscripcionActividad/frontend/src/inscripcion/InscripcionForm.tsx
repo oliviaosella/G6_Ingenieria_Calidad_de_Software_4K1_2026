@@ -45,7 +45,7 @@ export function InscripcionForm({ onActividadChange }: { onActividadChange: (act
     catch (issue) { setError(issue instanceof Error ? issue.message : 'No se pudo guardar la reserva.') }
   }
 
-  return <div className="booking-layout" ref={topRef}>
+  return <div className={`booking-layout ${reserva ? 'is-confirmed' : ''}`} ref={topRef}>
     <div className="booking-main">
       {!reserva ? <>
         <div className="stepper" aria-label="Progreso de inscripción">{steps.map((label, index) => <div key={label} className={`step-item ${step === index ? 'current' : ''} ${step > index ? 'done' : ''}`}><span className="step-circle">{step > index ? <Check size={14} /> : index + 1}</span><span>{label}</span></div>)}</div>
@@ -57,14 +57,14 @@ export function InscripcionForm({ onActividadChange }: { onActividadChange: (act
       </> : <ConfirmacionSection reserva={reserva} onNueva={() => { setDraft(initialDraft()); setReserva(null); onActividadChange(null); go(0) }} />}
     </div>
 
-    <aside className="summary-card" aria-label="Resumen de la reserva">
+    {!reserva && <aside className="summary-card" aria-label="Resumen de la reserva">
       <ThemeScene actividad={draft.actividad} compact cover />
       <div className="summary-content"><h3>{draft.actividad || 'Tu visita'}</h3><dl>
         <div><dt>Fecha</dt><dd>{draft.fecha ? new Intl.DateTimeFormat('es-AR', { day: 'numeric', month: 'long' }).format(new Date(`${draft.fecha}T12:00:00`)) : '—'}</dd></div>
         <div><dt>Horario</dt><dd>{draft.hora ? `${draft.hora} h` : '—'}</dd></div>
         <div><dt>Personas</dt><dd>{draft.participantes.length}</dd></div>
       </dl></div>
-    </aside>
+    </aside>}
     {!reserva && <GuiaAssistant step={step} draft={draft} error={error} />}
   </div>
 }

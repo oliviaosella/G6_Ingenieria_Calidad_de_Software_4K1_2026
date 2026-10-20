@@ -15,6 +15,9 @@ import cheerPng from '../../assets/guia-assistant/cheer.png'
 type Motion = 'wave' | 'point' | 'think' | 'cheer'
 const animated: Record<Motion, string> = { wave: waveGif, point: pointGif, think: thinkGif, cheer: cheerGif }
 const still: Record<Motion, string> = { wave: wavePng, point: pointPng, think: thinkPng, cheer: cheerPng }
+const sidePosition = (x: number, width: number) => x + width / 2 < window.innerWidth / 2
+  ? (window.innerWidth <= 650 ? 20 : 8)
+  : window.innerWidth - width - (window.innerWidth <= 650 ? 8 : 19)
 
 function consejo(step: number, draft: InscripcionDraft, error: string): { text: string; target: string; action: string; motion: Motion } {
   if (error) return { text: error, target: '.form-error', action: 'Ver qué falta', motion: 'think' }
@@ -47,7 +50,7 @@ export function GuiaAssistant({ step, draft, error }: { step: number; draft: Ins
       const footer = document.querySelector('.site-footer')
       const overlap = footer ? Math.max(0, Math.ceil(window.innerHeight - footer.getBoundingClientRect().top)) : 0
       setFooterOffset(overlap)
-      setPosition((current) => current && ({ left: Math.max(window.innerWidth <= 650 ? 20 : 8, Math.min(current.left, window.innerWidth - (window.innerWidth <= 650 ? 82 : 98) - 8)), top: Math.max(8, Math.min(current.top, window.innerHeight - overlap - (window.innerWidth <= 650 ? 82 : 98) - 8)) }))
+      setPosition((current) => current && ({ left: sidePosition(current.left, window.innerWidth <= 650 ? 82 : 98), top: Math.max(8, Math.min(current.top, window.innerHeight - overlap - (window.innerWidth <= 650 ? 82 : 98) - 8)) }))
     }
     updatePosition()
     window.addEventListener('scroll', updatePosition, { passive: true })
@@ -78,7 +81,7 @@ export function GuiaAssistant({ step, draft, error }: { step: number; draft: Ins
     const size = event.currentTarget.getBoundingClientRect()
     const minTop = open ? 160 : 8
     setPosition({
-      left: Math.max(window.innerWidth <= 650 ? 20 : 8, Math.min(current.left + dx, window.innerWidth - size.width - 8)),
+      left: sidePosition(current.left + dx, size.width),
       top: Math.max(minTop, Math.min(current.top + dy, window.innerHeight - footerOffset - size.height - 8)),
     })
   }

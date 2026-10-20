@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
+import { actividadPorId } from './catalogo'
 import { ActividadSection } from './actividad/ActividadSection'
 import { SummaryScene } from './actividad/SummaryScene'
 import { ConfirmacionSection } from './confirmacion/ConfirmacionSection'
@@ -20,6 +21,10 @@ export function InscripcionForm({ onActividadChange, onConfirmedChange }: { onAc
   const [error, setError] = useState('')
   const [reserva, setReserva] = useState<Reserva | null>(null)
   const topRef = useRef<HTMLDivElement>(null)
+  const requiereTalle = draft.actividad ? actividadPorId(draft.actividad)?.requiereTalle : false
+  const personasCargadas = draft.participantes.filter((persona) =>
+    persona.nombre.trim() && persona.dni.trim() && persona.edad.trim() && (!requiereTalle || persona.talle_vestimenta)
+  ).length
 
   const update = (change: Partial<InscripcionDraft>) => { setDraft((current) => ({ ...current, ...change })); setError('') }
   const scrollTop = () => topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -62,7 +67,7 @@ export function InscripcionForm({ onActividadChange, onConfirmedChange }: { onAc
       <div className="summary-content"><h3>{draft.actividad || 'Tu visita'}</h3><dl>
         <div><dt>Fecha</dt><dd>{draft.fecha ? new Intl.DateTimeFormat('es-AR', { day: 'numeric', month: 'long' }).format(new Date(`${draft.fecha}T12:00:00`)) : '—'}</dd></div>
         <div><dt>Horario</dt><dd>{draft.hora ? `${draft.hora} h` : '—'}</dd></div>
-        <div><dt>Personas</dt><dd>{draft.participantes.length}</dd></div>
+        <div><dt>Personas</dt><dd>{personasCargadas || '—'}</dd></div>
       </dl></div>
     </aside>}
     {!reserva && <GuiaAssistant step={step} draft={draft} error={error} />}

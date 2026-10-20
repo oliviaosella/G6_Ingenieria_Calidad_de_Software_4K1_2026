@@ -219,3 +219,10 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 .footer-bottom{grid-column:1/-1;display:flex;justify-content:space-between;gap:16px;padding-top:16px;border-top:1px solid #ffffff35;color:#bed5c2;font-size:12px}
 .footer-bottom a{color:#fff8e8;font-weight:700}
 @media(max-width:650px){.site-footer{padding:30px 0 22px}.footer-main{grid-template-columns:1fr;gap:23px}.footer-heading img{width:51px;height:51px}.footer-heading strong,.footer-course strong{font-size:17px}.footer-team,.footer-bottom{grid-column:1}.footer-team p{font-size:12px}.footer-bottom{font-size:11px}}
+@media(max-width:650px){
+  .summary-card{display:flex;align-items:stretch}
+  .summary-card .theme-scene{display:block;width:48%;height:128px;flex:none;border-right:2px solid var(--ink);border-bottom:0}
+  .summary-content{flex:1;min-width:0;padding:11px 12px}
+  .summary-content h3{font-size:19px;margin-bottom:6px}
+  .summary-content dl>div{padding:5px 0;font-size:11px}
+}

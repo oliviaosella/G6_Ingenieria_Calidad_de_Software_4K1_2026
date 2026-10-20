@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import { ActividadSection } from './actividad/ActividadSection'
-import { ThemeScene } from './actividad/ThemeScene'
+import { SummaryScene } from './actividad/SummaryScene'
 import { ConfirmacionSection } from './confirmacion/ConfirmacionSection'
 import { GuiaAssistant } from './mascota/GuiaAssistant'
 import { reservar } from './reservas/reservasDemo'
@@ -58,7 +58,7 @@ export function InscripcionForm({ onActividadChange, onConfirmedChange }: { onAc
     </div>
 
     {!reserva && <aside className="summary-card" aria-label="Resumen de la reserva">
-      <ThemeScene actividad={draft.actividad} compact cover />
+      <SummaryScene actividad={draft.actividad} />
       <div className="summary-content"><h3>{draft.actividad || 'Tu visita'}</h3><dl>
         <div><dt>Fecha</dt><dd>{draft.fecha ? new Intl.DateTimeFormat('es-AR', { day: 'numeric', month: 'long' }).format(new Date(`${draft.fecha}T12:00:00`)) : '—'}</dd></div>
         <div><dt>Horario</dt><dd>{draft.hora ? `${draft.hora} h` : '—'}</dd></div>

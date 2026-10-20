@@ -103,6 +103,7 @@ export function GuiaAssistant({ step, draft, error }: { step: number; draft: Ins
   const mobile = typeof window !== 'undefined' && window.innerWidth <= 650
   const tipWidth = mobile ? 198 : 247
   const triggerWidth = open ? (mobile ? 82 : 98) : 72
+  const isLeft = position ? position.left + triggerWidth / 2 < window.innerWidth / 2 : mobile && open && footerOffset > 0
   const tipX = position && Math.max(8, Math.min(position.left + triggerWidth - (mobile ? 48 : 61) - tipWidth, window.innerWidth - tipWidth - 8))
   const tipLeft = position && tipX! - position.left
   const tipTail = position && Math.max(18, Math.min(position.left + triggerWidth / 2 - tipX! - 10, tipWidth - 38))
@@ -110,7 +111,7 @@ export function GuiaAssistant({ step, draft, error }: { step: number; draft: Ins
     ? { left: position.left, top: position.top, right: 'auto', bottom: 'auto', '--tip-left': `${tipLeft}px`, '--tip-tail': `${tipTail}px` } as CSSProperties
     : { bottom: footerOffset + (footerOffset > 0 ? 8 : 16) }
 
-  return createPortal(<aside className={`guia-assistant ${open ? 'is-open' : 'is-closed'} ${footerOffset > 0 ? 'near-footer' : ''} ${position ? 'is-dragged' : ''}`} style={assistantStyle} aria-label="Ayuda de Guía">
+  return createPortal(<aside className={`guia-assistant ${open ? 'is-open' : 'is-closed'} ${footerOffset > 0 ? 'near-footer' : ''} ${position ? 'is-dragged' : ''} ${isLeft ? 'is-left' : ''}`} style={assistantStyle} aria-label="Ayuda de Guía">
     {open && <div className="guia-tip" key={`${step}-${hint.target}-${hint.text}`}>
       <button className="guia-tip-close" type="button" aria-label="Cerrar ayuda de Guía" onClick={() => setOpen(false)}><X size={16} /></button>
       <strong>CONSEJO DE GUÍA</strong>

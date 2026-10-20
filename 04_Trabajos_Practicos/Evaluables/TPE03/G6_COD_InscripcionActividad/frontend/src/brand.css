@@ -160,3 +160,7 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
   .date-pill,.time-pill{min-width:100px;min-height:65px}
   .activity-card .activity-meta{font-size:11px}
 }
+.stepper{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.step-item{position:relative;justify-content:center}
+.step-item:not(:last-child):after{position:absolute;top:17px;left:calc(50% + 86px);right:calc(-50% + 86px);height:1px;margin:0;flex:none}
+@media(max-width:650px){.step-item:not(:last-child):after{display:none}}

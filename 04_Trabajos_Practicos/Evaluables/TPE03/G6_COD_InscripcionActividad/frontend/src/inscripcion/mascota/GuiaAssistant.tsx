@@ -21,6 +21,11 @@ const sidePosition = (x: number, width: number) => {
     ? inset
     : window.innerWidth - width - inset
 }
+const minimumTop = (open: boolean) => {
+  const headerBottom = Math.max(0, document.querySelector('.site-header')?.getBoundingClientRect().bottom ?? 0)
+  const tipHeight = open ? (document.querySelector('.guia-tip')?.getBoundingClientRect().height ?? 130) : 0
+  return headerBottom + tipHeight + (open ? 32 : 24)
+}
 
 function consejo(step: number, draft: InscripcionDraft, error: string): { text: string; target: string; action: string; motion: Motion } {
   if (error) return { text: error, target: '.form-error', action: 'Ver qué falta', motion: 'think' }
@@ -53,13 +58,14 @@ export function GuiaAssistant({ step, draft, error }: { step: number; draft: Ins
       const footer = document.querySelector('.site-footer')
       const overlap = footer ? Math.max(0, Math.ceil(window.innerHeight - footer.getBoundingClientRect().top)) : 0
       setFooterOffset(overlap)
-      setPosition((current) => current && ({ left: sidePosition(current.left, window.innerWidth <= 650 ? 82 : 98), top: Math.max(8, Math.min(current.top, window.innerHeight - overlap - (window.innerWidth <= 650 ? 82 : 98) - 8)) }))
+      const triggerSize = open ? (window.innerWidth <= 650 ? 82 : 98) : 72
+      setPosition((current) => current && ({ left: sidePosition(current.left, triggerSize), top: Math.max(minimumTop(open), Math.min(current.top, window.innerHeight - overlap - triggerSize - 8)) }))
     }
     updatePosition()
     window.addEventListener('scroll', updatePosition, { passive: true })
     window.addEventListener('resize', updatePosition)
     return () => { window.removeEventListener('scroll', updatePosition); window.removeEventListener('resize', updatePosition) }
-  }, [])
+  }, [open])
   const pointToField = () => {
     const field = document.querySelector<HTMLElement>(hint.target)
     field?.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -82,10 +88,9 @@ export function GuiaAssistant({ step, draft, error }: { step: number; draft: Ins
     current.moved = true
     event.preventDefault()
     const size = event.currentTarget.getBoundingClientRect()
-    const minTop = open ? 160 : 8
     setPosition({
       left: sidePosition(current.left + dx, size.width),
-      top: Math.max(minTop, Math.min(current.top + dy, window.innerHeight - footerOffset - size.height - 8)),
+      top: Math.max(minimumTop(open), Math.min(current.top + dy, window.innerHeight - footerOffset - size.height - 8)),
     })
   }
   const endDrag = (event: ReactPointerEvent<HTMLButtonElement>) => {

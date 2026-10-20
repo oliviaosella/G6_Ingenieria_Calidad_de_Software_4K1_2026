@@ -201,8 +201,10 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 .guia-assistant-trigger{touch-action:none;cursor:grab}
 .guia-assistant-trigger:active{cursor:grabbing}
 .guia-assistant.is-dragged .guia-tip,.guia-assistant.is-dragged.is-open.near-footer .guia-tip{left:var(--tip-left);right:auto}
+.guia-assistant.is-dragged{transition:left .48s cubic-bezier(.22,1,.36,1)}
 .guia-assistant.is-dragged .guia-tip:after,.guia-assistant.is-dragged.is-open.near-footer .guia-tip:after{left:var(--tip-tail);right:auto}
 @media(max-width:650px){.guia-assistant{width:82px;height:82px}.guia-assistant.is-closed{width:72px;height:72px}.guia-assistant.is-dragged .guia-tip{width:min(198px,calc(100vw - 32px))}}
+@media(prefers-reduced-motion:reduce){.guia-assistant.is-dragged{transition:none}}
 
 .site-footer{padding:38px 0 24px;background:linear-gradient(145deg,#264e41,#19382f);color:#fff8e8}
 .site-footer:before{display:none}

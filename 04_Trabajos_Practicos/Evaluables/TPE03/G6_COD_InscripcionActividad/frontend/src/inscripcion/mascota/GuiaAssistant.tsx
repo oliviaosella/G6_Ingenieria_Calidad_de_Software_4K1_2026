@@ -15,9 +15,12 @@ import cheerPng from '../../assets/guia-assistant/cheer.png'
 type Motion = 'wave' | 'point' | 'think' | 'cheer'
 const animated: Record<Motion, string> = { wave: waveGif, point: pointGif, think: thinkGif, cheer: cheerGif }
 const still: Record<Motion, string> = { wave: wavePng, point: pointPng, think: thinkPng, cheer: cheerPng }
-const sidePosition = (x: number, width: number) => x + width / 2 < window.innerWidth / 2
-  ? (window.innerWidth <= 650 ? 20 : 8)
-  : window.innerWidth - width - (window.innerWidth <= 650 ? 8 : 19)
+const sidePosition = (x: number, width: number) => {
+  const inset = window.innerWidth <= 650 ? 24 : 36
+  return x + width / 2 < window.innerWidth / 2
+    ? inset
+    : window.innerWidth - width - inset
+}
 
 function consejo(step: number, draft: InscripcionDraft, error: string): { text: string; target: string; action: string; motion: Motion } {
   if (error) return { text: error, target: '.form-error', action: 'Ver qué falta', motion: 'think' }

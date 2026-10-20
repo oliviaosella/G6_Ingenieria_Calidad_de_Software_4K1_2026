@@ -19,17 +19,18 @@ function FloatingMotifs({ area }: { area: 'hero' | 'booking' }) {
 
 export default function App() {
   const [actividad, setActividad] = useState<ActividadId | null>(null)
+  const [confirmed, setConfirmed] = useState(false)
 
   return <div className="park-app" data-theme={themeName(actividad)}>
     <header className="site-header">
       <div className="shell header-inner">
         <a className="brand" href="#inicio" aria-label="Eco Harmony Park, inicio"><img src={logo} alt="" /><span><strong>eco<span>harmony</span></strong><small>PARK · EXPERIENCIAS NATURALES</small></span></a>
-        <a className="header-cta" href="#inscripcion">Reservar <ArrowRight size={17} /></a>
+        <a className="header-cta" href="#inscripcion">{confirmed ? 'Tu comprobante' : 'Reservar'} <ArrowRight size={17} /></a>
       </div>
     </header>
 
     <main id="inicio">
-      <section className="hero">
+      {!confirmed && <section className="hero">
         <FloatingMotifs area="hero" />
         <div className="shell hero-inner">
           <div className="hero-copy">
@@ -40,13 +41,13 @@ export default function App() {
           </div>
           <div className="hero-art"><div className="hero-art-frame"><ThemeScene actividad={actividad} cover /></div><GuiaMascot actividad={actividad} className="hero-guia" /></div>
         </div>
-      </section>
+      </section>}
 
-      <section id="inscripcion" className="booking-section">
+      <section id="inscripcion" className={`booking-section ${confirmed ? 'is-confirmed' : ''}`}>
         <FloatingMotifs area="booking" />
         <div className="shell">
-          <div className="booking-intro"><div><span className="eyebrow">TU VISITA</span><h2>Elegí tu próxima experiencia.</h2></div><img className="brand-stamp" src={logo} alt="" aria-hidden="true" /></div>
-          <InscripcionForm onActividadChange={setActividad} />
+          {!confirmed && <div className="booking-intro"><div><span className="eyebrow">TU VISITA</span><h2>Elegí tu próxima experiencia.</h2></div><img className="brand-stamp" src={logo} alt="" aria-hidden="true" /></div>}
+          <InscripcionForm onActividadChange={setActividad} onConfirmedChange={setConfirmed} />
         </div>
       </section>
     </main>

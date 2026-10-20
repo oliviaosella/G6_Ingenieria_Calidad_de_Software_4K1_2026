@@ -14,7 +14,7 @@ import type { ActividadId, InscripcionDraft, Reserva } from './types'
 const initialDraft = (): InscripcionDraft => ({ actividad: null, fecha: '', hora: '', participantes: [participanteVacio()], email: '', aceptaTerminos: false })
 const steps = ['Actividad', 'Participantes', 'Confirmar']
 
-export function InscripcionForm({ onActividadChange }: { onActividadChange: (actividad: ActividadId | null) => void }) {
+export function InscripcionForm({ onActividadChange, onConfirmedChange }: { onActividadChange: (actividad: ActividadId | null) => void; onConfirmedChange: (confirmed: boolean) => void }) {
   const [draft, setDraft] = useState(initialDraft)
   const [step, setStep] = useState(0)
   const [error, setError] = useState('')
@@ -41,7 +41,7 @@ export function InscripcionForm({ onActividadChange }: { onActividadChange: (act
     const email = emailSchema.safeParse(draft.email)
     if (!email.success) return setError(email.error.issues[0].message)
     if (!draft.aceptaTerminos) return setError('Aceptá las condiciones de la actividad para confirmar.')
-    try { setReserva(reservar(draft)); setError(''); requestAnimationFrame(scrollTop) }
+    try { setReserva(reservar(draft)); onConfirmedChange(true); setError(''); requestAnimationFrame(scrollTop) }
     catch (issue) { setError(issue instanceof Error ? issue.message : 'No se pudo guardar la reserva.') }
   }
 
@@ -54,7 +54,7 @@ export function InscripcionForm({ onActividadChange }: { onActividadChange: (act
         {step === 2 && draft.actividad && <TerminosSection actividad={draft.actividad} email={draft.email} acepta={draft.aceptaTerminos} onEmail={(email) => update({ email })} onAcepta={(aceptaTerminos) => update({ aceptaTerminos })} />}
         {error && <p className="form-error" role="alert">{error}</p>}
         <div className="form-actions">{step > 0 && <button type="button" className="button back" onClick={() => go(step - 1)}><ArrowLeft size={17} /> Volver</button>}<button type="button" className="button primary" onClick={next}>{step === 2 ? 'Confirmar reserva' : 'Continuar'} <ArrowRight size={17} /></button></div>
-      </> : <ConfirmacionSection reserva={reserva} onNueva={() => { setDraft(initialDraft()); setReserva(null); onActividadChange(null); go(0) }} />}
+      </> : <ConfirmacionSection reserva={reserva} onNueva={() => { setDraft(initialDraft()); setReserva(null); onActividadChange(null); onConfirmedChange(false); go(0) }} />}
     </div>
 
     {!reserva && <aside className="summary-card" aria-label="Resumen de la reserva">

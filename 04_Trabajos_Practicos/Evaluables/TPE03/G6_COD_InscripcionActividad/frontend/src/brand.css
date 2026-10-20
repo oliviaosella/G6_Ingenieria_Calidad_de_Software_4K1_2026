@@ -189,3 +189,5 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 .success-actions .button svg{width:21px;height:21px}
 @media(max-width:650px){.success-actions .button{min-height:58px;font-size:16px}}
 @media(prefers-reduced-motion:reduce){.confirmation-scene *{animation:none!important}}
+.booking-section.is-confirmed{min-height:calc(100vh - 92px);padding-top:46px}
+@media(max-width:650px){.booking-section.is-confirmed{min-height:calc(100vh - 78px);padding-top:26px}}

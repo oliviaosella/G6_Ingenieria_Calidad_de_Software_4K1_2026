@@ -191,3 +191,9 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 @media(prefers-reduced-motion:reduce){.confirmation-scene *{animation:none!important}}
 .booking-section.is-confirmed{min-height:calc(100vh - 92px);padding-top:46px}
 @media(max-width:650px){.booking-section.is-confirmed{min-height:calc(100vh - 78px);padding-top:26px}}
+@media(max-width:650px){
+  .guia-assistant.is-open.near-footer{left:20px;right:auto}
+  .guia-assistant.is-open.near-footer .guia-assistant-trigger{left:0;right:auto}
+  .guia-assistant.is-open.near-footer .guia-tip{left:0;right:auto;width:min(198px,calc(100vw - 32px));border-radius:18px 18px 18px 6px}
+  .guia-assistant.is-open.near-footer .guia-tip:after{left:22px;right:auto}
+}

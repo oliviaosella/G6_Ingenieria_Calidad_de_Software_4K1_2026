@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { ArrowUpRight, X } from 'lucide-react'
 import type { InscripcionDraft } from '../types'
@@ -38,15 +38,12 @@ function consejo(step: number, draft: InscripcionDraft, error: string): { text: 
 export function GuiaAssistant({ step, draft, error }: { step: number; draft: InscripcionDraft; error: string }) {
   const [open, setOpen] = useState(true)
   const [footerOffset, setFooterOffset] = useState(0)
-  const footerWasVisible = useRef(false)
   const hint = consejo(step, draft, error)
   useEffect(() => {
     const updatePosition = () => {
       const footer = document.querySelector('.site-footer')
       const overlap = footer ? Math.max(0, Math.ceil(window.innerHeight - footer.getBoundingClientRect().top)) : 0
       setFooterOffset(overlap)
-      if (overlap > 0 && !footerWasVisible.current) setOpen(false)
-      footerWasVisible.current = overlap > 0
     }
     updatePosition()
     window.addEventListener('scroll', updatePosition, { passive: true })
@@ -60,7 +57,7 @@ export function GuiaAssistant({ step, draft, error }: { step: number; draft: Ins
     else field?.querySelector<HTMLElement>('input, select, button')?.focus({ preventScroll: true })
   }
 
-  return createPortal(<aside className={`guia-assistant ${open ? 'is-open' : 'is-closed'}`} style={{ bottom: footerOffset + (footerOffset > 0 ? 8 : 16) }} aria-label="Ayuda de Guía">
+  return createPortal(<aside className={`guia-assistant ${open ? 'is-open' : 'is-closed'} ${footerOffset > 0 ? 'near-footer' : ''}`} style={{ bottom: footerOffset + (footerOffset > 0 ? 8 : 16) }} aria-label="Ayuda de Guía">
     {open && <div className="guia-tip" key={`${step}-${hint.target}-${hint.text}`}>
       <button className="guia-tip-close" type="button" aria-label="Cerrar ayuda de Guía" onClick={() => setOpen(false)}><X size={16} /></button>
       <strong>CONSEJO DE GUÍA</strong>

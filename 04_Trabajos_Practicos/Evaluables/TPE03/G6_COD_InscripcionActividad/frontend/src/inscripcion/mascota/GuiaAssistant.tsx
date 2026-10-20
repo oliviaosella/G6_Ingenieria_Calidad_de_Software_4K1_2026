@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { ArrowUpRight, X } from 'lucide-react'
 import type { InscripcionDraft } from '../types'
@@ -38,12 +38,16 @@ function consejo(step: number, draft: InscripcionDraft, error: string): { text: 
 export function GuiaAssistant({ step, draft, error }: { step: number; draft: InscripcionDraft; error: string }) {
   const [open, setOpen] = useState(true)
   const [footerOffset, setFooterOffset] = useState(0)
+  const [position, setPosition] = useState<{ left: number; top: number } | null>(null)
+  const drag = useRef<{ pointerId: number; startX: number; startY: number; left: number; top: number; moved: boolean } | null>(null)
+  const ignoreClick = useRef(false)
   const hint = consejo(step, draft, error)
   useEffect(() => {
     const updatePosition = () => {
       const footer = document.querySelector('.site-footer')
       const overlap = footer ? Math.max(0, Math.ceil(window.innerHeight - footer.getBoundingClientRect().top)) : 0
       setFooterOffset(overlap)
+      setPosition((current) => current && ({ left: Math.max(window.innerWidth <= 650 ? 20 : 8, Math.min(current.left, window.innerWidth - (window.innerWidth <= 650 ? 82 : 98) - 8)), top: Math.max(8, Math.min(current.top, window.innerHeight - overlap - (window.innerWidth <= 650 ? 82 : 98) - 8)) }))
     }
     updatePosition()
     window.addEventListener('scroll', updatePosition, { passive: true })
@@ -57,14 +61,52 @@ export function GuiaAssistant({ step, draft, error }: { step: number; draft: Ins
     else field?.querySelector<HTMLElement>('input, select, button')?.focus({ preventScroll: true })
   }
 
-  return createPortal(<aside className={`guia-assistant ${open ? 'is-open' : 'is-closed'} ${footerOffset > 0 ? 'near-footer' : ''}`} style={{ bottom: footerOffset + (footerOffset > 0 ? 8 : 16) }} aria-label="Ayuda de Guía">
+  const startDrag = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return
+    const rect = event.currentTarget.getBoundingClientRect()
+    drag.current = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, left: rect.left, top: rect.top, moved: false }
+    event.currentTarget.setPointerCapture(event.pointerId)
+  }
+  const moveDrag = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    const current = drag.current
+    if (!current || current.pointerId !== event.pointerId) return
+    const dx = event.clientX - current.startX
+    const dy = event.clientY - current.startY
+    if (Math.abs(dx) + Math.abs(dy) < 5 && !current.moved) return
+    current.moved = true
+    event.preventDefault()
+    const size = event.currentTarget.getBoundingClientRect()
+    const minTop = open ? 160 : 8
+    setPosition({
+      left: Math.max(window.innerWidth <= 650 ? 20 : 8, Math.min(current.left + dx, window.innerWidth - size.width - 8)),
+      top: Math.max(minTop, Math.min(current.top + dy, window.innerHeight - footerOffset - size.height - 8)),
+    })
+  }
+  const endDrag = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    if (drag.current?.pointerId !== event.pointerId) return
+    ignoreClick.current = drag.current.moved
+    drag.current = null
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId)
+  }
+
+  const mobile = typeof window !== 'undefined' && window.innerWidth <= 650
+  const tipWidth = mobile ? 198 : 247
+  const triggerWidth = open ? (mobile ? 82 : 98) : 72
+  const tipX = position && Math.max(8, Math.min(position.left + triggerWidth - (mobile ? 48 : 61) - tipWidth, window.innerWidth - tipWidth - 8))
+  const tipLeft = position && tipX! - position.left
+  const tipTail = position && Math.max(18, Math.min(position.left + triggerWidth / 2 - tipX! - 10, tipWidth - 38))
+  const assistantStyle = position
+    ? { left: position.left, top: position.top, right: 'auto', bottom: 'auto', '--tip-left': `${tipLeft}px`, '--tip-tail': `${tipTail}px` } as CSSProperties
+    : { bottom: footerOffset + (footerOffset > 0 ? 8 : 16) }
+
+  return createPortal(<aside className={`guia-assistant ${open ? 'is-open' : 'is-closed'} ${footerOffset > 0 ? 'near-footer' : ''} ${position ? 'is-dragged' : ''}`} style={assistantStyle} aria-label="Ayuda de Guía">
     {open && <div className="guia-tip" key={`${step}-${hint.target}-${hint.text}`}>
       <button className="guia-tip-close" type="button" aria-label="Cerrar ayuda de Guía" onClick={() => setOpen(false)}><X size={16} /></button>
       <strong>CONSEJO DE GUÍA</strong>
       <p aria-live="polite">{hint.text}</p>
       <button type="button" className="guia-tip-action" onClick={pointToField}>{hint.action} <ArrowUpRight size={14} /></button>
     </div>}
-    <button type="button" className="guia-assistant-trigger" onClick={() => setOpen((current) => !current)} aria-label={open ? 'Ocultar ayuda de Guía' : 'Abrir ayuda de Guía'} aria-expanded={open}>
+    <button type="button" className="guia-assistant-trigger" onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={endDrag} onPointerCancel={endDrag} onClick={() => { if (ignoreClick.current) { ignoreClick.current = false; return } setOpen((current) => !current) }} aria-label={open ? 'Ocultar ayuda de Guía' : 'Abrir ayuda de Guía'} aria-expanded={open} title="Arrastrá para mover a Guía">
       <span className="mini-guia-porthole" aria-hidden="true" />
       <span key={hint.motion} className="mini-guia-stage" role="img" aria-label={`Guía ${hint.motion === 'wave' ? 'saluda' : hint.motion === 'point' ? 'señala' : hint.motion === 'think' ? 'piensa' : 'celebra'}`}>
         <img className={`mini-guia-animated mini-${hint.motion}`} src={animated[hint.motion]} alt="" aria-hidden="true" draggable="false" />

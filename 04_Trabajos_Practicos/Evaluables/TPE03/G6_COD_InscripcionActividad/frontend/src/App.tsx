@@ -7,6 +7,14 @@ import { themeName } from './inscripcion/catalogo'
 import { GuiaMascot } from './inscripcion/mascota/GuiaMascot'
 import type { ActividadId } from './inscripcion/types'
 
+const integrantes = [
+  'Juan Ignacio Arrigoni', 'Lautaro Francisco Castillo', 'Francisco Dalmazzo',
+  'Ezequiel Deza', 'Gina Eusebi', 'Juan Ignacio Fanfliet', 'Olivia García Osella',
+  'Delfina Guerci', 'Ignacio Facundo Lescano Barreto', 'Ignacio Martín',
+  'Elena Adriana Moyano Maltega', 'Catalina Pérez', 'Diego Matías Petitto',
+  'Ignacio Samocachan', 'Pedro Torcivia',
+]
+
 function FloatingMotifs({ area }: { area: 'hero' | 'booking' }) {
   return <div className={`floating-motifs motifs-${area}`} aria-hidden="true">
     <span className="motif motif-leaf"><Leaf /></span>
@@ -52,6 +60,11 @@ export default function App() {
       </section>
     </main>
 
-    <footer className="site-footer"><div className="shell footer-main"><span>© 2026 Eco Harmony Park · Proyecto académico</span><a href="#inicio">Volver arriba ↑</a></div></footer>
+    <footer className="site-footer"><div className="shell footer-main">
+      <div className="footer-heading"><img src={logo} alt="" /><div><strong>Eco Harmony Park</strong><span>Proyecto académico · Grupo 6</span></div></div>
+      <div className="footer-course"><strong>Grupo 6 - Ingeniería y Calidad de Software</strong><span>Test Driven Development</span></div>
+      <div className="footer-team"><strong>Integrantes</strong><p>{integrantes.join(' - ')}</p></div>
+      <div className="footer-bottom"><span>© 2026 Eco Harmony Park</span><a href="#inicio">Volver arriba ↑</a></div>
+    </div></footer>
   </div>
 }

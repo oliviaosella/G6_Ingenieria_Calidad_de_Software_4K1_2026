@@ -197,3 +197,25 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
   .guia-assistant.is-open.near-footer .guia-tip{left:0;right:auto;width:min(198px,calc(100vw - 32px));border-radius:18px 18px 18px 6px}
   .guia-assistant.is-open.near-footer .guia-tip:after{left:22px;right:auto}
 }
+.guia-assistant{width:98px;height:98px}
+.guia-assistant-trigger{touch-action:none;cursor:grab}
+.guia-assistant-trigger:active{cursor:grabbing}
+.guia-assistant.is-dragged .guia-tip,.guia-assistant.is-dragged.is-open.near-footer .guia-tip{left:var(--tip-left);right:auto}
+.guia-assistant.is-dragged .guia-tip:after,.guia-assistant.is-dragged.is-open.near-footer .guia-tip:after{left:var(--tip-tail);right:auto}
+@media(max-width:650px){.guia-assistant{width:82px;height:82px}.guia-assistant.is-closed{width:72px;height:72px}.guia-assistant.is-dragged .guia-tip{width:min(198px,calc(100vw - 32px))}}
+
+.site-footer{padding:38px 0 24px;background:linear-gradient(145deg,#264e41,#19382f);color:#fff8e8}
+.site-footer:before{display:none}
+.footer-main{display:grid;grid-template-columns:1fr 1fr;gap:25px 44px;font-size:14px}
+.footer-heading{display:flex;align-items:center;gap:13px}
+.footer-heading img{width:59px;height:59px;padding:7px;border-radius:50%;background:#fff8e8;border:2px solid #a9ceaa}
+.footer-heading strong,.footer-course strong,.footer-team strong{display:block;font-family:"Fredoka",sans-serif;font-size:19px;font-weight:600;color:#fff8e8}
+.footer-heading span,.footer-course span{display:block;margin-top:4px;color:#c5e1ca;font-size:12px}
+.footer-course{align-self:center}
+.footer-course span{font-family:"Fredoka",sans-serif;font-size:16px;color:#ffc986}
+.footer-team{grid-column:1/-1;padding-top:20px;border-top:1px solid #ffffff35}
+.footer-team strong{font-size:15px;color:#ffc986}
+.footer-team p{max-width:1000px;margin:9px 0 0;color:#e1efe1;font-size:13px;line-height:1.8}
+.footer-bottom{grid-column:1/-1;display:flex;justify-content:space-between;gap:16px;padding-top:16px;border-top:1px solid #ffffff35;color:#bed5c2;font-size:12px}
+.footer-bottom a{color:#fff8e8;font-weight:700}
+@media(max-width:650px){.site-footer{padding:30px 0 22px}.footer-main{grid-template-columns:1fr;gap:23px}.footer-heading img{width:51px;height:51px}.footer-heading strong,.footer-course strong{font-size:17px}.footer-team,.footer-bottom{grid-column:1}.footer-team p{font-size:12px}.footer-bottom{font-size:11px}}

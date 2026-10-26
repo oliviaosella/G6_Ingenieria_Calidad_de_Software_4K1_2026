@@ -8,7 +8,7 @@ import { fechasEnVentana, motivoCierre } from './calendario'
 const dia = (fecha: string) => new Intl.DateTimeFormat('es-AR', { weekday: 'long', timeZone: 'UTC' }).format(new Date(`${fecha}T12:00:00Z`))
 const fechaCorta = (fecha: string) => new Intl.DateTimeFormat('es-AR', { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(new Date(`${fecha}T12:00:00Z`))
 
-export function HorarioSection({ actividad, fecha, hora, onFecha, onHora }: { actividad: ActividadId | null; fecha: string; hora: string; onFecha: (value: string) => void; onHora: (value: string) => void }) {
+export function HorarioSection({ actividad, fecha, hora, onFecha, onHora }: { actividad: ActividadId | null; fecha: string; hora: string; onFecha: (value: string) => void; onHora: (value: string, cupos: number) => void }) {
   const [dias, setDias] = useState<Record<string, HorarioApi[]>>({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -44,7 +44,7 @@ export function HorarioSection({ actividad, fecha, hora, onFecha, onHora }: { ac
         const motivo = cierre || (sinTurnos ? 'Fuera de la ventana de 24 h' : null)
         return <button className={`date-pill ${fecha === item ? 'active' : ''}`} type="button" key={item} disabled={!!motivo} onClick={() => onFecha(item)} title={motivo || undefined}><span>{dia(item)}</span><strong>{fechaCorta(item)}</strong>{motivo && <small>{motivo}</small>}</button>
       })}</div>{fechas.every((item) => !dias[item]?.length) && <div className="empty-prompt">No hay turnos reservables en las próximas 24 horas. Los lunes, el 1 de enero y el 25 de diciembre el parque está cerrado.</div>}</>}
-      {fecha && !loading && <><div className="field-label time-label"><Clock3 size={17} /> Horarios <span>· Hora local del parque</span></div><div className="time-grid">{horarios.map((turno) => <button type="button" key={turno.hora} disabled={!turno.disponible} onClick={() => onHora(turno.hora)} className={`time-pill ${hora === turno.hora ? 'active' : ''}`} aria-pressed={hora === turno.hora}><strong>{turno.hora}</strong><small>{turno.disponible ? `${turno.cupos_disponibles} lugares` : 'Sin cupos'}</small></button>)}</div></>}
+      {fecha && !loading && <><div className="field-label time-label"><Clock3 size={17} /> Horarios <span>· Hora local del parque</span></div><div className="time-grid">{horarios.map((turno) => <button type="button" key={turno.hora} disabled={!turno.disponible} onClick={() => onHora(turno.hora, turno.cupos_disponibles)} className={`time-pill ${hora === turno.hora ? 'active' : ''}`} aria-pressed={hora === turno.hora}><strong>{turno.hora}</strong><small>{turno.disponible ? `${turno.cupos_disponibles} lugares` : 'Sin cupos'}</small></button>)}</div></>}
     </>}
   </section>
 }

@@ -231,18 +231,3 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 }
 .date-pill:disabled{opacity:.7;cursor:not-allowed;background:#f1f3ed;border-color:#d7ddd2}
 .date-pill small{display:block;max-width:140px;margin-top:5px;font-size:10px;color:#8d5848;line-height:1.2}
-.demo-panel{margin-bottom:24px;padding:15px;border:1px solid #b8d1ba;border-radius:12px;background:#f5faf2;color:#294a38}
-.demo-panel summary{cursor:pointer;font-family:"Fredoka",sans-serif;font-size:17px;font-weight:600}
-.demo-panel>p{font-size:12px;line-height:1.5;margin:10px 0}
-.demo-cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0}
-.demo-case{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;border:1px solid #bad0bd;border-radius:9px;background:white;padding:11px;color:#294a38;cursor:pointer}
-.demo-case.selected,.demo-case:hover{border-color:#25796e;background:#ecf8ed}
-.demo-case strong{font-family:"Fredoka",sans-serif;font-size:14px}
-.demo-case span,.demo-case small{font-size:11px;line-height:1.35}
-.demo-case small{color:#217b73;font-weight:700}
-.demo-result,.demo-dates{border-top:1px solid #ccdecc;margin-top:14px;padding-top:13px;font-size:12px;line-height:1.7}
-.demo-result small,.demo-dates small{display:block;color:#667d68}
-.demo-pass,.demo-fail{display:block;font-weight:700}
-.demo-pass{color:#226b45}.demo-fail{color:#a04e31}
-.demo-exit{border:0;background:none;color:#217b73;font-weight:700;text-decoration:underline;cursor:pointer;padding:7px 0 0}
-@media(max-width:650px){.demo-cases{grid-template-columns:1fr}}

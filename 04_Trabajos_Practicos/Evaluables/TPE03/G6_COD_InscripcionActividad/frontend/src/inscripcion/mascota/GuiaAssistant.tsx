@@ -47,7 +47,7 @@ function consejo(step: number, draft: InscripcionDraft, error: string): { text: 
 }
 
 export function GuiaAssistant({ step, draft, error }: { step: number; draft: InscripcionDraft; error: string }) {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(() => typeof window === 'undefined' || window.innerWidth > 650)
   const [footerOffset, setFooterOffset] = useState(0)
   const [position, setPosition] = useState<{ left: number; top: number } | null>(null)
   const drag = useRef<{ pointerId: number; startX: number; startY: number; left: number; top: number; moved: boolean } | null>(null)

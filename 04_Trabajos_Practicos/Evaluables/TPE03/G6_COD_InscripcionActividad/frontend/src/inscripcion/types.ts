@@ -26,4 +26,6 @@ export type Reserva = {
   qrUrl: string
   qrContenido: string
   correoEstado: string
+  correoError: string | null
+  intentosEnvio: number
 }

@@ -231,3 +231,19 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 }
 .date-pill:disabled{opacity:.7;cursor:not-allowed;background:#f1f3ed;border-color:#d7ddd2}
 .date-pill small{display:block;max-width:140px;margin-top:5px;font-size:10px;color:#8d5848;line-height:1.2}
+.booking-calendar.date-options{display:block;width:min(100%,390px);padding:16px;border:1px solid #d7e4d7;border-radius:16px;background:#fffdf5}
+.calendar-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.calendar-heading strong{font:600 19px "Fredoka",sans-serif;color:#254b3c}
+.calendar-heading button{display:grid;place-items:center;width:34px;height:34px;border:1px solid #d7e4d7;border-radius:9px;background:#fff;color:#287a71;cursor:pointer}
+.calendar-heading button:disabled{opacity:.35;cursor:not-allowed}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.calendar-weekday{display:grid;place-items:center;height:27px;font-size:11px;font-weight:800;color:#708779}
+.calendar-day,.calendar-empty{display:grid;place-items:center;aspect-ratio:1;min-width:0}
+.calendar-day{border:1px solid transparent;border-radius:10px;background:#e8f4ec;color:#21645a;font:600 15px "Fredoka",sans-serif;cursor:pointer}
+.calendar-day:hover:not(:disabled){background:#d0eadd;border-color:#86b99f}
+.calendar-day.active{background:#207f76;color:#fff;border-color:#207f76}
+.calendar-day.active:hover:not(:disabled){background:#207f76;border-color:#207f76}
+.calendar-day:disabled{background:#f4f5f1;color:#a6b2a7;cursor:not-allowed}
+.calendar-day.closed:disabled{background:#fbf0e8;color:#a66e55;text-decoration:line-through}
+.calendar-day:focus-visible,.calendar-heading button:focus-visible{outline:3px solid #e3ac54;outline-offset:2px}
+.calendar-hint{margin:13px 0 0;color:#63796a;font-size:11px;line-height:1.45}

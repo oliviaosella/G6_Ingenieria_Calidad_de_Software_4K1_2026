@@ -2,6 +2,7 @@ import pytest
 
 from app.errors import (
     AceptacionDeOtraActividadError,
+    CuposNoDisponiblesError,
     TerminosNoAceptadosError,
 )
 from app.schemas import (
@@ -13,6 +14,7 @@ from app.schemas import (
 from app.services.email_service import ServicioNotificaciones
 from app.services.inscripciones import inscribir_participantes
 from app.services.reservas import GestorReservas
+
 
 
 class CorreoDePrueba:
@@ -167,4 +169,84 @@ def test_rechazo_por_actividad_incompatible_en_terminos_no_crea_reserva():
 
     assert gestor.consultar_cupos("Tirolesa", 1) == 10
     assert gestor.consultar_cupos("Safari", 1) == 8
+    assert correo.envios == []
+
+
+def test_reserva_sin_cupos_disponibles_no_envia_correo_confirmacion():
+    gestor = GestorReservas()
+    correo = CorreoDePrueba()
+    notificaciones = ServicioNotificaciones(correo)
+
+    # Tirolesa tiene capacidad máxima de 10 cupos; enviamos 11
+    participantes = [
+        Visitante(
+            nombre=f"Participante {i}",
+            dni=f"400000{i:02d}",
+            edad=20,
+            talle_vestimenta="M",
+        )
+        for i in range(11)
+    ]
+
+    solicitud = SolicitudInscripcion(
+        actividad=Actividad.TIROLESA,
+        horario_id=1,
+        cantidad_participantes=11,
+        participantes=participantes,
+        aceptacion_terminos=AceptacionTerminos(
+            actividad=Actividad.TIROLESA,
+            aceptados=True,
+        ),
+        email="grupo@example.com",
+    )
+
+    with pytest.raises(CuposNoDisponiblesError):
+        inscribir_participantes(
+            solicitud=solicitud,
+            gestor_reservas=gestor,
+            servicio_notificaciones=notificaciones,
+            fecha="2026-10-26",
+            horario="14:30",
+        )
+
+    assert gestor.consultar_cupos("Tirolesa", 1) == 10
+    assert correo.envios == []
+
+    gestor = GestorReservas()
+    correo = CorreoDePrueba()
+    notificaciones = ServicioNotificaciones(correo)
+
+    # Tirolesa tiene capacidad máxima de 10 cupos; enviamos 11
+    participantes = [
+        Visitante(
+            nombre=f"Participante {i}",
+            dni=f"400000{i:02d}",
+            edad=20,
+            talle_vestimenta="M",
+        )
+        for i in range(11)
+    ]
+
+    solicitud = SolicitudInscripcion(
+        actividad=Actividad.TIROLESA,
+        horario_id=1,
+        cantidad_participantes=11,
+        participantes=participantes,
+        aceptacion_terminos=AceptacionTerminos(
+            actividad=Actividad.TIROLESA,
+            aceptados=True,
+        ),
+        email="grupo@example.com",
+    )
+
+    resultado = inscribir_participantes(
+        solicitud=solicitud,
+        gestor_reservas=gestor,
+        servicio_notificaciones=notificaciones,
+        fecha="2026-10-26",
+        horario="14:30",
+    )
+
+    assert resultado is None
+    assert gestor.consultar_cupos("Tirolesa", 1) == 10
     assert correo.envios == []

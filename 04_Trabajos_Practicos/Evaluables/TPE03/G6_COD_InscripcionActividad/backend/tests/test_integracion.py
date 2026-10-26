@@ -1,6 +1,10 @@
 from app.services.email_service import ServicioNotificaciones
 from app.services.reservas import GestorReservas
-
+from app.schemas import AceptacionTerminos, Actividad, SolicitudInscripcion, Visitante
+from app.services.email_service import ServicioNotificaciones
+# pyrefly: ignore[missing-import]
+from app.services.inscripciones import inscribir_participantes
+from app.services.reservas import GestorReservas
 
 class CorreoDePrueba:
     def __init__(self):
@@ -42,3 +46,41 @@ def test_reserva_rechazada_no_genera_confirmacion():
     assert reserva is None
     assert gestor.consultar_cupos("Tirolesa", 1) == 10
     assert correo.envios == []
+
+
+def test_inscripcion_exitosa_valida_terminos_reserva_cupos_y_envia_correo():
+    gestor = GestorReservas()
+    correo = CorreoDePrueba()
+    notificaciones = ServicioNotificaciones(correo)
+    solicitud = SolicitudInscripcion(
+        actividad=Actividad.TIROLESA,
+        horario_id=1,
+        cantidad_participantes=1,
+        participantes=[
+            Visitante(
+                nombre="Ana Pérez",
+                dni="12345678",
+                edad=25,
+                talle_vestimenta="M",
+            )
+        ],
+        aceptacion_terminos=AceptacionTerminos(
+            actividad=Actividad.TIROLESA,
+            aceptados=True,
+        ),
+        email="ana@example.com",
+    )
+    resultado = inscribir_participantes(
+        solicitud=solicitud,
+        gestor_reservas=gestor,
+        servicio_notificaciones=notificaciones,
+        fecha="2026-10-26",
+        horario="14:30",
+    )
+    assert resultado is not None
+    assert resultado["id"] == 1
+    assert gestor.consultar_cupos("Tirolesa", 1) == 9
+    assert len(correo.envios) == 1
+    assert correo.envios[0]["destinatario"] == "ana@example.com"
+    assert "Tirolesa" in correo.envios[0]["contenido"]
+    assert correo.envios[0]["qr"].startswith(b"\x89PNG\r\n\x1a\n")

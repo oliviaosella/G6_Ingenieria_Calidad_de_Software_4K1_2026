@@ -55,6 +55,13 @@ def test_health_check(client):
     assert response.json() == {"status": "ok"}
 
 
+@pytest.mark.parametrize("origin", ["http://localhost:5173", "http://localhost:5174", "http://127.0.0.1:5174"])
+def test_frontend_local_puede_consultar_api(client, origin):
+    response = client.get("/actividades", headers={"Origin": origin})
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == origin
+
+
 def test_openapi_schema_generado_correctamente(client):
     response = client.get("/openapi.json")
     assert response.status_code == 200

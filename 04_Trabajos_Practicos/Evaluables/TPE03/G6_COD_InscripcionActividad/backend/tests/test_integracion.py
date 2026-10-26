@@ -2,7 +2,6 @@ from app.services.email_service import ServicioNotificaciones
 from app.services.reservas import GestorReservas
 from app.schemas import AceptacionTerminos, Actividad, SolicitudInscripcion, Visitante
 from app.services.email_service import ServicioNotificaciones
-# pyrefly: ignore[missing-import]
 from app.services.inscripciones import inscribir_participantes
 from app.services.reservas import GestorReservas
 

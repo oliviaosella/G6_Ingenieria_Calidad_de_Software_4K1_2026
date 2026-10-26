@@ -43,8 +43,50 @@ class SolicitudInscripcion(BaseModel):
     participantes: list[Visitante]
     aceptacion_terminos: AceptacionTerminos
     email: EmailStr
+    fecha: str = ""
+    horario: str = ""
 
 
 class InscripcionConfirmada(BaseModel):
     inscripcion_id: int
     solicitud: SolicitudInscripcion
+
+
+class ActividadDetalleResponse(BaseModel):
+    id: Actividad
+    categoria: str
+    descripcion: str
+    duracion: str
+    cupo: int
+    edad_minima: int
+    requiere_talle: bool
+
+
+class HorarioConsultaResponse(BaseModel):
+    horario_id: int
+    actividad: Actividad
+    fecha: str
+    hora: str
+    cupos_disponibles: int
+    disponible: bool
+
+
+class InscripcionExitosaResponse(BaseModel):
+    id: int
+    actividad: Actividad
+    horario_id: int
+    fecha: str
+    horario: str
+    email: EmailStr
+    participantes: list[Visitante]
+    qr_codigo: str
+
+
+class ReservaConsultaResponse(BaseModel):
+    id: int
+    actividad: str
+    horario_id: int
+    participantes: list[dict]
+
+    model_config = {"extra": "allow"}
+

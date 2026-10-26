@@ -12,6 +12,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "httpx>=0.28.1",
     "opencv-python-headless>=5.0.0.93",
     "pytest>=9.1.1",
 ]

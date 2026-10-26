@@ -7,6 +7,8 @@ import type { TerminosApi } from './api'
 import { ActividadSection } from './actividad/ActividadSection'
 import { SummaryScene } from './actividad/SummaryScene'
 import { ConfirmacionSection } from './confirmacion/ConfirmacionSection'
+import { DemoPanel } from './demo/DemoPanel'
+import type { CasoParticipantes } from './demo/casos'
 import { GuiaAssistant } from './mascota/GuiaAssistant'
 import { HorarioSection } from './horario/HorarioSection'
 import { ParticipantesSection } from './participantes/ParticipantesSection'
@@ -26,6 +28,8 @@ export function InscripcionForm({ onActividadChange, onConfirmedChange }: { onAc
   const [catalogoError, setCatalogoError] = useState('')
   const [terminos, setTerminos] = useState<TerminosApi | null>(null)
   const [saving, setSaving] = useState(false)
+  const [demoCase, setDemoCase] = useState<CasoParticipantes | null>(null)
+  const [demoResult, setDemoResult] = useState('')
   const topRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     let active = true
@@ -52,13 +56,29 @@ export function InscripcionForm({ onActividadChange, onConfirmedChange }: { onAc
     persona.nombre.trim() && persona.dni.trim() && persona.edad.trim() && (!requiereTalle || persona.talle_vestimenta)
   ).length
 
-  const update = (change: Partial<InscripcionDraft>) => { setDraft((current) => ({ ...current, ...change })); setError('') }
+  const update = (change: Partial<InscripcionDraft>) => { setDraft((current) => ({ ...current, ...change })); setError(''); setDemoResult('') }
   const scrollTop = () => topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   const go = (next: number) => { setStep(next); setError(''); requestAnimationFrame(scrollTop) }
   const chooseActivity = (actividad: ActividadId) => {
     update({ actividad, fecha: '', hora: '', aceptaTerminos: false, participantes: draft.participantes.map((persona) => ({ ...persona, talle_vestimenta: '' })) })
     setTerminos(null)
     onActividadChange(actividad)
+  }
+  const loadDemo = (caso: CasoParticipantes) => {
+    setDemoCase(caso)
+    setDemoResult('')
+    setError('')
+    setDraft({ ...initialDraft(), actividad: caso.actividad, participantes: caso.participantes.map((persona) => ({ ...persona })) })
+    setStep(1)
+    onActividadChange(caso.actividad)
+    requestAnimationFrame(scrollTop)
+  }
+  const exitDemo = () => {
+    setDemoCase(null)
+    setDemoResult('')
+    setDraft(initialDraft())
+    onActividadChange(null)
+    go(0)
   }
   const next = async () => {
     if (step === 0) {
@@ -67,6 +87,11 @@ export function InscripcionForm({ onActividadChange, onConfirmedChange }: { onAc
     }
     if (step === 1) {
       const issue = validarParticipantes(draft.participantes, draft.actividad!)
+      if (demoCase) {
+        setDemoResult(issue || 'Datos válidos.')
+        setError(issue || '')
+        return
+      }
       if (issue) return setError(issue)
       return go(2)
     }
@@ -83,12 +108,13 @@ export function InscripcionForm({ onActividadChange, onConfirmedChange }: { onAc
   return <div className={`booking-layout ${reserva ? 'is-confirmed' : ''}`} ref={topRef}>
     <div className="booking-main">
       {!reserva ? <>
+        {import.meta.env.DEV && <DemoPanel casoActivo={demoCase} resultado={demoResult} onCargar={loadDemo} onSalir={exitDemo} />}
         <div className="stepper" aria-label="Progreso de inscripción">{steps.map((label, index) => <div key={label} className={`step-item ${step === index ? 'current' : ''} ${step > index ? 'done' : ''}`}><span className="step-circle">{step > index ? <Check size={14} /> : index + 1}</span><span>{label}</span></div>)}</div>
         {step === 0 && <><ActividadSection value={draft.actividad} onChange={chooseActivity} actividades={actividades} />{!actividades.length && !catalogoError && <p>Cargando actividades…</p>}{catalogoError && <p className="form-error" role="alert">{catalogoError}</p>}<HorarioSection actividad={draft.actividad} fecha={draft.fecha} hora={draft.hora} onFecha={(fecha) => update({ fecha, hora: '' })} onHora={(hora) => update({ hora })} /></>}
         {step === 1 && draft.actividad && <ParticipantesSection actividad={draft.actividad} participantes={draft.participantes} onChange={(participantes) => update({ participantes })} />}
         {step === 2 && draft.actividad && <TerminosSection actividad={draft.actividad} email={draft.email} acepta={draft.aceptaTerminos} terminos={terminos} onEmail={(email) => update({ email })} onAcepta={(aceptaTerminos) => update({ aceptaTerminos })} />}
         {error && <p className="form-error" role="alert">{error}</p>}
-        <div className="form-actions">{step > 0 && <button type="button" className="button back" disabled={saving} onClick={() => go(step - 1)}><ArrowLeft size={17} /> Volver</button>}<button type="button" className="button primary" disabled={saving || (step === 0 && !!catalogoError)} onClick={next}>{saving ? 'Confirmando…' : step === 2 ? 'Confirmar reserva' : 'Continuar'} <ArrowRight size={17} /></button></div>
+        <div className="form-actions">{step > 0 && !demoCase && <button type="button" className="button back" disabled={saving} onClick={() => go(step - 1)}><ArrowLeft size={17} /> Volver</button>}<button type="button" className="button primary" disabled={saving || (step === 0 && !!catalogoError)} onClick={next}>{saving ? 'Confirmando…' : demoCase ? 'Ejecutar validación' : step === 2 ? 'Confirmar reserva' : 'Continuar'} <ArrowRight size={17} /></button></div>
       </> : <ConfirmacionSection reserva={reserva} onNueva={() => { setDraft(initialDraft()); setReserva(null); onActividadChange(null); onConfirmedChange(false); go(0) }} />}
     </div>
 
@@ -100,6 +126,6 @@ export function InscripcionForm({ onActividadChange, onConfirmedChange }: { onAc
         <div><dt>Personas</dt><dd>{personasCargadas || '—'}</dd></div>
       </dl></div>
     </aside>}
-    {!reserva && <GuiaAssistant step={step} draft={draft} error={error} />}
+    {!reserva && !demoCase && <GuiaAssistant step={step} draft={draft} error={error} />}
   </div>
 }

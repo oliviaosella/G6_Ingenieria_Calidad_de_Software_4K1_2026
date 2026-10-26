@@ -7,11 +7,15 @@ def validar_participantes(
     cantidad: int,
     participantes: list[Visitante],
     actividad: Actividad,
+    cupos_disponibles: int | None = None,
 ) -> bool:
     
     
     # 1. Validar cantidad de participantes
     if cantidad != len(participantes) or cantidad <= 0 or actividad.cupo < cantidad:
+        return False
+
+    if cupos_disponibles is not None and cantidad > cupos_disponibles:
         return False
 
     if not all(

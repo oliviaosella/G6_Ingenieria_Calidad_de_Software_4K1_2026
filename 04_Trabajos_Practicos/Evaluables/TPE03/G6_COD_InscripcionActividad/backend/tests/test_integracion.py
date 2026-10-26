@@ -4,6 +4,20 @@ from app.schemas import AceptacionTerminos, Actividad, SolicitudInscripcion, Vis
 from app.services.email_service import ServicioNotificaciones
 from app.services.inscripciones import inscribir_participantes
 from app.services.reservas import GestorReservas
+import pytest
+
+from app.errors import TerminosNoAceptadosError
+from app.schemas import (
+    AceptacionTerminos,
+    Actividad,
+    SolicitudInscripcion,
+    Visitante,
+)
+from app.services.email_service import ServicioNotificaciones
+from app.services.inscripciones import inscribir_participantes
+from app.services.reservas import GestorReservas
+
+
 
 class CorreoDePrueba:
     def __init__(self):
@@ -83,3 +97,43 @@ def test_inscripcion_exitosa_valida_terminos_reserva_cupos_y_envia_correo():
     assert correo.envios[0]["destinatario"] == "ana@example.com"
     assert "Tirolesa" in correo.envios[0]["contenido"]
     assert correo.envios[0]["qr"].startswith(b"\x89PNG\r\n\x1a\n")
+
+
+
+    
+
+def test_rechazo_por_terminos_no_aceptados_no_modifica_cupos_ni_envia_correo():
+    gestor = GestorReservas()
+    correo = CorreoDePrueba()
+    notificaciones = ServicioNotificaciones(correo)
+
+    solicitud = SolicitudInscripcion(
+        actividad=Actividad.TIROLESA,
+        horario_id=1,
+        cantidad_participantes=1,
+        participantes=[
+            Visitante(
+                nombre="Carlos Benítez",
+                dni="22334455",
+                edad=30,
+                talle_vestimenta="L",
+            )
+        ],
+        aceptacion_terminos=AceptacionTerminos(
+            actividad=Actividad.TIROLESA,
+            aceptados=False,
+        ),
+        email="carlos@example.com",
+    )
+
+    with pytest.raises(TerminosNoAceptadosError):
+        inscribir_participantes(
+            solicitud=solicitud,
+            gestor_reservas=gestor,
+            servicio_notificaciones=notificaciones,
+            fecha="2026-10-26",
+            horario="14:30",
+        )
+
+    assert gestor.consultar_cupos("Tirolesa", 1) == 10
+    assert correo.envios == []

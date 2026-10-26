@@ -1,6 +1,9 @@
 import pytest
 
-from app.errors import TerminosNoAceptadosError
+from app.errors import (
+    AceptacionDeOtraActividadError,
+    TerminosNoAceptadosError,
+)
 from app.schemas import (
     AceptacionTerminos,
     Actividad,
@@ -10,6 +13,7 @@ from app.schemas import (
 from app.services.email_service import ServicioNotificaciones
 from app.services.inscripciones import inscribir_participantes
 from app.services.reservas import GestorReservas
+
 
 class CorreoDePrueba:
     def __init__(self):
@@ -125,4 +129,44 @@ def test_rechazo_por_terminos_no_aceptados_no_modifica_cupos_ni_envia_correo():
         )
 
     assert gestor.consultar_cupos("Tirolesa", 1) == 10
+    assert correo.envios == []
+
+
+
+
+def test_rechazo_por_actividad_incompatible_en_terminos_no_crea_reserva():
+    gestor = GestorReservas()
+    correo = CorreoDePrueba()
+    notificaciones = ServicioNotificaciones(correo)
+
+    solicitud = SolicitudInscripcion(
+        actividad=Actividad.TIROLESA,
+        horario_id=1,
+        cantidad_participantes=1,
+        participantes=[
+            Visitante(
+                nombre="Lucía Morales",
+                dni="33445566",
+                edad=22,
+                talle_vestimenta="S",
+            )
+        ],
+        aceptacion_terminos=AceptacionTerminos(
+            actividad=Actividad.SAFARI,
+            aceptados=True,
+        ),
+        email="lucia@example.com",
+    )
+
+    with pytest.raises(AceptacionDeOtraActividadError):
+        inscribir_participantes(
+            solicitud=solicitud,
+            gestor_reservas=gestor,
+            servicio_notificaciones=notificaciones,
+            fecha="2026-10-26",
+            horario="14:30",
+        )
+
+    assert gestor.consultar_cupos("Tirolesa", 1) == 10
+    assert gestor.consultar_cupos("Safari", 1) == 8
     assert correo.envios == []

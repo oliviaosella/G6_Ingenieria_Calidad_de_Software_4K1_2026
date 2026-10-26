@@ -12,3 +12,7 @@ class AceptacionDeOtraActividadError(Exception):
 
 class CuposNoDisponiblesError(Exception):
     """No hay cupos disponibles para la actividad en el horario solicitado."""
+
+
+class DniDuplicadoEnHorarioError(Exception):
+    """Uno o más visitantes ya se encuentran inscriptos en el mismo horario."""

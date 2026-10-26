@@ -4,6 +4,7 @@ from app.errors import (
     AceptacionDeOtraActividadError,
     CuposNoDisponiblesError,
     DniDuplicadoEnHorarioError,
+    InconsistenciaParticipantesError,
     TerminosNoAceptadosError,
 )
 from app.schemas import (
@@ -15,6 +16,7 @@ from app.schemas import (
 from app.services.email_service import ServicioNotificaciones
 from app.services.inscripciones import inscribir_participantes
 from app.services.reservas import GestorReservas
+
 
 
 
@@ -280,3 +282,41 @@ def test_rechazo_por_dni_duplicado_en_mismo_horario_no_emite_confirmacion():
     # Los cupos de Safari deben seguir intactos (8) y no debe haber un 2do correo
     assert gestor.consultar_cupos("Safari", 1) == 8
     assert len(correo.envios) == 1
+
+
+def test_inconsistencia_entre_cantidad_declarada_y_lista_participantes():
+    gestor = GestorReservas()
+    correo = CorreoDePrueba()
+    notificaciones = ServicioNotificaciones(correo)
+
+    # Se declara cantidad_participantes=2 pero se envía solo 1 participante
+    solicitud = SolicitudInscripcion(
+        actividad=Actividad.TIROLESA,
+        horario_id=1,
+        cantidad_participantes=2,
+        participantes=[
+            Visitante(
+                nombre="Valeria Rivas",
+                dni="55667788",
+                edad=26,
+                talle_vestimenta="S",
+            )
+        ],
+        aceptacion_terminos=AceptacionTerminos(
+            actividad=Actividad.TIROLESA,
+            aceptados=True,
+        ),
+        email="valeria@example.com",
+    )
+
+    with pytest.raises(InconsistenciaParticipantesError):
+        inscribir_participantes(
+            solicitud=solicitud,
+            gestor_reservas=gestor,
+            servicio_notificaciones=notificaciones,
+            fecha="2026-10-26",
+            horario="14:30",
+        )
+
+    assert gestor.consultar_cupos("Tirolesa", 1) == 10
+    assert correo.envios == []

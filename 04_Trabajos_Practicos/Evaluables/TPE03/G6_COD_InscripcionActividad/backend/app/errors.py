@@ -1,5 +1,3 @@
-
-
 class TerminosNoDisponiblesError(Exception):
     """No se pueden obtener los términos de la actividad."""
 

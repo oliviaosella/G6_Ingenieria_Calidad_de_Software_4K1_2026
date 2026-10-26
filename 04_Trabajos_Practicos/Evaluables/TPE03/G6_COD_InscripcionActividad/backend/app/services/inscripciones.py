@@ -40,6 +40,8 @@ def inscribir_participantes(
         TerminosNoAceptadosError: Si los términos no fueron aceptados.
         AceptacionDeOtraActividadError: Si los términos corresponden a otra
             actividad distinta de la solicitada.
+        CuposNoDisponiblesError: Si la cantidad de participantes supera los
+            cupos disponibles en el horario seleccionado.
     """
     validar_aceptacion(solicitud.actividad, solicitud.aceptacion_terminos)
 

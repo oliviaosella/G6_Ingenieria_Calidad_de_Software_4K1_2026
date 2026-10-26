@@ -33,16 +33,19 @@ def inscribir_participantes(
     servicio_notificaciones: ServicioNotificaciones,
     fecha: str,
     horario: str,
-) -> dict[str, Any] | None:
+) -> dict[str, Any]:
     """Orquesta el proceso de inscripción a una actividad.
 
     Valida la aceptación de los términos específicos de la actividad,
-    descuenta cupos de forma atómica y emite la confirmación con QR.
+    verifica que ningún DNI esté duplicado en el turno, descuenta cupos
+    de forma atómica y emite la confirmación con QR.
 
     Raises:
         TerminosNoAceptadosError: Si los términos no fueron aceptados.
         AceptacionDeOtraActividadError: Si los términos corresponden a otra
             actividad distinta de la solicitada.
+        DniDuplicadoEnHorarioError: Si uno o más participantes ya están
+            inscriptos en el horario seleccionado.
         CuposNoDisponiblesError: Si la cantidad de participantes supera los
             cupos disponibles en el horario seleccionado.
     """
@@ -53,6 +56,7 @@ def inscribir_participantes(
             solicitud.horario_id, participante.dni
         ):
             raise DniDuplicadoEnHorarioError
+
     participantes_dict = [
         participante.model_dump()
         for participante in solicitud.participantes

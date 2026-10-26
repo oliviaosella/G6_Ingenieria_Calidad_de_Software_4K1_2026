@@ -3,8 +3,8 @@ import pytest
 from app.errors import (
     AceptacionDeOtraActividadError,
     CuposNoDisponiblesError,
-    TerminosNoAceptadosError,
     DniDuplicadoEnHorarioError,
+    TerminosNoAceptadosError,
 )
 from app.schemas import (
     AceptacionTerminos,

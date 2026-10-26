@@ -4,6 +4,7 @@ from app.errors import (
     AceptacionDeOtraActividadError,
     CuposNoDisponiblesError,
     TerminosNoAceptadosError,
+    DniDuplicadoEnHorarioError,
 )
 from app.schemas import (
     AceptacionTerminos,
@@ -211,3 +212,71 @@ def test_reserva_sin_cupos_disponibles_no_envia_correo_confirmacion():
 
     assert gestor.consultar_cupos("Tirolesa", 1) == 10
     assert correo.envios == []
+
+
+def test_rechazo_por_dni_duplicado_en_mismo_horario_no_emite_confirmacion():
+    gestor = GestorReservas()
+    correo = CorreoDePrueba()
+    notificaciones = ServicioNotificaciones(correo)
+
+    # 1. Primera inscripción exitosa con DNI 11223344 en horario 1
+    solicitud_1 = SolicitudInscripcion(
+        actividad=Actividad.TIROLESA,
+        horario_id=1,
+        cantidad_participantes=1,
+        participantes=[
+            Visitante(
+                nombre="Martín Vega",
+                dni="11223344",
+                edad=28,
+                talle_vestimenta="M",
+            )
+        ],
+        aceptacion_terminos=AceptacionTerminos(
+            actividad=Actividad.TIROLESA,
+            aceptados=True,
+        ),
+        email="martin@example.com",
+    )
+    res_1 = inscribir_participantes(
+        solicitud=solicitud_1,
+        gestor_reservas=gestor,
+        servicio_notificaciones=notificaciones,
+        fecha="2026-10-26",
+        horario="14:30",
+    )
+    assert res_1 is not None
+    assert gestor.consultar_cupos("Tirolesa", 1) == 9
+    assert len(correo.envios) == 1
+
+    # 2. Segunda solicitud con el MISMO DNI en el MISMO horario (para Safari)
+    solicitud_duplicada = SolicitudInscripcion(
+        actividad=Actividad.SAFARI,
+        horario_id=1,
+        cantidad_participantes=1,
+        participantes=[
+            Visitante(
+                nombre="Martín Vega",
+                dni="11223344",
+                edad=28,
+            )
+        ],
+        aceptacion_terminos=AceptacionTerminos(
+            actividad=Actividad.SAFARI,
+            aceptados=True,
+        ),
+        email="martin@example.com",
+    )
+
+    with pytest.raises(DniDuplicadoEnHorarioError):
+        inscribir_participantes(
+            solicitud=solicitud_duplicada,
+            gestor_reservas=gestor,
+            servicio_notificaciones=notificaciones,
+            fecha="2026-10-26",
+            horario="14:30",
+        )
+
+    # Los cupos de Safari deben seguir intactos (8) y no debe haber un 2do correo
+    assert gestor.consultar_cupos("Safari", 1) == 8
+    assert len(correo.envios) == 1

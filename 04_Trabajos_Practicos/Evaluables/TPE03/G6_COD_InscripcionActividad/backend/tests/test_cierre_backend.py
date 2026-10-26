@@ -1,4 +1,3 @@
-import json
 import smtplib
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
@@ -52,7 +51,7 @@ def leer_qr(png):
     imagen = cv2.imdecode(np.frombuffer(png, dtype=np.uint8), cv2.IMREAD_GRAYSCALE)
     texto, _, _ = cv2.QRCodeDetector().detectAndDecode(imagen)
     assert texto, "El QR debe poder leerse con un decodificador independiente"
-    return json.loads(texto)
+    return texto
 
 
 def test_qr_descargable_y_del_correo_contienen_la_inscripcion_completa(ambiente):
@@ -64,14 +63,14 @@ def test_qr_descargable_y_del_correo_contienen_la_inscripcion_completa(ambiente)
     assert qr.status_code == 200
     assert qr.headers["content-type"] == "image/png"
     contenido = leer_qr(qr.content)
-    assert contenido == json.loads(datos["qr_contenido"])
-    assert contenido["codigo"] == datos["qr_codigo"]
-    assert contenido["actividad"] == "Safari"
-    assert contenido["fecha"] == "2026-10-27"
-    assert contenido["horario"] == "09:00"
-    assert contenido["email"] == "ana@example.com"
-    assert contenido["cantidad_participantes"] == 1
-    assert contenido["participantes"] == solicitud["participantes"]
+    assert contenido == datos["qr_contenido"]
+    assert "Código: " + datos["qr_codigo"] in contenido
+    assert "Actividad: Safari\n" in contenido
+    assert "Fecha: 2026-10-27\n" in contenido
+    assert "Horario: 09:00 h\n" in contenido
+    assert "Correo: ana@example.com\n" in contenido
+    assert "PARTICIPANTES (1)\n" in contenido
+    assert "1. Ana Pérez\n   DNI: 12345678\n   Edad: 25" in contenido
     assert leer_qr(correo.envios[0]["qr"]) == contenido
 
 
@@ -178,7 +177,7 @@ def test_export_publico_para_enviar_correo_sigue_funcionando(monkeypatch):
     monkeypatch.setattr(email_service, "_crear_emisor_correo", lambda: correo)
     enviar_confirmacion({"id": 3, "email": "ana@example.com", "actividad": "Safari", "fecha": "2026-10-27", "horario": "09:00"})
     assert len(correo.envios) == 1
-    assert leer_qr(correo.envios[0]["qr"])["codigo"] == "RESERVA-3"
+    assert "Código: RESERVA-3\n" in leer_qr(correo.envios[0]["qr"])
 
 
 def test_configuracion_gmail_admite_password_de_aplicacion_con_espacios(monkeypatch, tmp_path):
@@ -253,8 +252,9 @@ def test_qr_admite_los_doce_participantes_de_palestra():
         ],
     }
     datos = leer_qr(generar_qr(inscripcion))
-    assert datos["cantidad_participantes"] == 12
-    assert datos["participantes"] == inscripcion["participantes"]
+    assert "PARTICIPANTES (12)\n" in datos
+    for i, participante in enumerate(inscripcion["participantes"], start=1):
+        assert f"{i}. María Gómez\n   DNI: {participante['dni']}\n   Edad: 25\n   Talle de vestimenta: XL" in datos
 
 
 def test_base_se_reabre_despues_de_cerrar_la_conexion(tmp_path):

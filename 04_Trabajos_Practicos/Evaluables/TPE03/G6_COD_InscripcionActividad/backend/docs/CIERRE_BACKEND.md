@@ -10,7 +10,7 @@ uv run python -m pytest -q
 uv run uvicorn app.main:app --reload
 ```
 
-La suite incluye tests anteriores y nuevos: 164 casos pasan. No requiere credenciales
+La suite incluye tests anteriores y nuevos: 165 casos pasan. No requiere credenciales
 reales. Los tests bloquean SMTP, aíslan la configuración local y usan bases temporales.
 La verificación automática no envía correos ni comprueba la entrega en Gmail.
 
@@ -74,17 +74,22 @@ una vez. No se implementan reintentos automáticos ni tareas en segundo plano.
 
 ## QR y comprobante
 
-El correo y el QR comparten una única fuente de datos. El QR contiene JSON UTF-8 con:
+El correo y el QR comparten el mismo comprobante de texto UTF-8, con títulos,
+saltos de línea y participantes numerados. Al escanearlo no se muestran claves JSON.
+El comprobante incluye:
 
-- Versión del formato, referencia `RESERVA-{id}` e ID.
+- Referencia `RESERVA-{id}` e ID.
 - Actividad, fecha, horario y correo.
 - Cantidad de participantes y datos de cada uno: nombre, apellido cuando exista,
   DNI, edad y talle cuando corresponda.
 
 La respuesta conserva `qr_codigo` como referencia corta y agrega `qr_contenido`
-con el JSON y `qr_url` con una ruta relativa del backend.
+con el texto legible y `qr_url` con una ruta relativa del backend.
+`qr_contenido` es un string de presentación y no debe interpretarse con JSON.parse.
+Los datos estructurados siguen disponibles en los demás campos de la respuesta.
 `GET /inscripciones/{id}/qr` descarga el PNG con la misma información que se adjunta
-al correo. El frontend debe resolver la URL respecto de su URL base de API.
+al correo. Los adjuntos de correos anteriores no cambian; se puede descargar
+el formato actualizado desde este endpoint. El frontend debe resolver la URL respecto de su URL base de API.
 
 Se verificó la decodificación con OpenCV, incluyendo 12 participantes y nombres
 acentuados. Si los datos son demasiado extensos para un solo QR, se rechaza la

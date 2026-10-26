@@ -6,7 +6,7 @@ import ssl
 
 from dotenv import dotenv_values
 
-from .comprobantes import datos_comprobante
+from .comprobantes import formatear_comprobante
 from .qr_service import generar_qr
 
 _RUTA_ENV = Path(__file__).resolve().parents[2] / ".env"
@@ -29,23 +29,7 @@ class ServicioNotificaciones:
 
 
 def preparar_resumen(inscripcion: dict) -> str:
-    datos = datos_comprobante(inscripcion)
-    lineas = []
-    for numero, participante in enumerate(datos["participantes"], start=1):
-        nombre = " ".join(str(participante[campo]) for campo in ("nombre", "apellido") if participante.get(campo))
-        lineas.append(f"{numero}. {nombre or 'Sin nombre'}")
-        for etiqueta, campo in (("DNI", "dni"), ("Edad", "edad"), ("Talle de vestimenta", "talle_vestimenta")):
-            if participante.get(campo) is not None and participante[campo] != "":
-                lineas.append(f"   {etiqueta}: {participante[campo]}")
-    detalle = "\n".join(lineas) if lineas else "No se informaron participantes."
-    return (
-        "¡Inscripción confirmada!\n\nDETALLES DE LA ACTIVIDAD\n"
-        "------------------------------------\n"
-        f"Número de inscripción: {datos['id']}\nCódigo: {datos['codigo']}\n"
-        f"Actividad: {datos['actividad']}\nFecha: {datos['fecha']}\nHorario: {datos['horario']}\n"
-        f"Correo: {datos['email']}\n\nPARTICIPANTES ({datos['cantidad_participantes']})\n"
-        f"------------------------------------\n{detalle}\n"
-    )
+    return formatear_comprobante(inscripcion)
 
 
 class CorreoSMTP:

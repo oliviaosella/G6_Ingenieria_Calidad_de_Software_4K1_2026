@@ -74,7 +74,7 @@ omiten se usa la fecha actual del parque y la hora derivada de `horario_id`.
 ## Respuestas y errores
 
 - 201: inscripción registrada. `qr_codigo` conserva la referencia `RESERVA-{id}`;
-  `qr_contenido` contiene el JSON completo y `qr_url` permite descargar su PNG.
+  `qr_contenido` contiene el comprobante de texto legible y `qr_url` permite descargar su PNG.
   `correo_estado` informa si el envío fue enviado, falló o sigue en proceso.
   La reserva permanece confirmada aunque SMTP falle.
 - 400: términos, participantes, calendario o correspondencia de turno inválidos.

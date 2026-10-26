@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 from typing import Any
 from fastapi import APIRouter, Depends, Query
 
@@ -6,7 +6,9 @@ from app.dependencies import get_gestor_reservas
 from app.schemas import (
     Actividad,
     ActividadDetalleResponse,
+    CalendarioReservaResponse,
     HorarioConsultaResponse,
+    TalleVestimenta,
     TerminosCondiciones,
 )
 from app.services.reservas import GestorReservas
@@ -63,7 +65,12 @@ CATALOGO_ACTIVIDADES: list[dict[str, Any]] = [
 )
 def listar_actividades() -> list[dict[str, Any]]:
     return [
-        {**actividad, "nombre": actividad["id"].value, "cupo_maximo": actividad["cupo"]}
+        {
+            **actividad,
+            "nombre": actividad["id"].value,
+            "cupo_maximo": actividad["cupo"],
+            "talles_disponibles": [talle.value for talle in TalleVestimenta] if actividad["requiere_talle"] else [],
+        }
         for actividad in CATALOGO_ACTIVIDADES
     ]
 
@@ -93,3 +100,34 @@ def consultar_horarios(
         {**turno, "horario_id": int(turno["hora"][:2]) - 8}
         for turno in consulta_actividades.turnos_con_cupos(actividad.value, fecha, gestor)
     ]
+
+
+@router.get(
+    "/{actividad}/calendario",
+    response_model=CalendarioReservaResponse,
+    summary="Consultar fechas y turnos reservables",
+    description="Informa desde el backend la ventana de reserva, los cierres del parque y los cupos de cada turno.",
+)
+def consultar_calendario(
+    actividad: Actividad,
+    gestor: GestorReservas = Depends(get_gestor_reservas),
+) -> dict[str, Any]:
+    hoy = consulta_actividades.obtener_hora_actual().date()
+    dias = []
+    for fecha in (hoy, hoy + timedelta(days=1)):
+        horarios = consultar_horarios(actividad, fecha, gestor)
+        cierre = consulta_actividades.motivo_cierre(fecha)
+        if cierre:
+            estado, motivo = "cerrado", cierre
+        elif not horarios:
+            estado, motivo = "fuera_de_ventana", "No hay horarios dentro de la ventana de reserva"
+        elif not any(turno["disponible"] for turno in horarios):
+            estado, motivo = "sin_cupos", "No hay cupos disponibles en esta fecha"
+        else:
+            estado, motivo = "con_horarios", None
+        dias.append({"fecha": fecha.isoformat(), "estado": estado, "motivo": motivo, "horarios": horarios})
+    return {
+        "anticipacion_minima_minutos": int(consulta_actividades.ANTICIPACION_MINIMA.total_seconds() // 60),
+        "anticipacion_maxima_horas": int(consulta_actividades.ANTICIPACION_MAXIMA.total_seconds() // 3600),
+        "dias": dias,
+    }

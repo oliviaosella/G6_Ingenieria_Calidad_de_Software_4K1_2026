@@ -17,11 +17,13 @@ El formulario consulta el catálogo, la disponibilidad y los términos en la API
 
 ## Fechas y cierres
 
-Solo se pueden reservar turnos entre 15 minutos y 24 horas antes de empezar. El selector usa la fecha local del parque (`America/Argentina/Cordoba`) y consulta la disponibilidad real del backend. Los lunes, el 1 de enero y el 25 de diciembre aparecen como cerrados y no se pueden seleccionar. Cuando un día no tiene turnos dentro de la ventana, se muestra deshabilitado con su motivo. La disponibilidad se actualiza mientras el formulario está abierto.
+El calendario consume `GET /actividades/{actividad}/calendario`. El backend determina la fecha local del parque, la ventana de anticipación, los cierres, los turnos y los cupos; el frontend solo dibuja esos datos en una grilla mensual. La disponibilidad se actualiza mientras el formulario está abierto. Antes de avanzar se vuelve a consultar el horario elegido con `GET /actividades/{actividad}/horarios`.
 
 ## Reglas visibles en el formulario
 
-El formulario consulta las actividades y cupos del backend. Al cargar participantes, aplica mensajes inmediatos de validación y llama a `POST /inscripciones/validar` antes de avanzar. En ese momento vuelve a consultar el turno para detectar cambios de cupo. La confirmación definitiva vuelve a verificar todas las reglas en el backend: una consulta previa no reserva lugares.
+El formulario toma del catálogo del backend la descripción, duración, capacidad, edad mínima, obligatoriedad de talle y talles disponibles. Los datos de participantes se envían a `POST /inscripciones/validar` antes de avanzar; las reglas de nombre, DNI, edad y talle no se duplican en el frontend. La confirmación definitiva vuelve a verificar todas las reglas en el backend: una consulta previa no reserva lugares.
+
+El frontend conserva únicamente recursos visuales asociados al identificador de actividad (colores, íconos e ilustraciones). No usa un catálogo local de reglas ni calcula por su cuenta días de cierre, límites de anticipación o identificadores de turnos.
 
 Los términos son específicos por actividad y se envían con la versión mostrada. Si cambiaron antes de confirmar, el formulario carga la versión nueva y solicita otra aceptación. La reserva confirmada muestra el QR del backend y el estado del correo. Si el envío falla, se puede reintentar sin crear otra reserva.
 

@@ -2,7 +2,6 @@ import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as R
 import { createPortal } from 'react-dom'
 import { ArrowUpRight, X } from 'lucide-react'
 import type { InscripcionDraft } from '../types'
-import { actividadPorId } from '../catalogo'
 import waveGif from '../../assets/guia-assistant/wave.gif'
 import pointGif from '../../assets/guia-assistant/point.gif'
 import thinkGif from '../../assets/guia-assistant/think.gif'
@@ -27,7 +26,7 @@ const minimumTop = (open: boolean) => {
   return headerBottom + tipHeight + (open ? 32 : 24)
 }
 
-function consejo(step: number, draft: InscripcionDraft, error: string): { text: string; target: string; action: string; motion: Motion } {
+function consejo(step: number, draft: InscripcionDraft, error: string, requiereTalle: boolean): { text: string; target: string; action: string; motion: Motion } {
   if (error) return { text: error, target: '.form-error', action: 'Ver qué falta', motion: 'think' }
   if (step === 0) {
     if (!draft.actividad) return { text: '¡Hola! Soy Guía. Elegí una aventura para comenzar.', target: '.activity-grid', action: 'Ver aventuras', motion: 'wave' }
@@ -38,21 +37,21 @@ function consejo(step: number, draft: InscripcionDraft, error: string): { text: 
   if (step === 1) {
     const incomplete = draft.participantes.some((p) => !p.nombre.trim() || !p.dni || !p.edad)
     if (incomplete) return { text: 'Contame quiénes vienen: nombre, DNI y edad de cada persona.', target: '.participant-card .input-field input', action: 'Completar datos', motion: 'point' }
-    if (actividadPorId(draft.actividad!)?.requiereTalle && draft.participantes.some((p) => !p.talle_vestimenta)) return { text: 'Para esta actividad también necesito el talle de cada participante.', target: '.participant-card select', action: 'Elegir talles', motion: 'point' }
+    if (requiereTalle && draft.participantes.some((p) => !p.talle_vestimenta)) return { text: 'Para esta actividad también necesito el talle de cada participante.', target: '.participant-card select', action: 'Elegir talles', motion: 'point' }
     return { text: '¡Tu equipo está listo! Continuá con los últimos datos.', target: '.form-actions .primary', action: 'Ir a continuar', motion: 'cheer' }
   }
-  if (!draft.email) return { text: '¡Último paso! Escribí tu correo para identificar la reserva.', target: '.email-field input', action: 'Ir al correo', motion: 'think' }
+  if (!draft.email) return { text: '¡Último paso! Escribí tu correo para recibir el comprobante.', target: '.email-field input', action: 'Ir al correo', motion: 'think' }
   if (!draft.aceptaTerminos) return { text: 'Leé y aceptá las condiciones de la actividad para confirmar.', target: '.check-line input', action: 'Ver condiciones', motion: 'point' }
   return { text: '¡Todo preparado! Confirmá y nos vemos en el parque.', target: '.form-actions .primary', action: 'Ir a confirmar', motion: 'cheer' }
 }
 
-export function GuiaAssistant({ step, draft, error }: { step: number; draft: InscripcionDraft; error: string }) {
+export function GuiaAssistant({ step, draft, error, requiereTalle }: { step: number; draft: InscripcionDraft; error: string; requiereTalle: boolean }) {
   const [open, setOpen] = useState(() => typeof window === 'undefined' || window.innerWidth > 650)
   const [footerOffset, setFooterOffset] = useState(0)
   const [position, setPosition] = useState<{ left: number; top: number } | null>(null)
   const drag = useRef<{ pointerId: number; startX: number; startY: number; left: number; top: number; moved: boolean } | null>(null)
   const ignoreClick = useRef(false)
-  const hint = consejo(step, draft, error)
+  const hint = consejo(step, draft, error, requiereTalle)
   useEffect(() => {
     const updatePosition = () => {
       const footer = document.querySelector('.site-footer')

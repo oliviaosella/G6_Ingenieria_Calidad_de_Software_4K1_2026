@@ -5,10 +5,11 @@ const colors = {
   Safari: { sky: '#ABE1B9', sun: '#FFD577', far: '#9AC98F', mid: '#6CAF75', front: '#428B68' },
   Palestra: { sky: '#F5C7AD', sun: '#FFDA81', far: '#DDB8A7', mid: '#B98B82', front: '#8E646D' },
   Jardinería: { sky: '#FFE5AC', sun: '#FFF09F', far: '#CBD993', mid: '#96C27C', front: '#5B9D74' },
+  Parque: { sky: '#E2F3DC', sun: '#FFE39A', far: '#BCD7AF', mid: '#90B89D', front: '#568B74' },
 } as const
 
 export function SummaryScene({ actividad }: { actividad: ActividadId | null }) {
-  const theme = colors[actividad || 'Jardinería']
+  const theme = colors[actividad as keyof typeof colors] ?? colors.Parque
   return <svg className="theme-scene summary-illustration" viewBox="0 0 450 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label={`Paisaje de ${actividad || 'Eco Harmony Park'}`}>
     <rect width="450" height="300" fill={theme.sky} />
     <circle cx="358" cy="63" r="35" fill={theme.sun} />
@@ -35,7 +36,7 @@ export function SummaryScene({ actividad }: { actividad: ActividadId | null }) {
       <path d="M316 209q22-17 43-3l12-12 21 2 6 18-21 7-4 34h-10l-7-25-28 3-8 23h-10l3-33-11-7Z" fill="#F4D59E" stroke="#9C765E" strokeWidth="3" />
       <path d="m376 196 2-16m10 18 7-14" fill="none" stroke="#9C765E" strokeWidth="4" strokeLinecap="round" />
     </g>}
-    {(!actividad || actividad === 'Jardinería') && <g>
+    {actividad === 'Jardinería' && <g>
       <path d="M92 269V173m83 105V194m167 78V182" stroke="#538D65" strokeWidth="5" strokeLinecap="round" />
       <path d="M92 227q-32-27-47-9 16 24 47 9Zm0-16q25-32 46-16-10 27-46 16Zm83 35q-32-29-47-9 18 24 47 9Zm0-16q25-33 44-16-8 26-44 16Zm167 18q-30-28-48-9 18 23 48 9Zm0-18q29-30 47-12-12 27-47 12Z" fill="#4B9B6C" />
       {[[92,166],[175,188],[342,176]].map(([x,y]) => <g key={x}><circle cx={x} cy={y} r="17" fill="#FFF6D5"/><circle cx={x} cy={y} r="6" fill="#EAA77A"/></g>)}

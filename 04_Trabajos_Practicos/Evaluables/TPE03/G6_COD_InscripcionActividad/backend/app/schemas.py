@@ -99,6 +99,7 @@ class ActividadDetalleResponse(BaseModel):
     cupo: int
     edad_minima: int
     requiere_talle: bool
+    talles_disponibles: list[str]
 
 
 class HorarioConsultaResponse(BaseModel):
@@ -109,6 +110,19 @@ class HorarioConsultaResponse(BaseModel):
     cupos_disponibles: int
     disponible: bool
     motivo: str | None = None
+
+
+class DiaCalendarioResponse(BaseModel):
+    fecha: str
+    estado: str
+    motivo: str | None = None
+    horarios: list[HorarioConsultaResponse]
+
+
+class CalendarioReservaResponse(BaseModel):
+    anticipacion_minima_minutos: int
+    anticipacion_maxima_horas: int
+    dias: list[DiaCalendarioResponse]
 
 
 class InscripcionExitosaResponse(BaseModel):

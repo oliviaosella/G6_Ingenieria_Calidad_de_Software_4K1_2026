@@ -8,6 +8,8 @@ from app.dependencies import get_gestor_reservas
 from app.services.reservas import GestorReservas
 
 router = APIRouter(prefix="/actividades", tags=["actividades"])
+ANTICIPACION_MINIMA = timedelta(minutes=15)
+ANTICIPACION_MAXIMA = timedelta(hours=24)
 
 
 def obtener_hora_actual() -> datetime:
@@ -77,10 +79,7 @@ def listar_turnos(
 ):
     obtener_actividad(actividad)
 
-    if fecha.weekday() == 0 or (
-        (fecha.month == 12 and fecha.day == 25)
-        or (fecha.month == 1 and fecha.day == 1)
-    ):
+    if motivo_cierre(fecha):
         return []
     turnos = []
 
@@ -96,8 +95,8 @@ def listar_turnos(
             tiempo_hasta_el_turno = inicio_turno - hora_actual
 
             if (
-                tiempo_hasta_el_turno < timedelta(minutes=15)
-                or tiempo_hasta_el_turno > timedelta(hours=24)
+                tiempo_hasta_el_turno < ANTICIPACION_MINIMA
+                or tiempo_hasta_el_turno > ANTICIPACION_MAXIMA
             ):
                 continue
 
@@ -124,6 +123,16 @@ def listar_turnos(
         turnos.append(horario.model_dump(mode="json", exclude_unset=True))
 
     return turnos
+
+
+def motivo_cierre(fecha: date) -> str | None:
+    if fecha.weekday() == 0:
+        return "Cerrado los lunes"
+    if fecha.month == 1 and fecha.day == 1:
+        return "Cerrado el 1 de enero"
+    if fecha.month == 12 and fecha.day == 25:
+        return "Cerrado el 25 de diciembre"
+    return None
 
 
 def consultar_cupos(actividad, ocupados):

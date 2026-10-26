@@ -70,6 +70,7 @@ def test_openapi_schema_generado_correctamente(client):
     assert "/actividades" in schema["paths"]
     assert "/actividades/{actividad}/terminos" in schema["paths"]
     assert "/actividades/{actividad}/horarios" in schema["paths"]
+    assert "/actividades/{actividad}/calendario" in schema["paths"]
     assert "/inscripciones" in schema["paths"]
     assert "/inscripciones/{id}" in schema["paths"]
 
@@ -87,6 +88,45 @@ def test_listar_actividades_catalogo_completo(client):
     assert tirolesa["cupo"] == 10
     assert tirolesa["edad_minima"] == 8
     assert tirolesa["requiere_talle"] is True
+    assert tirolesa["talles_disponibles"] == ["XS", "S", "M", "L", "XL", "XXL"]
+    assert next(a for a in datos if a["id"] == "Safari")["talles_disponibles"] == []
+
+
+def test_calendario_expone_cierres_ventana_y_horarios_desde_backend(client, monkeypatch):
+    monkeypatch.setattr(
+        consulta_actividades, "obtener_hora_actual",
+        lambda: datetime(2026, 10, 26, 10, 0),
+    )
+    response = client.get("/actividades/Safari/calendario")
+    assert response.status_code == 200
+    calendario = response.json()
+    assert calendario["anticipacion_minima_minutos"] == 15
+    assert calendario["anticipacion_maxima_horas"] == 24
+    lunes, martes = calendario["dias"]
+    assert lunes == {"fecha": "2026-10-26", "estado": "cerrado", "motivo": "Cerrado los lunes", "horarios": []}
+    assert martes["fecha"] == "2026-10-27"
+    assert martes["estado"] == "con_horarios"
+    assert martes["horarios"][0]["horario_id"] == 1
+    assert martes["horarios"][0]["cupos_disponibles"] == 8
+
+
+@pytest.mark.parametrize(
+    ("ahora", "fecha_cerrada", "motivo"),
+    [
+        (datetime(2026, 12, 24, 10, 0), "2026-12-25", "Cerrado el 25 de diciembre"),
+        (datetime(2026, 12, 31, 10, 0), "2027-01-01", "Cerrado el 1 de enero"),
+    ],
+)
+def test_calendario_expone_feriados_cerrados(client, monkeypatch, ahora, fecha_cerrada, motivo):
+    monkeypatch.setattr(consulta_actividades, "obtener_hora_actual", lambda: ahora)
+    response = client.get("/actividades/Safari/calendario")
+    assert response.status_code == 200
+    assert response.json()["dias"][1] == {
+        "fecha": fecha_cerrada,
+        "estado": "cerrado",
+        "motivo": motivo,
+        "horarios": [],
+    }
 
 
 def test_consultar_terminos_actividad_existente(client):

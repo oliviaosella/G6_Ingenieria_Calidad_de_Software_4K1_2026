@@ -6,8 +6,8 @@ Base: `origin/tdd/integracion/participantes-actividades` (`1f0e799`).
 Rama incorporada: `origin/tdd/integracion/terminos-reserva-envio` (`00ef906`).
 La rama integrada es `tdd/integracion/integracion-grupos-1-a-5`.
 
-La integración cubre el backend. El frontend y sus simulaciones locales no
-se modifican en esta rama.
+En esa rama histórica la integración cubrió el backend. El contrato actual
+del frontend se describe más abajo y en `TRAZABILIDAD_TDD_FRONTEND.md`.
 
 ## Resoluciones del merge
 
@@ -89,6 +89,16 @@ reservar ni a descontar cupos. Si el envío ya fue exitoso, no lo repite.
 
 La validación previa de participantes es informativa. El POST definitivo vuelve
 a validar los participantes y los cupos, sin confiar en una consulta anterior.
+
+## Contrato del frontend integrado
+
+El frontend actual obtiene las fechas con `GET /actividades/{actividad}/calendario`.
+El backend devuelve la anticipación mínima y máxima y, por cada fecha de la
+ventana, `estado`, `motivo` y los horarios con `horario_id` y cupos. La interfaz
+no calcula cierres, límites de anticipación ni identificadores de horario.
+`GET /actividades` incluye `talles_disponibles` para construir el selector de
+talles sin una lista local. Las reglas de participantes se consultan mediante
+`POST /inscripciones/validar` y se vuelven a imponer en el POST definitivo.
 
 ## Configuración y ejecución
 

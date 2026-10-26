@@ -16,7 +16,11 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   }
   if (!response.ok) {
     const body = await response.json().catch(() => null)
-    throw new ApiError(typeof body?.detail === 'string' ? body.detail : `La solicitud falló (${response.status}).`, response.status)
+    const detail = body?.detail
+    const message = typeof detail === 'string' ? detail
+      : Array.isArray(detail) ? `El servidor rechazó estos datos: ${[...new Set(detail.map((issue) => issue.loc?.at(-1) ?? 'campo desconocido'))].join(', ')}.`
+        : `La solicitud falló (${response.status}).`
+    throw new ApiError(message, response.status)
   }
   return response.json() as Promise<T>
 }
@@ -29,6 +33,7 @@ export type ActividadApi = {
   cupo: number
   edad_minima: number
   requiere_talle: boolean
+  talles_disponibles: string[]
 }
 
 export type HorarioApi = {
@@ -36,6 +41,18 @@ export type HorarioApi = {
   hora: string
   cupos_disponibles: number
   disponible: boolean
+  motivo: string | null
+}
+
+export type CalendarioApi = {
+  anticipacion_minima_minutos: number
+  anticipacion_maxima_horas: number
+  dias: {
+    fecha: string
+    estado: 'con_horarios' | 'cerrado' | 'fuera_de_ventana' | 'sin_cupos'
+    motivo: string | null
+    horarios: HorarioApi[]
+  }[]
 }
 
 export type TerminosApi = {
@@ -60,7 +77,7 @@ type InscripcionApi = {
 }
 
 const participantesParaApi = (participantes: Participante[]) => participantes.map((persona) => ({
-  nombre: persona.nombre.trim(), dni: persona.dni.trim(), edad: Number(persona.edad),
+  nombre: persona.nombre.trim(), dni: persona.dni.trim(), edad: persona.edad.trim() === '' ? null : Number(persona.edad),
   talle_vestimenta: persona.talle_vestimenta || null,
 }))
 
@@ -72,6 +89,9 @@ const reservaDesdeApi = (result: InscripcionApi): Reserva => ({
 })
 
 export const listarActividades = () => request<ActividadApi[]>('/actividades')
+
+export const consultarCalendario = (actividad: ActividadId) =>
+  request<CalendarioApi>(`/actividades/${encodeURIComponent(actividad)}/calendario`)
 
 export const consultarHorarios = (actividad: ActividadId, fecha: string) =>
   request<HorarioApi[]>(`/actividades/${encodeURIComponent(actividad)}/horarios?fecha=${fecha}`)
@@ -89,15 +109,14 @@ export const reenviarConfirmacion = async (id: string) =>
   reservaDesdeApi(await request<InscripcionApi>(`/inscripciones/${encodeURIComponent(id)}/reenviar-confirmacion`, { method: 'POST' }))
 
 export async function reservar(draft: InscripcionDraft, version: string): Promise<Reserva> {
-  if (!draft.actividad) throw new Error('Elegí una actividad.')
-  const horarioId = Number(draft.hora.slice(0, 2)) - 8
+  if (!draft.actividad || draft.horarioId === null) throw new Error('Elegí una actividad y un horario.')
   const result = await request<InscripcionApi>('/inscripciones', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       actividad: draft.actividad,
       fecha: draft.fecha,
-      horario_id: horarioId,
+      horario_id: draft.horarioId,
       horario: draft.hora,
       cantidad_participantes: draft.participantes.length,
       participantes: participantesParaApi(draft.participantes),

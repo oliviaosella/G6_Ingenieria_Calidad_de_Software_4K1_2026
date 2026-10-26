@@ -1,4 +1,4 @@
-export type ActividadId = 'Tirolesa' | 'Safari' | 'Palestra' | 'Jardinería'
+export type ActividadId = string
 
 export type Participante = {
   nombre: string
@@ -11,6 +11,7 @@ export type InscripcionDraft = {
   actividad: ActividadId | null
   fecha: string
   hora: string
+  horarioId: number | null
   participantes: Participante[]
   email: string
   aceptaTerminos: boolean

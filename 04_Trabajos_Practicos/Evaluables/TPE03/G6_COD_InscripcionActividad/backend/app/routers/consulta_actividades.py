@@ -1,5 +1,7 @@
 from datetime import date, datetime, time, timedelta
 
+from ..schemas import HorarioDisponible
+
 class ActividadNoExisteError(ValueError):
     pass
 
@@ -74,7 +76,8 @@ def listar_turnos(
             turno["disponible"] = cupos > 0
             turno["motivo"] = "sin cupos" if cupos == 0 else None
 
-        turnos.append(turno)
+        horario = HorarioDisponible(**turno)
+        turnos.append(horario.model_dump(mode="json", exclude_unset=True))
 
     return turnos
 

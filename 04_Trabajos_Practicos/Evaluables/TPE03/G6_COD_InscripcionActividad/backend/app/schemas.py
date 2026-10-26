@@ -1,5 +1,5 @@
 from enum import Enum
-from datetime import datetime
+from datetime import date
 from pydantic import BaseModel
 """
 class Actividad(str, Enum):
@@ -50,8 +50,9 @@ class Visitante(BaseModel):
     talle_vestimenta: str | None = None
 
 class HorarioDisponible(BaseModel):
-    horario_id: int
     actividad: Actividad
-    inicio: datetime
-    fin: datetime
-    cupos_disponibles: int
+    fecha: date
+    hora: str
+    cupos_disponibles: int | None = None
+    disponible: bool | None = None
+    motivo: str | None = None

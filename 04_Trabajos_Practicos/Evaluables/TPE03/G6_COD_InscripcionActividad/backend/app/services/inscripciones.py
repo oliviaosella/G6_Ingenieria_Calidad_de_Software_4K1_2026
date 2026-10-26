@@ -11,7 +11,6 @@ from app.services.email_service import ServicioNotificaciones
 from app.services.reservas import GestorReservas
 
 
-
 def _armar_datos_notificacion(
     reserva: dict[str, Any],
     email: str,
@@ -39,13 +38,16 @@ def inscribir_participantes(
     """Orquesta el proceso de inscripción a una actividad.
 
     Valida la aceptación de los términos específicos de la actividad,
-    verifica que ningún DNI esté duplicado en el turno, descuenta cupos
+    verifica que la cantidad declarada coincida con los participantes,
+    valida que ningún DNI esté duplicado en el turno, descuenta cupos
     de forma atómica y emite la confirmación con QR.
 
     Raises:
         TerminosNoAceptadosError: Si los términos no fueron aceptados.
         AceptacionDeOtraActividadError: Si los términos corresponden a otra
             actividad distinta de la solicitada.
+        InconsistenciaParticipantesError: Si la cantidad de participantes
+            declarada no coincide con la lista enviada.
         DniDuplicadoEnHorarioError: Si uno o más participantes ya están
             inscriptos en el horario seleccionado.
         CuposNoDisponiblesError: Si la cantidad de participantes supera los
@@ -53,7 +55,6 @@ def inscribir_participantes(
     """
     validar_aceptacion(solicitud.actividad, solicitud.aceptacion_terminos)
 
-    
     if len(solicitud.participantes) != solicitud.cantidad_participantes:
         raise InconsistenciaParticipantesError
 
@@ -78,7 +79,6 @@ def inscribir_participantes(
     if reserva is None:
         raise CuposNoDisponiblesError
 
-
     datos_notificacion = _armar_datos_notificacion(
         reserva=reserva,
         email=solicitud.email,
@@ -88,4 +88,3 @@ def inscribir_participantes(
     servicio_notificaciones.enviar_confirmacion(datos_notificacion)
 
     return reserva
-

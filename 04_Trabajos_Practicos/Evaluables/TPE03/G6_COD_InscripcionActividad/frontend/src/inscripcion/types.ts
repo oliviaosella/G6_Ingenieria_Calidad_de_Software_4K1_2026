@@ -23,11 +23,7 @@ export type Reserva = {
   hora: string
   participantes: Participante[]
   email: string
-  creadaEn: string
-}
-
-export type Horario = {
-  hora: string
-  cupos: number
-  disponible: boolean
+  qrUrl: string
+  qrContenido: string
+  correoEstado: string
 }

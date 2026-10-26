@@ -1,11 +1,11 @@
 import { Binoculars, Mountain, Sprout, Waypoints } from 'lucide-react'
-import { actividades } from '../catalogo'
+import type { ActividadInfo } from '../catalogo'
 import type { ActividadId } from '../types'
 import { ThemeScene } from './ThemeScene'
 
 const iconos = { zipline: Waypoints, binoculars: Binoculars, mountain: Mountain, sprout: Sprout }
 
-export function ActividadSection({ value, onChange }: { value: ActividadId | null; onChange: (value: ActividadId) => void }) {
+export function ActividadSection({ value, onChange, actividades }: { value: ActividadId | null; onChange: (value: ActividadId) => void; actividades: ActividadInfo[] }) {
   return <section aria-labelledby="actividades-title" className="form-section">
     <div className="section-heading"><h2 id="actividades-title">Actividad</h2></div>
     <div className="activity-grid">

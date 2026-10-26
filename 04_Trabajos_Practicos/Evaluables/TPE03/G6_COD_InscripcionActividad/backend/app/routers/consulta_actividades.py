@@ -1,4 +1,50 @@
 from datetime import date, datetime, time, timedelta
+from zoneinfo import ZoneInfo
+
+from fastapi import APIRouter, Depends, HTTPException
+
+from ..schemas import HorarioDisponible
+from app.dependencies import get_gestor_reservas
+from app.services.reservas import GestorReservas
+
+router = APIRouter(prefix="/actividades", tags=["actividades"])
+
+
+def obtener_hora_actual() -> datetime:
+    return datetime.now(ZoneInfo("America/Argentina/Cordoba")).replace(tzinfo=None)
+
+
+def consultar_actividades() -> list[dict]:
+    return listar_actividades()
+
+
+@router.get(
+    "/{actividad}/turnos",
+    response_model=list[HorarioDisponible],
+    response_model_exclude_unset=True,
+)
+def consultar_turnos(
+    actividad: str, fecha: date,
+    gestor: GestorReservas = Depends(get_gestor_reservas),
+) -> list[dict]:
+    try:
+        return turnos_con_cupos(actividad, fecha, gestor)
+    except ActividadNoExisteError as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
+
+
+def turnos_con_cupos(actividad: str, fecha: date, gestor: GestorReservas) -> list[dict]:
+    def consultar_ocupados(actividad, fecha, hora):
+        capacidad = obtener_actividad(actividad)["cupo_maximo"]
+        horario_id = int(hora[:2]) - 8
+        return capacidad - gestor.consultar_cupos(actividad, horario_id, fecha.isoformat())
+
+    return listar_turnos(
+        actividad=actividad, fecha=fecha,
+        consultar_ocupados=consultar_ocupados,
+        hora_actual=obtener_hora_actual(),
+    )
+
 
 class ActividadNoExisteError(ValueError):
     pass
@@ -74,7 +120,8 @@ def listar_turnos(
             turno["disponible"] = cupos > 0
             turno["motivo"] = "sin cupos" if cupos == 0 else None
 
-        turnos.append(turno)
+        horario = HorarioDisponible(**turno)
+        turnos.append(horario.model_dump(mode="json", exclude_unset=True))
 
     return turnos
 

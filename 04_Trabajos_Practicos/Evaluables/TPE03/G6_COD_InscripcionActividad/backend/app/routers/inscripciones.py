@@ -5,7 +5,7 @@ router = APIRouter(prefix="/inscripciones", tags=["inscripciones"])
 
 def validar_participantes(
     cantidad: int,
-    participantes: list[dict],
+    participantes: list[Visitante],
     actividad: Actividad,
 ) -> bool:
     
@@ -18,7 +18,7 @@ def validar_participantes(
 
     # 2. Validar talle según la actividad
     for participante in participantes:
-        talle = participante.get("talle_vestimenta")
+        talle = participante.talle_vestimenta
 
         if actividad.talle_obligatorio:
             if not talle or talle not in talles_validos:
@@ -29,16 +29,11 @@ def validar_participantes(
     # 3. Validar edad segun la actividad
     if not actividad.edad_minima == 0:
         for participante in participantes:
-            if participante["edad"] < actividad.edad_minima:
+            if participante.edad < actividad.edad_minima:
                 return False
 
     # 4. Validar que el DNI no se repita entre participantes
-    dnis = []
-    for participante in participantes:
-        if isinstance(participante, dict):
-            dnis.append(participante.get("dni"))
-        else:
-            dnis.append(getattr(participante, "dni", None))
+    dnis = [participante.dni for participante in participantes]
 
     if len(dnis) != len(set(dnis)):
         return False

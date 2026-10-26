@@ -12,13 +12,13 @@ def crear_participante(
     edad: int = 25,
     talle_vestimenta: str | None = "M",
     nombre: str = "Ana",
-) -> dict:
-    return {
-        "nombre": nombre,
-        "dni": dni,
-        "edad": edad,
-        "talle_vestimenta": talle_vestimenta,
-    }
+) -> Visitante:
+    return Visitante(
+        nombre=nombre,
+        dni=dni,
+        edad=edad,
+        talle_vestimenta=talle_vestimenta,
+    )
 
 
 def test_validar_participantes() -> None:
@@ -30,17 +30,14 @@ def test_validar_participante() -> None:
 def test_validar_participantes_acepta_argumentos_esperados() -> None:
     signature(validar_participantes).bind(
         cantidad=1,
-        participantes=[{"datos": "datos del participante"}],
+        participantes=[crear_participante()],
         actividad=Actividad.SAFARI,
     )
 
 def test_validar_participante_acepta_argumentos_esperados() -> None:
-    signature(validar_participante).bind({
-        "nombre": "Ana",
-        "dni": "12345678",
-        "edad": 25,
-        "talle_vestimenta": "XL"
-        })
+    signature(validar_participante).bind(
+        crear_participante(talle_vestimenta="XL")
+    )
 
 
 def test_validar_nombre() -> None:

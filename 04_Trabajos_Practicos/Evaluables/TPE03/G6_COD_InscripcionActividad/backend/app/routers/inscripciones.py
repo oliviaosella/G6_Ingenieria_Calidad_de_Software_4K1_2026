@@ -14,6 +14,12 @@ def validar_participantes(
     if cantidad != len(participantes) or cantidad <= 0 or actividad.cupo < cantidad:
         return False
 
+    if not all(
+        validar_participante(participante)
+        for participante in participantes
+    ):
+        return False
+
     talles_validos = {talle.value for talle in TalleVestimenta}
 
     # 2. Validar talle según la actividad

@@ -120,3 +120,12 @@ def test_validar_cantidad_no_supera_cupo_de_actividad() -> None:
     ]
     assert validar_participantes(8, participantes[:8], actividad_safari) is True
     assert validar_participantes(9, participantes, actividad_safari) is False
+
+
+def test_rechaza_grupo_si_el_segundo_participante_es_invalido() -> None:
+    participantes = [
+        crear_participante(dni="12345678"),
+        crear_participante(dni="23456789", nombre=""),
+    ]
+
+    assert validar_participantes(2, participantes, Actividad.SAFARI) is False

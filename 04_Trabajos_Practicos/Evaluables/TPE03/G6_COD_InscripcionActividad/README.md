@@ -30,12 +30,44 @@ Desde la raíz del repositorio, entrar en `backend/` y ejecutar:
 ```bash
 cd backend
 uv sync
-uv run uvicorn main:app --reload
+uv run uvicorn app.main:app --reload
 ```
 
 Esto instala las dependencias indicadas en `pyproject.toml` y `uv.lock`.
 
 La API quedará disponible en `http://127.0.0.1:8000` y su documentación en `/docs`.
+
+Desde `backend/`, ejecutar las pruebas con `uv run python -m pytest`.
+
+### Endpoints disponibles
+
+| Método | Ruta | Resultado |
+| --- | --- | --- |
+| GET | `/health` | Estado del backend. |
+| GET | `/actividades` | Actividades y sus cupos máximos. |
+| GET | `/actividades/Safari/turnos?fecha=2026-10-28` | Turnos de la actividad y fecha indicadas. |
+| POST | `/inscripciones/validar` | Valida los participantes y las reglas de la actividad. |
+
+La consulta de turnos aplica los cierres y la ventana de 15 minutos a 24 horas,
+usando la hora de Córdoba. Una actividad inexistente responde 404; una fecha
+inválida o ausente responde 422. La ocupación real todavía no está conectada,
+por lo que los turnos no incluyen cupos disponibles.
+
+Ejemplo del cuerpo para `POST /inscripciones/validar`:
+
+```json
+{
+  "actividad": "Safari",
+  "cantidad": 1,
+  "participantes": [
+    {"nombre": "Ana", "dni": "12345678", "edad": 25}
+  ]
+}
+```
+
+Responde 200 con `{"valida": true}` o `{"valida": false}`. Los datos con
+estructura inválida responden 422. Esta ruta no comprueba la disponibilidad
+de un turno, no registra reservas ni envía correos.
 
 ### Frontend
 

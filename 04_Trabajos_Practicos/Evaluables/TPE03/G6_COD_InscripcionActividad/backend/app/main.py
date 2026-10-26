@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 # pyrefly: ignore[missing-import]
-from routers.inscripciones import router as inscripciones_router
+from app.routers.inscripciones import router as inscripciones_router
+from app.routers.consulta_actividades import router as actividades_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -13,6 +14,7 @@ app.add_middleware(
 )
 
 app.include_router(inscripciones_router)
+app.include_router(actividades_router)
 
 
 @app.get("/health")

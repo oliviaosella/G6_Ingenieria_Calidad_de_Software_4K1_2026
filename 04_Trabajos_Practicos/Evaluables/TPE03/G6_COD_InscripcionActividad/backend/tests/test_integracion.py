@@ -132,8 +132,6 @@ def test_rechazo_por_terminos_no_aceptados_no_modifica_cupos_ni_envia_correo():
     assert correo.envios == []
 
 
-
-
 def test_rechazo_por_actividad_incompatible_en_terminos_no_crea_reserva():
     gestor = GestorReservas()
     correo = CorreoDePrueba()

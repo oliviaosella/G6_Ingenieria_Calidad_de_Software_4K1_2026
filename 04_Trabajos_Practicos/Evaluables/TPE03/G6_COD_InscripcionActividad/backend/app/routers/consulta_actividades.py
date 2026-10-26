@@ -1,6 +1,37 @@
 from datetime import date, datetime, time, timedelta
+from zoneinfo import ZoneInfo
+
+from fastapi import APIRouter, HTTPException
 
 from ..schemas import HorarioDisponible
+
+router = APIRouter(prefix="/actividades", tags=["actividades"])
+
+
+def obtener_hora_actual() -> datetime:
+    return datetime.now(ZoneInfo("America/Argentina/Cordoba")).replace(tzinfo=None)
+
+
+@router.get("")
+def consultar_actividades() -> list[dict]:
+    return listar_actividades()
+
+
+@router.get(
+    "/{actividad}/turnos",
+    response_model=list[HorarioDisponible],
+    response_model_exclude_unset=True,
+)
+def consultar_turnos(actividad: str, fecha: date) -> list[dict]:
+    try:
+        return listar_turnos(
+            actividad=actividad,
+            fecha=fecha,
+            hora_actual=obtener_hora_actual(),
+        )
+    except ActividadNoExisteError as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
+
 
 class ActividadNoExisteError(ValueError):
     pass

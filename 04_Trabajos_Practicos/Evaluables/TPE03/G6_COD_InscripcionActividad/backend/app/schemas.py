@@ -56,3 +56,9 @@ class HorarioDisponible(BaseModel):
     cupos_disponibles: int | None = None
     disponible: bool | None = None
     motivo: str | None = None
+
+
+class SolicitudValidacionParticipantes(BaseModel):
+    actividad: Actividad
+    cantidad: int
+    participantes: list[Visitante]

@@ -1,7 +1,26 @@
 from fastapi import APIRouter
-from ..schemas import Actividad, TalleVestimenta, Visitante
+from ..schemas import (
+    Actividad,
+    SolicitudValidacionParticipantes,
+    TalleVestimenta,
+    Visitante,
+)
 
 router = APIRouter(prefix="/inscripciones", tags=["inscripciones"])
+
+
+@router.post("/validar")
+def validar_inscripcion(
+    solicitud: SolicitudValidacionParticipantes,
+) -> dict[str, bool]:
+    return {
+        "valida": validar_participantes(
+            cantidad=solicitud.cantidad,
+            participantes=solicitud.participantes,
+            actividad=solicitud.actividad,
+        )
+    }
+
 
 def validar_participantes(
     cantidad: int,

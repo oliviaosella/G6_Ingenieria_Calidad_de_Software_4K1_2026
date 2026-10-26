@@ -16,3 +16,7 @@ class CuposNoDisponiblesError(Exception):
 
 class DniDuplicadoEnHorarioError(Exception):
     """Uno o más visitantes ya se encuentran inscriptos en el mismo horario."""
+
+
+class InconsistenciaParticipantesError(Exception):
+    """La cantidad de participantes declarada no coincide con la lista enviada."""

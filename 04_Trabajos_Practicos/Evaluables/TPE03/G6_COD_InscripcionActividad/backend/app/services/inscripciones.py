@@ -3,11 +3,13 @@ from typing import Any
 from app.errors import (
     CuposNoDisponiblesError,
     DniDuplicadoEnHorarioError,
+    InconsistenciaParticipantesError,
 )
 from app.schemas import SolicitudInscripcion
 from app.services.aceptacion import validar_aceptacion
 from app.services.email_service import ServicioNotificaciones
 from app.services.reservas import GestorReservas
+
 
 
 def _armar_datos_notificacion(
@@ -50,6 +52,10 @@ def inscribir_participantes(
             cupos disponibles en el horario seleccionado.
     """
     validar_aceptacion(solicitud.actividad, solicitud.aceptacion_terminos)
+
+    
+    if len(solicitud.participantes) != solicitud.cantidad_participantes:
+        raise InconsistenciaParticipantesError
 
     for participante in solicitud.participantes:
         if gestor_reservas.dni_esta_inscripto(

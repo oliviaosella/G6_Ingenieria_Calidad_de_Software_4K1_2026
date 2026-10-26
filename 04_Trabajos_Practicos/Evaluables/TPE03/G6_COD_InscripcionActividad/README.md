@@ -44,14 +44,20 @@ Desde `backend/`, ejecutar las pruebas con `uv run python -m pytest`.
 | Método | Ruta | Resultado |
 | --- | --- | --- |
 | GET | `/health` | Estado del backend. |
-| GET | `/actividades` | Actividades y sus cupos máximos. |
-| GET | `/actividades/Safari/turnos?fecha=2026-10-28` | Turnos de la actividad y fecha indicadas. |
+| GET | `/actividades` | Catálogo detallado, capacidades y reglas por actividad. |
+| GET | `/actividades/Safari/turnos?fecha=2026-10-28` | Turnos elegibles con cupos reales del gestor. |
+| GET | `/actividades/Safari/horarios?fecha=2026-10-28` | Misma disponibilidad, incluyendo `horario_id` para reservar. |
+| GET | `/actividades/Safari/terminos` | Términos específicos de la actividad. |
 | POST | `/inscripciones/validar` | Valida los participantes y las reglas de la actividad. |
+| POST | `/inscripciones` | Valida el turno y los participantes, acepta términos, reserva y envía correo con QR. |
+| GET | `/inscripciones/1` | Recupera la reserva, incluida su fecha. |
 
 La consulta de turnos aplica los cierres y la ventana de 15 minutos a 24 horas,
 usando la hora de Córdoba. Una actividad inexistente responde 404; una fecha
-inválida o ausente responde 422. La ocupación real todavía no está conectada,
-por lo que los turnos no incluyen cupos disponibles.
+inválida o ausente responde 422. Ambas consultas de turnos usan el mismo gestor
+de reservas: después de confirmar una inscripción, sus cupos se actualizan.
+El catálogo conserva `nombre` y `cupo_maximo` como alias de `id` y `cupo` para
+facilitar la transición entre los contratos de ambas ramas.
 
 Ejemplo del cuerpo para `POST /inscripciones/validar`:
 
@@ -68,6 +74,10 @@ Ejemplo del cuerpo para `POST /inscripciones/validar`:
 Responde 200 con `{"valida": true}` o `{"valida": false}`. Los datos con
 estructura inválida responden 422. Esta ruta no comprueba la disponibilidad
 de un turno, no registra reservas ni envía correos.
+
+La integración completa y su configuración SMTP se describen en
+[backend/docs/INTEGRACION_GRUPOS.md](backend/docs/INTEGRACION_GRUPOS.md).
+El almacenamiento es en memoria y se pierde al reiniciar el proceso.
 
 ### Frontend
 

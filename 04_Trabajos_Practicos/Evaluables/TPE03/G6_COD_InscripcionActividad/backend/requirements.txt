@@ -1,5 +1,9 @@
 fastapi
 uvicorn[standard]
 pytest
+httpx
 httpx2
 qrcode[pil]
+email-validator
+python-dotenv
+tzdata

@@ -12,7 +12,10 @@ def test_endpoint_lista_actividades() -> None:
     respuesta = cliente.get("/actividades")
 
     assert respuesta.status_code == 200
-    assert respuesta.json() == [
+    assert [
+        {"nombre": item["nombre"], "cupo_maximo": item["cupo_maximo"]}
+        for item in respuesta.json()
+    ] == [
         {"nombre": "Tirolesa", "cupo_maximo": 10},
         {"nombre": "Safari", "cupo_maximo": 8},
         {"nombre": "Palestra", "cupo_maximo": 12},
@@ -34,7 +37,10 @@ def test_endpoint_lista_turnos_con_anticipacion(monkeypatch) -> None:
 
     assert respuesta.status_code == 200
     assert respuesta.json() == [
-        {"actividad": "Safari", "fecha": "2026-10-28", "hora": f"{hora}:00"}
+        {
+            "actividad": "Safari", "fecha": "2026-10-28", "hora": f"{hora}:00",
+            "cupos_disponibles": 8, "disponible": True, "motivo": None,
+        }
         for hora in range(11, 18)
     ]
 

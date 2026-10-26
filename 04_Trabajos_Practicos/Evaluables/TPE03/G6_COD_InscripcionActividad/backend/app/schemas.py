@@ -1,10 +1,7 @@
 from enum import Enum
-
+from datetime import datetime
 from pydantic import BaseModel
 """
-# Clase de ejemplo incompleta
-# Usar pydantic Field para validación
-
 class Actividad(str, Enum):
     TIROLESA = "Tirolesa"
     SAFARI = "Safari"
@@ -51,3 +48,10 @@ class Visitante(BaseModel):
     dni: str
     edad: int
     talle_vestimenta: str | None = None
+
+class HorarioDisponible(BaseModel):
+    horario_id: int
+    actividad: Actividad
+    inicio: datetime
+    fin: datetime
+    cupos_disponibles: int

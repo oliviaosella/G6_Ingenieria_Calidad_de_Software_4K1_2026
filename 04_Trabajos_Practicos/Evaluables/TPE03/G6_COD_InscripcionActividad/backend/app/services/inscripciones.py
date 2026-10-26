@@ -30,6 +30,16 @@ def inscribir_participantes(
     fecha: str,
     horario: str,
 ) -> dict[str, Any] | None:
+    """Orquesta el proceso de inscripción a una actividad.
+
+    Valida la aceptación de los términos específicos de la actividad,
+    descuenta cupos de forma atómica y emite la confirmación con QR.
+
+    Raises:
+        TerminosNoAceptadosError: Si los términos no fueron aceptados.
+        AceptacionDeOtraActividadError: Si los términos corresponden a otra
+            actividad distinta de la solicitada.
+    """
     validar_aceptacion(solicitud.actividad, solicitud.aceptacion_terminos)
 
     participantes_dict = [
@@ -56,3 +66,4 @@ def inscribir_participantes(
     servicio_notificaciones.enviar_confirmacion(datos_notificacion)
 
     return reserva
+

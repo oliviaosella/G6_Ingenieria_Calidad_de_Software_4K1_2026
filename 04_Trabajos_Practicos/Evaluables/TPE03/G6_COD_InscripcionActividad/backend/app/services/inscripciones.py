@@ -1,5 +1,6 @@
 from typing import Any
 
+from app.errors import CuposNoDisponiblesError
 from app.schemas import SolicitudInscripcion
 from app.services.aceptacion import validar_aceptacion
 from app.services.email_service import ServicioNotificaciones
@@ -55,7 +56,8 @@ def inscribir_participantes(
     )
 
     if reserva is None:
-        return None
+        raise CuposNoDisponiblesError
+
 
     datos_notificacion = _armar_datos_notificacion(
         reserva=reserva,

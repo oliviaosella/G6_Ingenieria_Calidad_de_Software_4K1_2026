@@ -1,3 +1,5 @@
+
+
 class TerminosNoDisponiblesError(Exception):
     """No se pueden obtener los términos de la actividad."""
 
@@ -8,3 +10,7 @@ class TerminosNoAceptadosError(Exception):
 
 class AceptacionDeOtraActividadError(Exception):
     """La aceptación corresponde a una actividad distinta de la solicitada."""
+
+
+class CuposNoDisponiblesError(Exception):
+    """No hay cupos disponibles para la actividad en el horario solicitado."""

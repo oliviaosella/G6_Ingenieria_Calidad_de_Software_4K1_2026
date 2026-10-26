@@ -1,3 +1,5 @@
+import json
+
 import cv2
 import numpy as np
 
@@ -46,7 +48,12 @@ def test_qr_contiene_identificador_inscripcion() -> None:
     detector = cv2.QRCodeDetector()
     contenido, _, _ = detector.detectAndDecode(imagen)
 
-    assert contenido == "RESERVA-125"
+    datos = json.loads(contenido)
+    assert datos["codigo"] == "RESERVA-125"
+    assert datos["actividad"] == "Tirolesa"
+    assert datos["fecha"] == "2026-10-20"
+    assert datos["horario"] == "14:30"
+    assert datos["email"] == "visitante@gmail.com"
 
 
 def test_qr_es_diferente_para_cada_inscripcion() -> None:

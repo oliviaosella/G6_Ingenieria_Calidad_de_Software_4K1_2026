@@ -1,6 +1,6 @@
 from typing import Any
 from datetime import date
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 
 from app.dependencies import get_gestor_reservas, get_servicio_notificaciones
 from app.errors import (
@@ -10,6 +10,8 @@ from app.errors import (
     InconsistenciaParticipantesError,
     ParticipantesInvalidosError,
     TerminosNoAceptadosError,
+    TerminosDesactualizadosError,
+    ComprobanteInvalidoError,
 )
 from app.schemas import (
     InscripcionExitosaResponse,
@@ -26,6 +28,9 @@ from app.services.participantes import (
 )
 from app.services.reservas import GestorReservas
 from app.routers import consulta_actividades
+from app.services.comprobantes import contenido_qr
+from app.services.qr_service import generar_qr
+from app.services.notificaciones import procesar_envio
 
 router = APIRouter(prefix="/inscripciones", tags=["Inscripciones"])
 
@@ -38,7 +43,8 @@ router = APIRouter(prefix="/inscripciones", tags=["Inscripciones"])
     description=(
         "Procesa la inscripción integral: valida la aceptación de términos, la consistencia "
         "de los participantes declarados, verifica que ningún DNI esté duplicado en el mismo turno, "
-        "descuenta cupos atómicamente y emite el correo con QR adjunto."
+        "descuenta cupos atómicamente y emite el correo con QR adjunto. "
+        "Si el envío falla, la reserva permanece confirmada y correo_estado informa el fallo."
     ),
     responses={
         201: {"description": "Inscripción creada y confirmada exitosamente."},
@@ -95,6 +101,10 @@ def registrar_inscripcion(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Los términos aceptados no corresponden a la actividad solicitada.",
         )
+    except TerminosDesactualizadosError as error:
+        raise HTTPException(400, "Los términos cambiaron. Consultá y aceptá la versión vigente.") from error
+    except ComprobanteInvalidoError as error:
+        raise HTTPException(422, "Los datos son demasiado extensos para el comprobante QR.") from error
     except InconsistenciaParticipantesError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -116,15 +126,25 @@ def registrar_inscripcion(
             detail="Uno o más participantes ya tienen una reserva activa en este mismo turno horario.",
         )
 
+    return _respuesta_inscripcion(reserva)
+
+
+def _respuesta_inscripcion(reserva: dict) -> dict:
     return {
         "id": reserva["id"],
         "actividad": reserva["actividad"],
         "horario_id": reserva["horario_id"],
-        "fecha": fecha,
-        "horario": horario,
-        "email": solicitud.email,
+        "fecha": reserva["fecha"],
+        "horario": reserva["horario"],
+        "email": reserva["email"],
         "participantes": reserva["participantes"],
         "qr_codigo": f"RESERVA-{reserva['id']}",
+        "qr_contenido": contenido_qr(reserva),
+        "qr_url": f"/inscripciones/{reserva['id']}/qr",
+        "estado": reserva["estado"],
+        "correo_estado": reserva["correo_estado"],
+        "correo_error": reserva.get("correo_error"),
+        "intentos_envio": reserva["intentos_envio"],
     }
 
 
@@ -149,6 +169,33 @@ def consultar_reserva(
             detail="Reserva no encontrada.",
         )
     return reserva
+
+
+@router.get(
+    "/{id}/qr", summary="Descargar el QR de una reserva", response_class=Response,
+    responses={200: {"content": {"image/png": {}}}, 404: {"description": "Reserva no encontrada"}},
+)
+def descargar_qr(id: int, gestor: GestorReservas = Depends(get_gestor_reservas)):
+    reserva = gestor.obtener_reserva(id)
+    if reserva is None:
+        raise HTTPException(404, "Reserva no encontrada.")
+    return Response(
+        content=generar_qr(reserva), media_type="image/png",
+        headers={"Content-Disposition": f'attachment; filename="reserva-{id}.png"'},
+    )
+
+
+@router.post("/{id}/reenviar-confirmacion", response_model=InscripcionExitosaResponse,
+             summary="Reintentar el correo de una reserva confirmada")
+def reenviar_confirmacion(
+    id: int,
+    gestor: GestorReservas = Depends(get_gestor_reservas),
+    servicio: ServicioNotificaciones = Depends(get_servicio_notificaciones),
+):
+    reserva = procesar_envio(id, gestor, servicio)
+    if reserva is None:
+        raise HTTPException(404, "Reserva no encontrada.")
+    return _respuesta_inscripcion(reserva)
 
 
 @router.post("/validar", summary="Validar datos de los participantes")

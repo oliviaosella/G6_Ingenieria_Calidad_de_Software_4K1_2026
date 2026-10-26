@@ -1,33 +1,22 @@
 from typing import Any
+from datetime import datetime, timezone
+from qrcode.exceptions import DataOverflowError
 
 from app.errors import (
     CuposNoDisponiblesError,
     DniDuplicadoEnHorarioError,
     InconsistenciaParticipantesError,
     ParticipantesInvalidosError,
+    ComprobanteInvalidoError,
 )
 from app.schemas import SolicitudInscripcion
 from app.services.aceptacion import validar_aceptacion
 from app.services.email_service import ServicioNotificaciones
 from app.services.reservas import GestorReservas
 from app.services.participantes import validar_participantes
-
-
-def _armar_datos_notificacion(
-    reserva: dict[str, Any],
-    email: str,
-    fecha: str,
-    horario: str,
-) -> dict[str, Any]:
-    datos = dict(reserva)
-    datos.update(
-        {
-            "email": email,
-            "fecha": fecha,
-            "horario": horario,
-        }
-    )
-    return datos
+from app.services.terminos import obtener_terminos
+from app.services.notificaciones import procesar_envio
+from app.services.qr_service import validar_capacidad_qr
 
 
 def inscribir_participantes(
@@ -86,23 +75,36 @@ def inscribir_participantes(
         for participante in solicitud.participantes
     ]
 
+    terminos = obtener_terminos(solicitud.actividad)
+    datos = {
+        "email": str(solicitud.email), "horario": horario, "estado": "confirmada",
+        "correo_estado": "pendiente", "correo_error": None, "intentos_envio": 0,
+        "creada_en": datetime.now(timezone.utc).isoformat(),
+        "aceptacion_terminos": {
+            "actividad": solicitud.actividad.value, "aceptados": True,
+            "version": terminos.version, "texto": terminos.texto,
+            "aceptados_en": datetime.now(timezone.utc).isoformat(),
+        },
+    }
+    try:
+        # El mayor ID de SQLite reserva espacio suficiente sin asignar un ID real.
+        validar_capacidad_qr({
+            **datos, "id": 9223372036854775807, "actividad": solicitud.actividad.value,
+            "fecha": fecha, "participantes": participantes_dict,
+        })
+    except DataOverflowError as error:
+        raise ComprobanteInvalidoError from error
+
     reserva = gestor_reservas.crear_reserva(
         actividad=solicitud.actividad.value,
         horario_id=solicitud.horario_id,
         participantes=participantes_dict,
         cantidad_declarada=solicitud.cantidad_participantes,
         fecha=fecha,
+        datos_adicionales=datos,
     )
 
     if reserva is None:
         raise CuposNoDisponiblesError
 
-    datos_notificacion = _armar_datos_notificacion(
-        reserva=reserva,
-        email=solicitud.email,
-        fecha=fecha,
-        horario=horario,
-    )
-    servicio_notificaciones.enviar_confirmacion(datos_notificacion)
-
-    return reserva
+    return procesar_envio(reserva["id"], gestor_reservas, servicio_notificaciones)

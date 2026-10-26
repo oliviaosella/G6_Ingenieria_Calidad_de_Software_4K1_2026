@@ -24,3 +24,11 @@ class InconsistenciaParticipantesError(Exception):
 
 class ParticipantesInvalidosError(Exception):
     """Los datos personales, edades, DNIs o talles no cumplen las reglas."""
+
+
+class TerminosDesactualizadosError(Exception):
+    """La versión aceptada ya no es la vigente para la actividad."""
+
+
+class ComprobanteInvalidoError(Exception):
+    """Los datos de la inscripción exceden la capacidad de un único QR."""

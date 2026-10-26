@@ -50,7 +50,9 @@ Desde `backend/`, ejecutar las pruebas con `uv run python -m pytest`.
 | GET | `/actividades/Safari/terminos` | Términos específicos de la actividad. |
 | POST | `/inscripciones/validar` | Valida los participantes y las reglas de la actividad. |
 | POST | `/inscripciones` | Valida el turno y los participantes, acepta términos, reserva y envía correo con QR. |
-| GET | `/inscripciones/1` | Recupera la reserva, incluida su fecha. |
+| GET | `/inscripciones/1` | Recupera la reserva y su aceptación y estado de correo. |
+| GET | `/inscripciones/1/qr` | Descarga el QR con los datos completos. |
+| POST | `/inscripciones/1/reenviar-confirmacion` | Reintenta un envío fallido sin volver a reservar. |
 
 La consulta de turnos aplica los cierres y la ventana de 15 minutos a 24 horas,
 usando la hora de Córdoba. Una actividad inexistente responde 404; una fecha
@@ -77,7 +79,10 @@ de un turno, no registra reservas ni envía correos.
 
 La integración completa y su configuración SMTP se describen en
 [backend/docs/INTEGRACION_GRUPOS.md](backend/docs/INTEGRACION_GRUPOS.md).
-El almacenamiento es en memoria y se pierde al reiniciar el proceso.
+Las reservas, cupos, aceptación de términos y estados de envío se conservan en
+SQLite (`backend/data/reservas.sqlite3`). La base y las credenciales `.env` no se
+versionan. El detalle del cierre está en
+[backend/docs/CIERRE_BACKEND.md](backend/docs/CIERRE_BACKEND.md).
 
 ### Frontend
 

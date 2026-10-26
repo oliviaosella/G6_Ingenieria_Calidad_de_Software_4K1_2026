@@ -279,7 +279,10 @@ def test_post_inscripcion_rechaza_formato_email_invalido(client):
 
 
 def test_dependencia_smtp_estricta_sin_env(monkeypatch):
-    """Verifica que el emisor de correo es estricto y falla si no se configuran las variables SMTP."""
+    """La configuración se valida al enviar, sin impedir crear la reserva."""
+    from app.services.email_service import ConfiguracionSMTPError, _crear_emisor_correo
+
     monkeypatch.delenv("SMTP_HOST", raising=False)
-    with pytest.raises(KeyError):
-        get_servicio_notificaciones()
+    assert get_servicio_notificaciones() is not None
+    with pytest.raises(ConfiguracionSMTPError):
+        _crear_emisor_correo()

@@ -63,17 +63,20 @@ class SolicitudValidacionParticipantes(BaseModel):
 class TerminosCondiciones(BaseModel):
     actividad: Actividad
     texto: str
+    version: str = "1"
+    pendiente_aprobacion: bool = True
 
 
 class AceptacionTerminos(BaseModel):
     actividad: Actividad
     aceptados: bool
+    version: str | None = None
 
 
 class SolicitudInscripcion(BaseModel):
     actividad: Actividad
     horario_id: int = Field(ge=1, le=9)
-    cantidad_participantes: int
+    cantidad_participantes: int = Field(gt=0)
     participantes: list[Visitante]
     aceptacion_terminos: AceptacionTerminos
     email: EmailStr
@@ -117,6 +120,12 @@ class InscripcionExitosaResponse(BaseModel):
     email: EmailStr
     participantes: list[Visitante]
     qr_codigo: str
+    qr_contenido: str
+    qr_url: str
+    estado: str
+    correo_estado: str
+    correo_error: str | None = None
+    intentos_envio: int
 
 
 class ReservaConsultaResponse(BaseModel):
@@ -124,5 +133,14 @@ class ReservaConsultaResponse(BaseModel):
     actividad: str
     horario_id: int
     participantes: list[dict]
+    fecha: str | None = None
+    horario: str | None = None
+    email: EmailStr | None = None
+    estado: str | None = None
+    correo_estado: str | None = None
+    correo_error: str | None = None
+    intentos_envio: int = 0
+    creada_en: str | None = None
+    aceptacion_terminos: dict | None = None
 
     model_config = {"extra": "allow"}

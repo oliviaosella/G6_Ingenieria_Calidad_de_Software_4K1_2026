@@ -4,7 +4,7 @@
 
 Base: `origin/tdd/integracion/participantes-actividades` (`1f0e799`).
 Rama incorporada: `origin/tdd/integracion/terminos-reserva-envio` (`00ef906`).
-La combinación se prepara en `codex/integracion-grupos-1-a-5`.
+La rama integrada es `tdd/integracion/integracion-grupos-1-a-5`.
 
 La integración cubre el backend. El frontend y sus simulaciones locales no
 se modifican en esta rama.
@@ -36,7 +36,8 @@ se modifican en esta rama.
 5. Enviar `POST /inscripciones` con el turno y todos los datos.
 6. El backend vuelve a validar apertura, anticipación, correspondencia de hora e
    identificador, términos, cantidad, nombres, DNI, edades y talles. Después
-   confirma la reserva de forma atómica y envía la confirmación con QR.
+   confirma la reserva de forma atómica en SQLite e intenta enviar la confirmación con QR.
+   Un fallo de correo no revierte ni duplica la reserva: se informa por separado.
 7. Consultar `GET /inscripciones/{id}` o volver a consultar los cupos del turno.
 
 `horario_id` representa un inicio diario: 1 es 09:00, 2 es 10:00, hasta 9 que
@@ -72,13 +73,19 @@ omiten se usa la fecha actual del parque y la hora derivada de `horario_id`.
 
 ## Respuestas y errores
 
-- 201: inscripción registrada; `qr_codigo` identifica el contenido `RESERVA-{id}`.
-  El correo adjunta el PNG del QR y el resumen de la inscripción.
+- 201: inscripción registrada. `qr_codigo` conserva la referencia `RESERVA-{id}`;
+  `qr_contenido` contiene el JSON completo y `qr_url` permite descargar su PNG.
+  `correo_estado` informa si el envío fue enviado, falló o sigue en proceso.
+  La reserva permanece confirmada aunque SMTP falle.
 - 400: términos, participantes, calendario o correspondencia de turno inválidos.
 - 404: actividad inexistente en `/turnos`, o reserva inexistente.
 - 409: cupos insuficientes o participante ya registrado en ese turno.
 - 422: estructura de solicitud inválida, fecha inválida, enum no reconocido o
   `horario_id` fuera del rango 1 a 9. `/horarios` valida la actividad como enum.
+
+El QR se descarga mediante `GET /inscripciones/{id}/qr`. Para reintentar un envío
+fallido se utiliza `POST /inscripciones/{id}/reenviar-confirmacion`: no vuelve a
+reservar ni a descontar cupos. Si el envío ya fue exitoso, no lo repite.
 
 La validación previa de participantes es informativa. El POST definitivo vuelve
 a validar los participantes y los cupos, sin confiar en una consulta anterior.
@@ -117,10 +124,23 @@ Los tests usan relojes fijos y emisores en memoria; no envían correos reales.
 Las pruebas de concurrencia y decodificación del QR de las ramas de origen
 también se ejecutan en la suite conjunta.
 
-## Límites heredados
+## Cierre del backend
 
-- Las reservas se almacenan en memoria del proceso. Reiniciar o ejecutar varios
-  workers no proporciona persistencia compartida.
-- Si SMTP falla después de registrar una reserva, la reserva permanece registrada.
-  No se agrega una política de reintentos ni de compensación en esta integración.
-- Los términos conservan el texto de muestra de la rama de origen.
+Se completaron los pendientes de QR, SMTP, términos, aceptación y persistencia.
+La configuración y los contratos actualizados están en
+[CIERRE_BACKEND.md](CIERRE_BACKEND.md).
+
+- SQLite guarda reservas, cupos por fecha, DNIs y aceptación de términos en
+  `backend/data/reservas.sqlite3`. La base local está ignorada por Git.
+- Cada reserva conserva email, horario, fecha de creación, texto y versión de
+  términos aceptados, fecha de aceptación y estado de correo.
+- El envío usa Gmail con STARTTLS en puerto 587 y contraseña de aplicación;
+  los secretos se configuran localmente en `.env` o variables de entorno.
+- El fallo de envío queda registrado y se puede reintentar por ID, sin repetir
+  la reserva. La información técnica o credenciales del proveedor no se exponen.
+- El QR contiene el resumen completo y es coherente con el cuerpo del correo.
+- Los términos son propuestas específicas por actividad, pendientes de aprobación
+  del PO. La integración con el frontend sigue siendo un paso posterior.
+
+La suite actual incluye los casos de cierre en `tests/test_cierre_backend.py`.
+Los tests aíslan `.env`, usan bases temporales y bloquean conexiones SMTP reales.

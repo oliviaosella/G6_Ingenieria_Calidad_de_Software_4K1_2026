@@ -376,3 +376,9 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
   55%{transform:translate3d(-7px,-5px,0) rotate(-4deg)}
   78%{transform:translate3d(-2px,-1px,0) rotate(-1deg)}
 }
+.park-app[data-theme="tirolesa"] .hero-art .hero-guia,
+.park-app[data-theme="safari"] .hero-art .hero-guia,
+.park-app[data-theme="palestra"] .hero-art .hero-guia,
+.park-app[data-theme="jardineria"] .hero-art .hero-guia{
+  animation-duration:5.8s;
+}

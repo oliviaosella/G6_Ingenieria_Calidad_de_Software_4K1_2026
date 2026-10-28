@@ -1,16 +1,14 @@
-@import "@fontsource/fredoka/latin-400.css";
-@import "@fontsource/fredoka/latin-600.css";
-@import "@fontsource/nunito/latin-400.css";
-@import "@fontsource/nunito/latin-600.css";
-@import "@fontsource/nunito/latin-700.css";
+@import "@fontsource/lato/latin-400.css";
+@import "@fontsource/lato/latin-700.css";
+@import "@fontsource/lato/latin-900.css";
 
-:root{font-family:"Nunito",sans-serif;color:#263c34;background:#fbf6e9}
+:root{font-family:var(--font-ui);color:#263c34;background:#fbf6e9}
 .park-app{--ink:#263c34;--cream:#fff8e8;--orange:#f47b38;--teal:#198e88;--wash:#f7f0dc;--accent:#217b73;--line:#aac6ae}
 .park-app[data-theme="safari"]{--wash:#e7f2dc;--accent:#31835b;--line:#94be91}
 .park-app[data-theme="tirolesa"]{--wash:#dff3f1;--accent:#187f89;--line:#89c5c4}
 .park-app[data-theme="palestra"]{--wash:#f8e8d8;--accent:#a46054;--line:#d7a992}
 .park-app[data-theme="jardineria"]{--wash:#f8f0d3;--accent:#6c8b4d;--line:#c7d398}
-h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info strong,.terms-card strong{font-family:"Fredoka",sans-serif!important;font-weight:600!important;letter-spacing:-.025em!important}
+h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info strong,.terms-card strong{font-family:var(--font-ui)!important;font-weight:600!important;letter-spacing:-.025em!important}
 .hero h1{font-size:clamp(51px,5.8vw,75px);line-height:1.03;color:var(--ink)}
 .hero h1 em{font-style:normal;color:var(--accent);text-decoration:underline;text-decoration-thickness:5px;text-underline-offset:8px}
 .hero-copy p,.section-heading p,.success-screen>p{color:#526d5e}
@@ -20,7 +18,7 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 .brand strong{font-size:23px;letter-spacing:-.055em!important;color:var(--ink)}
 .brand strong span{color:#e47b39}
 .brand small{color:#487165;font-size:8px;letter-spacing:.12em}
-.header-cta{font-family:"Fredoka",sans-serif;font-size:15px;color:var(--ink)}
+.header-cta{font-family:var(--font-ui);font-size:15px;color:var(--ink)}
 .header-cta:hover{color:var(--accent)}
 .hero,.booking-section{position:relative;isolation:isolate;background:linear-gradient(125deg,var(--wash),color-mix(in srgb,var(--sky) 28%,#fff8e8));transition:background .5s}
 .hero-inner,.booking-section>.shell{position:relative;z-index:1}
@@ -38,7 +36,7 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 .motif-e{right:44%;bottom:2%;width:36px;animation-delay:-3s}
 .motifs-booking .motif-leaf{left:3%;top:5%}.motifs-booking .motif-flower{left:2%;top:43%}.motifs-booking .motif-tracks{right:2%;bottom:12%}.motifs-booking .motif-spark{right:3%;top:25%;left:auto}.motifs-booking .motif-e{left:3%;bottom:8%;right:auto}
 @keyframes motifFloat{from{translate:0 5px;rotate:-4deg}to{translate:8px -12px;rotate:5deg}}
-.button,.date-pill,.time-pill,.add-button{font-family:"Fredoka",sans-serif;font-weight:600;border-radius:12px}
+.button,.date-pill,.time-pill,.add-button{font-family:var(--font-ui);font-weight:600;border-radius:12px}
 .button.primary,.hero-button{background:var(--accent);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);color:#fffdf2}
 .button:hover,.date-pill:hover:not(:disabled),.time-pill:hover:not(:disabled){transform:translateY(-2px)}
 .button.secondary,.date-pill,.time-pill,.add-button{border:2px solid #9dbca5;background:#fffdf5}
@@ -47,7 +45,7 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 .booking-intro h2{font-size:clamp(29px,3.5vw,42px);margin:12px 0 0;color:var(--ink)}
 .brand-stamp{display:block;width:82px;height:82px;flex:none;padding:13px;background:#fff9df;border:2px solid var(--ink);border-radius:50%;box-shadow:4px 4px 0 #d2dcba;transform:rotate(-10deg)}
 .booking-main,.summary-card{background:#fffcf3;border:2px solid var(--ink);border-radius:18px;box-shadow:5px 6px 0 #cbd9bc}
-.step-circle{border-width:2px;font-family:"Fredoka",sans-serif}
+.step-circle{border-width:2px;font-family:var(--font-ui)}
 .section-heading h2{color:var(--ink)}
 .activity-card{border:2px solid var(--ink);border-radius:15px;box-shadow:3px 4px 0 #bbd1b8;background:var(--cream)}
 .activity-card:before{background:linear-gradient(180deg,transparent 38%,#fff8e822 58%,#fff8e8a8 79%,#fff8e8db 100%)}
@@ -68,7 +66,7 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 .participant-card,.terms-card,.ticket{background:#fff8e9;border:1.5px solid #abc3a8;border-radius:13px}
 .expedition-member{width:100px;border:2px solid var(--ink);border-radius:15px;background:#fff8e9;box-shadow:3px 4px 0 #cbd9bc;padding:5px 5px 8px}
 .expedition-member svg{width:88px;height:97px}
-.expedition-member span{max-width:88px;font-family:"Fredoka",sans-serif;font-size:12px;color:var(--ink)}
+.expedition-member span{max-width:88px;font-family:var(--font-ui);font-size:12px;color:var(--ink)}
 .summary-card .theme-scene{border-bottom:2px solid var(--ink)}
 .summary-content h3{color:var(--ink)}
 .success-screen{position:relative}
@@ -99,14 +97,14 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 @keyframes miniCheer{0%,100%{transform:translateY(8px) rotate(-2deg)}45%{transform:translateY(-12px) rotate(3deg)}}
 .guia-tip{position:absolute;right:61px;bottom:106px;width:247px;padding:17px 17px 14px;background:#fff9e8;border:2px solid var(--ink);border-radius:18px 18px 6px 18px;box-shadow:5px 6px 0 #263c3440;pointer-events:auto;animation:guideTipEnter .28s cubic-bezier(.2,1.3,.4,1) both}
 .guia-tip:after{content:"";position:absolute;right:22px;bottom:-13px;width:20px;height:20px;background:#fff9e8;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg)}
-.guia-tip strong{display:block;font-family:"Fredoka",sans-serif;font-size:11px;letter-spacing:.07em;color:var(--accent)}
+.guia-tip strong{display:block;font-family:var(--font-ui);font-size:11px;letter-spacing:.07em;color:var(--accent)}
 .guia-tip p{font-size:13px;font-weight:700;line-height:1.35;color:var(--ink);margin:7px 3px 12px 0}
-.guia-tip-action{display:inline-flex;align-items:center;gap:4px;padding:5px 0;border:0;background:transparent;color:var(--accent);font-family:"Fredoka",sans-serif;font-size:12px;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.guia-tip-action{display:inline-flex;align-items:center;gap:4px;padding:5px 0;border:0;background:transparent;color:var(--accent);font-family:var(--font-ui);font-size:12px;font-weight:600;text-decoration:underline;text-underline-offset:3px}
 .guia-tip-close{position:absolute;right:8px;top:8px;display:grid;place-items:center;width:26px;height:26px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--ink)}
 .guia-tip-close:hover{background:#e7ead5}
 .guia-assistant.is-closed{width:76px;height:76px}
 .guia-assistant.is-closed .guia-assistant-trigger{width:72px;height:72px}
-.guia-assistant.is-closed .guia-assistant-trigger:after{content:"?";position:absolute;right:1px;top:2px;display:grid;place-items:center;width:22px;height:22px;border:2px solid var(--ink);border-radius:50%;background:#fff9e8;color:var(--accent);font-family:"Fredoka",sans-serif;font-size:15px}
+.guia-assistant.is-closed .guia-assistant-trigger:after{content:"?";position:absolute;right:1px;top:2px;display:grid;place-items:center;width:22px;height:22px;border:2px solid var(--ink);border-radius:50%;background:#fff9e8;color:var(--accent);font-family:var(--font-ui);font-size:15px}
 @keyframes guideTipEnter{from{opacity:0;transform:translate(9px,12px) scale(.92)}to{opacity:1;transform:translate(0,0) scale(1)}}
 .site-footer{position:relative;background:#27463c;border-top:3px solid var(--ink);color:#fff2d5}
 .site-footer:before{content:"";position:absolute;left:12px;margin-top:-19px;width:23px;height:23px;background:url('./assets/eco-harmony-logo.svg') center/contain no-repeat;filter:brightness(0) invert(1);opacity:.55}
@@ -212,10 +210,10 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 .footer-main{display:grid;grid-template-columns:1fr 1fr;gap:25px 44px;font-size:14px}
 .footer-heading{display:flex;align-items:center;gap:13px}
 .footer-heading img{width:59px;height:59px;padding:7px;border-radius:50%;background:#fff8e8;border:2px solid #a9ceaa}
-.footer-heading strong,.footer-course strong,.footer-team strong{display:block;font-family:"Fredoka",sans-serif;font-size:19px;font-weight:600;color:#fff8e8}
+.footer-heading strong,.footer-course strong,.footer-team strong{display:block;font-family:var(--font-ui);font-size:19px;font-weight:600;color:#fff8e8}
 .footer-heading span,.footer-course span{display:block;margin-top:4px;color:#c5e1ca;font-size:12px}
 .footer-course{align-self:center}
-.footer-course span{font-family:"Fredoka",sans-serif;font-size:16px;color:#ffc986}
+.footer-course span{font-family:var(--font-ui);font-size:16px;color:#ffc986}
 .footer-team{grid-column:1/-1;padding-top:20px;border-top:1px solid #ffffff35}
 .footer-team strong{font-size:15px;color:#ffc986}
 .footer-team p{max-width:1000px;margin:9px 0 0;color:#e1efe1;font-size:13px;line-height:1.8}
@@ -233,13 +231,13 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 .date-pill small{display:block;max-width:140px;margin-top:5px;font-size:10px;color:#8d5848;line-height:1.2}
 .booking-calendar.date-options{display:block;width:min(100%,390px);padding:16px;border:1px solid #d7e4d7;border-radius:16px;background:#fffdf5}
 .calendar-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
-.calendar-heading strong{font:600 19px "Fredoka",sans-serif;color:#254b3c}
+.calendar-heading strong{font:600 19px var(--font-ui);color:#254b3c}
 .calendar-heading button{display:grid;place-items:center;width:34px;height:34px;border:1px solid #d7e4d7;border-radius:9px;background:#fff;color:#287a71;cursor:pointer}
 .calendar-heading button:disabled{opacity:.35;cursor:not-allowed}
 .calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
 .calendar-weekday{display:grid;place-items:center;height:27px;font-size:11px;font-weight:800;color:#708779}
 .calendar-day,.calendar-empty{display:grid;place-items:center;aspect-ratio:1;min-width:0}
-.calendar-day{border:1px solid transparent;border-radius:10px;background:#e8f4ec;color:#21645a;font:600 15px "Fredoka",sans-serif;cursor:pointer}
+.calendar-day{border:1px solid transparent;border-radius:10px;background:#e8f4ec;color:#21645a;font:600 15px var(--font-ui);cursor:pointer}
 .calendar-day:hover:not(:disabled){background:#d0eadd;border-color:#86b99f}
 .calendar-day.active{background:#207f76;color:#fff;border-color:#207f76}
 .calendar-day.active:hover:not(:disabled){background:#207f76;border-color:#207f76}

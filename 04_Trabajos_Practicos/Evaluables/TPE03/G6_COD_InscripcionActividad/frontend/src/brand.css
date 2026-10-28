@@ -245,3 +245,60 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 .calendar-day.closed:disabled{background:#fbf0e8;color:#a66e55;text-decoration:line-through}
 .calendar-day:focus-visible,.calendar-heading button:focus-visible{outline:3px solid #e3ac54;outline-offset:2px}
 .calendar-hint{margin:13px 0 0;color:#63796a;font-size:11px;line-height:1.45}
+
+/* Paleta institucional: Coolors 386641 · 6A994E · A7C957 · F2E8CF · BC4749 */
+:root{color:#386641;background:#f2e8cf}
+.park-app,
+.park-app[data-theme="safari"],
+.park-app[data-theme="tirolesa"],
+.park-app[data-theme="palestra"],
+.park-app[data-theme="jardineria"]{
+  --ink:#386641;
+  --cream:#f2e8cf;
+  --orange:#bc4749;
+  --teal:#6a994e;
+  --wash:#f2e8cf;
+  --sky:#a7c957;
+  --accent:#6a994e;
+  --line:#a7c957;
+}
+.theme-scene.theme-parque{--sky:#f2e8cf;--far:#a7c957;--mid:#6a994e;--front:#386641;--creature:#bc4749;--sun:#f2e8cf}
+.theme-scene.theme-safari{--sky:#a7c957;--far:#6a994e;--mid:#386641;--front:#386641;--creature:#bc4749;--sun:#f2e8cf}
+.theme-scene.theme-tirolesa{--sky:#f2e8cf;--far:#a7c957;--mid:#6a994e;--front:#386641;--creature:#bc4749;--sun:#a7c957}
+.theme-scene.theme-palestra{--sky:#f2e8cf;--far:#bc4749;--mid:#6a994e;--front:#386641;--creature:#a7c957;--sun:#f2e8cf}
+.theme-scene.theme-jardineria{--sky:#f2e8cf;--far:#a7c957;--mid:#6a994e;--front:#386641;--creature:#bc4749;--sun:#a7c957}
+.site-header{background:#f2e8cf;border-bottom-color:#386641}
+.brand strong,.brand small,.header-cta,.hero h1,.booking-intro h2,.section-heading h2,.summary-content h3,.field-label,.participant-title h3,.input-field{color:#386641}
+.brand strong span,.form-error,.date-pill small{color:#bc4749}
+.hero h1 em,.eyebrow,.guia-tip strong,.guia-tip-action{color:#6a994e}
+.hero,.booking-section{background:linear-gradient(135deg,#f2e8cf,color-mix(in srgb,#a7c957 30%,#f2e8cf))}
+.hero-art-frame,.success-landscape{border-color:#386641;background:#a7c957;box-shadow:11px 11px 0 color-mix(in srgb,#6a994e 38%,#f2e8cf)}
+.button.primary,.hero-button{background:#386641;border-color:#386641;box-shadow:3px 3px 0 #6a994e;color:#f2e8cf}
+.button.primary:hover,.hero-button:hover{background:#6a994e}
+.button.secondary,.date-pill,.time-pill,.add-button{background:#f2e8cf;border-color:#6a994e;color:#386641}
+.date-pill.active,.time-pill.active,.calendar-day.active,.calendar-day.active:hover:not(:disabled){background:#6a994e;border-color:#386641;color:#f2e8cf}
+.booking-main,.summary-card,.participant-card,.terms-card,.ticket,.expedition-member,.booking-calendar.date-options{background:color-mix(in srgb,#f2e8cf 88%,white);border-color:#386641;box-shadow-color:#a7c957}
+.activity-card{background:#f2e8cf;border-color:#386641;box-shadow:3px 4px 0 #a7c957}
+.activity-card:before{background:linear-gradient(180deg,transparent 34%,color-mix(in srgb,#f2e8cf 25%,transparent) 57%,color-mix(in srgb,#f2e8cf 82%,transparent) 82%,#f2e8cf 100%)}
+.activity-card.selected{border-color:#bc4749;box-shadow:4px 5px 0 #bc4749}
+.activity-card .activity-icon{background:#f2e8cf;border-color:#386641;color:#386641}
+.activity-card strong,.activity-card .activity-meta{color:#386641}
+.input-field input,.input-field select{background:color-mix(in srgb,#f2e8cf 82%,white);border-color:#6a994e;color:#386641}
+.step-circle{border-color:#a7c957;color:#6a994e}
+.step-item.current .step-circle,.step-item.done .step-circle{background:#386641;border-color:#386641;color:#f2e8cf}
+.success-seal{background:#a7c957;color:#386641}
+.ticket{border-color:#6a994e;box-shadow:3px 4px 0 #a7c957}
+.mini-guia-porthole{background:radial-gradient(circle at 32% 24%,#f2e8cf,#a7c957);box-shadow:4px 5px 0 color-mix(in srgb,#386641 35%,transparent)}
+.guia-tip,.guia-tip:after{background:#f2e8cf;border-color:#386641}
+.guia-tip-close:hover{background:#a7c957}
+.calendar-heading strong,.calendar-heading button,.calendar-day,.calendar-hint{color:#386641}
+.calendar-heading button,.calendar-day{border-color:#a7c957;background:color-mix(in srgb,#a7c957 25%,#f2e8cf)}
+.calendar-day:hover:not(:disabled){background:#a7c957;border-color:#6a994e}
+.calendar-day.closed:disabled{background:color-mix(in srgb,#bc4749 18%,#f2e8cf);color:#bc4749}
+.calendar-day:focus-visible,.calendar-heading button:focus-visible{outline-color:#a7c957}
+.site-footer{background:linear-gradient(145deg,#386641,#6a994e);color:#f2e8cf}
+.footer-heading img{background:#f2e8cf;border-color:#a7c957}
+.footer-heading strong,.footer-course strong,.footer-team strong,.footer-bottom a{color:#f2e8cf}
+.footer-heading span,.footer-course span,.footer-team p,.footer-bottom{color:color-mix(in srgb,#f2e8cf 84%,#a7c957)}
+.footer-course span,.footer-team strong{color:#a7c957}
+.footer-team,.footer-bottom{border-top-color:color-mix(in srgb,#f2e8cf 30%,transparent)}

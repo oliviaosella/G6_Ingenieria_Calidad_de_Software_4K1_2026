@@ -15,7 +15,7 @@ type Motion = 'wave' | 'point' | 'think' | 'cheer'
 const animated: Record<Motion, string> = { wave: waveGif, point: pointGif, think: thinkGif, cheer: cheerGif }
 const still: Record<Motion, string> = { wave: wavePng, point: pointPng, think: thinkPng, cheer: cheerPng }
 const sidePosition = (x: number, width: number) => {
-  const inset = window.innerWidth <= 650 ? 24 : 36
+  const inset = window.innerWidth <= 650 ? 36 : 44
   return x + width / 2 < window.innerWidth / 2
     ? inset
     : window.innerWidth - width - inset

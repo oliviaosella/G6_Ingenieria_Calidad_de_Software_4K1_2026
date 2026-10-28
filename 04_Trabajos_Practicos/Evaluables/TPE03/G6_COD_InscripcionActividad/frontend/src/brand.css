@@ -302,3 +302,77 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 .footer-heading span,.footer-course span,.footer-team p,.footer-bottom{color:color-mix(in srgb,#f2e8cf 84%,#a7c957)}
 .footer-course span,.footer-team strong{color:#a7c957}
 .footer-team,.footer-bottom{border-top-color:color-mix(in srgb,#f2e8cf 30%,transparent)}
+
+/* Guía: mayor presencia en portada y movimientos con más aire */
+.hero-art .hero-guia{
+  right:-3%;
+  bottom:-30px;
+  width:min(86%,435px);
+  transform-origin:52% 86%;
+  animation-duration:4.2s;
+  animation-timing-function:cubic-bezier(.45,.05,.3,1);
+}
+.guia-assistant.is-open .mini-guia-stage{
+  left:-36%;
+  bottom:0;
+  width:172%;
+  height:172%;
+  mask-image:
+    radial-gradient(ellipse 43% 45% at 50% 52%,#000 82%,transparent 100%),
+    radial-gradient(ellipse 58% 53% at 54% 27%,#000 85%,transparent 100%),
+    radial-gradient(ellipse 32% 38% at 8% 48%,#000 82%,transparent 100%);
+}
+.guia-assistant{right:44px}
+.guia-assistant.is-open .mini-guia-stage img{
+  left:0;
+  bottom:0;
+  width:100%;
+  height:100%;
+  animation-timing-function:cubic-bezier(.45,.05,.3,1);
+}
+@media(max-width:650px){
+  .hero-art .hero-guia{right:-4%;bottom:-19px;width:min(82%,300px)}
+  .guia-assistant{right:36px}
+  .guia-assistant.is-open.near-footer{left:36px}
+  .guia-assistant.is-open .mini-guia-stage{left:-39%;bottom:0;width:178%;height:178%}
+}
+@keyframes guiaIdle{
+  0%{transform:translate3d(0,0,0) rotate(-1deg)}
+  22%{transform:translate3d(-3px,-5px,0) rotate(.5deg)}
+  48%{transform:translate3d(2px,-10px,0) rotate(1.6deg)}
+  74%{transform:translate3d(5px,-5px,0) rotate(.4deg)}
+  100%{transform:translate3d(0,0,0) rotate(-1deg)}
+}
+@keyframes guiaGlide{
+  0%{transform:translate3d(-8px,2px,0) rotate(-2deg)}
+  25%{transform:translate3d(0,-6px,0) rotate(1deg)}
+  55%{transform:translate3d(13px,-12px,0) rotate(4deg)}
+  78%{transform:translate3d(20px,-6px,0) rotate(2deg)}
+  100%{transform:translate3d(12px,1px,0) rotate(0)}
+}
+@keyframes guiaClimb{
+  0%{transform:translate3d(0,2px,0) rotate(1deg)}
+  28%{transform:translate3d(-4px,-6px,0) rotate(-2deg)}
+  58%{transform:translate3d(2px,-15px,0) rotate(-3deg)}
+  82%{transform:translate3d(5px,-8px,0) rotate(0)}
+  100%{transform:translate3d(0,2px,0) rotate(1deg)}
+}
+@keyframes guiaGarden{
+  0%{transform:translate3d(-2px,1px,0) rotate(-1deg)}
+  30%{transform:translate3d(2px,-4px,0) rotate(1deg)}
+  58%{transform:translate3d(-1px,-8px,0) rotate(2deg)}
+  82%{transform:translate3d(4px,-3px,0) rotate(.5deg)}
+  100%{transform:translate3d(-2px,1px,0) rotate(-1deg)}
+}
+@keyframes miniPeek{
+  0%,100%{transform:translate3d(0,7px,0) rotate(-2deg)}
+  22%{transform:translate3d(-2px,-2px,0) rotate(1deg)}
+  48%{transform:translate3d(2px,-7px,0) rotate(2deg)}
+  72%{transform:translate3d(1px,-3px,0) rotate(-1deg)}
+}
+@keyframes miniPoint{
+  0%,100%{transform:translate3d(4px,3px,0) rotate(1deg)}
+  28%{transform:translate3d(-2px,-2px,0) rotate(-2deg)}
+  55%{transform:translate3d(-7px,-5px,0) rotate(-4deg)}
+  78%{transform:translate3d(-2px,-1px,0) rotate(-1deg)}
+}

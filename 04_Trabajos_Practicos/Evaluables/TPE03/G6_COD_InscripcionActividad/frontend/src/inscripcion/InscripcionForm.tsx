@@ -13,6 +13,7 @@ import { ParticipantesSection } from './participantes/ParticipantesSection'
 import { participanteVacio } from './draft'
 import { TerminosSection } from './terminos/TerminosSection'
 import type { ActividadId, InscripcionDraft, Reserva } from './types'
+import { hayErrores, validarEmail } from './validaciones'
 
 const initialDraft = (): InscripcionDraft => ({ actividad: null, fecha: '', hora: '', horarioId: null, participantes: [participanteVacio()], email: '', aceptaTerminos: false })
 const steps = ['Actividad', 'Participantes', 'Confirmar']
@@ -27,6 +28,7 @@ export function InscripcionForm({ onActividadChange, onConfirmedChange }: { onAc
   const [terminos, setTerminos] = useState<TerminosApi | null>(null)
   const [cuposSeleccionados, setCuposSeleccionados] = useState<number | null>(null)
   const [busy, setBusy] = useState(false)
+  const [intento, setIntento] = useState(false)
   const topRef = useRef<HTMLDivElement>(null)
   const info = actividades.find((item) => item.id === draft.actividad)
 
@@ -52,7 +54,7 @@ export function InscripcionForm({ onActividadChange, onConfirmedChange }: { onAc
   ).length
   const update = (change: Partial<InscripcionDraft>) => { setDraft((current) => ({ ...current, ...change })); setError('') }
   const scrollTop = () => topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  const go = (next: number) => { setStep(next); setError(''); requestAnimationFrame(scrollTop) }
+  const go = (next: number) => { setStep(next); setError(''); setIntento(false); requestAnimationFrame(scrollTop) }
   const chooseActivity = (actividad: ActividadId) => {
     update({ actividad, fecha: '', hora: '', horarioId: null, aceptaTerminos: false, participantes: draft.participantes.map((persona) => ({ ...persona, talle_vestimenta: '' })) })
     setTerminos(null)
@@ -67,8 +69,9 @@ export function InscripcionForm({ onActividadChange, onConfirmedChange }: { onAc
     }
     if (step === 1) {
       if (!info || !draft.actividad) return setError('Volvé a elegir una actividad.')
-      if (draft.participantes.some((persona) => !persona.edad.trim())) {
-        return setError('Los datos de los participantes no cumplen las reglas de la actividad.')
+      if (hayErrores(draft.participantes, info)) {
+        setIntento(true)
+        return setError('Revisá los campos marcados en rojo para continuar.')
       }
       setBusy(true)
       try {
@@ -88,6 +91,8 @@ export function InscripcionForm({ onActividadChange, onConfirmedChange }: { onAc
       } finally { setBusy(false) }
       return
     }
+    const errorEmail = validarEmail(draft.email)
+    if (errorEmail) { setIntento(true); return setError(errorEmail) }
     if (!draft.aceptaTerminos) return setError('Aceptá las condiciones de la actividad para confirmar.')
     if (!terminos) return setError('Esperá a que se carguen las condiciones de la actividad.')
     setBusy(true)
@@ -120,8 +125,8 @@ export function InscripcionForm({ onActividadChange, onConfirmedChange }: { onAc
       {!reserva ? <>
         <div className="stepper" aria-label="Progreso de inscripción">{steps.map((label, index) => <div key={label} className={`step-item ${step === index ? 'current' : ''} ${step > index ? 'done' : ''}`}><span className="step-circle">{step > index ? <Check size={14} /> : index + 1}</span><span>{label}</span></div>)}</div>
         {step === 0 && <><ActividadSection value={draft.actividad} onChange={chooseActivity} actividades={actividades} />{!actividades.length && !catalogoError && <p>Cargando actividades…</p>}{catalogoError && <p className="form-error" role="alert">{catalogoError}</p>}<HorarioSection actividad={draft.actividad} fecha={draft.fecha} hora={draft.hora} onFecha={(fecha) => { update({ fecha, hora: '', horarioId: null }); setCuposSeleccionados(null) }} onHora={(turno) => { update({ hora: turno.hora, horarioId: turno.horario_id }); setCuposSeleccionados(turno.cupos_disponibles) }} /></>}
-        {step === 1 && info && <ParticipantesSection info={info} cuposDisponibles={cuposSeleccionados} participantes={draft.participantes} onChange={(participantes) => update({ participantes })} />}
-        {step === 2 && draft.actividad && <TerminosSection actividad={draft.actividad} email={draft.email} acepta={draft.aceptaTerminos} terminos={terminos} onEmail={(email) => update({ email })} onAcepta={(aceptaTerminos) => update({ aceptaTerminos })} />}
+        {step === 1 && info && <ParticipantesSection info={info} cuposDisponibles={cuposSeleccionados} participantes={draft.participantes} mostrarErrores={intento} onChange={(participantes) => update({ participantes })} />}
+        {step === 2 && draft.actividad && <TerminosSection actividad={draft.actividad} email={draft.email} mostrarErrores={intento} acepta={draft.aceptaTerminos} terminos={terminos} onEmail={(email) => update({ email })} onAcepta={(aceptaTerminos) => update({ aceptaTerminos })} />}
         {error && <p className="form-error" role="alert">{error}</p>}
         <div className="form-actions">{step > 0 && <button type="button" className="button back" disabled={busy} onClick={() => go(step - 1)}><ArrowLeft size={17} /> Volver</button>}<button type="button" className="button primary" disabled={busy || (step === 0 && !!catalogoError)} onClick={next}>{busy ? step === 1 ? 'Validando…' : 'Confirmando…' : step === 2 ? 'Confirmar reserva' : 'Continuar'} <ArrowRight size={17} /></button></div>
       </> : <ConfirmacionSection reserva={reserva} onNueva={nuevaReserva} onReenviar={async () => setReserva(await reenviarConfirmacion(reserva.id))} />}

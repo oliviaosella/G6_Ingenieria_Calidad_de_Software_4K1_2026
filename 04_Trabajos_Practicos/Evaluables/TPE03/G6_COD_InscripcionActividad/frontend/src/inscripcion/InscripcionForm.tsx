@@ -67,6 +67,9 @@ export function InscripcionForm({ onActividadChange, onConfirmedChange }: { onAc
     }
     if (step === 1) {
       if (!info || !draft.actividad) return setError('Volvé a elegir una actividad.')
+      if (draft.participantes.some((persona) => !persona.edad.trim())) {
+        return setError('Los datos de los participantes no cumplen las reglas de la actividad.')
+      }
       setBusy(true)
       try {
         const [validacion, horarios] = await Promise.all([

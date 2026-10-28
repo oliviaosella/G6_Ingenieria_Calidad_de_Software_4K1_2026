@@ -198,7 +198,7 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 .guia-assistant{width:98px;height:98px}
 .guia-assistant-trigger{touch-action:none;cursor:grab}
 .guia-assistant-trigger:active{cursor:grabbing}
-.guia-assistant.is-left .mini-guia-stage{transform:scaleX(-1)}
+.guia-assistant:not(.is-left) .mini-guia-stage{transform:scaleX(-1)}
 .guia-assistant.is-dragged .guia-tip,.guia-assistant.is-dragged.is-open.near-footer .guia-tip{left:var(--tip-left);right:auto}
 .guia-assistant.is-dragged{transition:left .48s cubic-bezier(.22,1,.36,1)}
 .guia-assistant.is-dragged .guia-tip:after,.guia-assistant.is-dragged.is-open.near-footer .guia-tip:after{left:var(--tip-tail);right:auto}

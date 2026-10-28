@@ -8,7 +8,7 @@ const stillUrls = import.meta.glob<string>('../../assets/guia-frames/*-0.png', {
 
 export function GuiaMascot({ actividad = null, celebrating = false, className = '' }: { actividad?: ActividadId | null; celebrating?: boolean; className?: string }) {
   const theme = themeName(actividad)
-  return <span key={theme} className={`guia-mascot guia-${theme} ${celebrating ? 'celebrating' : ''} ${className}`.trim()} role="img" aria-label={`Guía, el dinosaurio explorador del parque, ${celebrating ? 'celebra tu reserva' : 'saluda y se mueve'}`}>
+  return <span key={theme} className={`guia-mascot guia-${theme} ${celebrating ? 'celebrating' : ''} ${className}`.trim()} role="img" aria-label={`Guía, el zorro explorador del parque, ${celebrating ? 'celebra tu reserva' : 'saluda y se mueve'}`}>
     <img className="guia-animated" src={celebrating ? celebrationGif : animatedUrls[`../../assets/guia-gifs/${theme}.gif`]} alt="" aria-hidden="true" draggable="false" />
     <img className="guia-still" src={celebrating ? celebrationStill : stillUrls[`../../assets/guia-frames/${theme}-0.png`]} alt="" aria-hidden="true" draggable="false" />
   </span>

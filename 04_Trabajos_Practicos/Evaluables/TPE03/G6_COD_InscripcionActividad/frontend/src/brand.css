@@ -314,7 +314,7 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 }
 .guia-assistant.is-open .mini-guia-stage{
   left:-36%;
-  bottom:0;
+  bottom:-36%;
   width:172%;
   height:172%;
   mask-image:
@@ -322,7 +322,7 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
     radial-gradient(ellipse 58% 53% at 54% 27%,#000 85%,transparent 100%),
     radial-gradient(ellipse 32% 38% at 8% 48%,#000 82%,transparent 100%);
 }
-.guia-assistant{right:44px}
+.guia-assistant{right:60px}
 .guia-assistant.is-open .mini-guia-stage img{
   left:0;
   bottom:0;
@@ -332,9 +332,9 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 }
 @media(max-width:650px){
   .hero-art .hero-guia{right:-4%;bottom:-19px;width:min(82%,300px)}
-  .guia-assistant{right:36px}
-  .guia-assistant.is-open.near-footer{left:36px}
-  .guia-assistant.is-open .mini-guia-stage{left:-39%;bottom:0;width:178%;height:178%}
+  .guia-assistant{right:52px}
+  .guia-assistant.is-open.near-footer{left:52px}
+  .guia-assistant.is-open .mini-guia-stage{left:-39%;bottom:-39%;width:178%;height:178%}
 }
 @keyframes guiaIdle{
   0%{transform:translate3d(0,0,0) rotate(-1deg)}

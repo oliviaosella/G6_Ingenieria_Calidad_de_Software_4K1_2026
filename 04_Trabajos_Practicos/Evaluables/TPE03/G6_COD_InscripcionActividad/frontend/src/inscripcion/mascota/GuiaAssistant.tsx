@@ -15,7 +15,7 @@ type Motion = 'wave' | 'point' | 'think' | 'cheer'
 const animated: Record<Motion, string> = { wave: waveGif, point: pointGif, think: thinkGif, cheer: cheerGif }
 const still: Record<Motion, string> = { wave: wavePng, point: pointPng, think: thinkPng, cheer: cheerPng }
 const sidePosition = (x: number, width: number) => {
-  const inset = window.innerWidth <= 650 ? 36 : 44
+  const inset = window.innerWidth <= 650 ? 52 : 60
   return x + width / 2 < window.innerWidth / 2
     ? inset
     : window.innerWidth - width - inset
@@ -58,7 +58,8 @@ export function GuiaAssistant({ step, draft, error, requiereTalle }: { step: num
       const overlap = footer ? Math.max(0, Math.ceil(window.innerHeight - footer.getBoundingClientRect().top)) : 0
       setFooterOffset(overlap)
       const triggerSize = open ? (window.innerWidth <= 650 ? 82 : 98) : 72
-      setPosition((current) => current && ({ left: sidePosition(current.left, triggerSize), top: Math.max(minimumTop(open), Math.min(current.top, window.innerHeight - overlap - triggerSize - 8)) }))
+      const lowerInset = open ? (window.innerWidth <= 650 ? 38 : 44) : 8
+      setPosition((current) => current && ({ left: sidePosition(current.left, triggerSize), top: Math.max(minimumTop(open), Math.min(current.top, window.innerHeight - overlap - triggerSize - lowerInset)) }))
     }
     updatePosition()
     window.addEventListener('scroll', updatePosition, { passive: true })
@@ -87,9 +88,10 @@ export function GuiaAssistant({ step, draft, error, requiereTalle }: { step: num
     current.moved = true
     event.preventDefault()
     const size = event.currentTarget.getBoundingClientRect()
+    const lowerInset = open ? (window.innerWidth <= 650 ? 38 : 44) : 8
     setPosition({
       left: sidePosition(current.left + dx, size.width),
-      top: Math.max(minimumTop(open), Math.min(current.top + dy, window.innerHeight - footerOffset - size.height - 8)),
+      top: Math.max(minimumTop(open), Math.min(current.top + dy, window.innerHeight - footerOffset - size.height - lowerInset)),
     })
   }
   const endDrag = (event: ReactPointerEvent<HTMLButtonElement>) => {
@@ -108,7 +110,7 @@ export function GuiaAssistant({ step, draft, error, requiereTalle }: { step: num
   const tipTail = position && Math.max(18, Math.min(position.left + triggerWidth / 2 - tipX! - 10, tipWidth - 38))
   const assistantStyle = position
     ? { left: position.left, top: position.top, right: 'auto', bottom: 'auto', '--tip-left': `${tipLeft}px`, '--tip-tail': `${tipTail}px` } as CSSProperties
-    : { bottom: footerOffset + (footerOffset > 0 ? 8 : 16) }
+    : { bottom: footerOffset + (open ? (mobile ? 42 : 52) : footerOffset > 0 ? 8 : 16) }
 
   return createPortal(<aside className={`guia-assistant ${open ? 'is-open' : 'is-closed'} ${footerOffset > 0 ? 'near-footer' : ''} ${position ? 'is-dragged' : ''} ${isLeft ? 'is-left' : ''}`} style={assistantStyle} aria-label="Ayuda de Guía">
     {open && <div className="guia-tip" key={`${step}-${hint.target}-${hint.text}`}>

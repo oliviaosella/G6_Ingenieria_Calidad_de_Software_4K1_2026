@@ -60,7 +60,13 @@ def validar_participante(participante: Visitante) -> bool:
 
 
 def validar_dni_participante(dni: str) -> bool:
-    return isinstance(dni, str) and dni.isdigit() and 1 <= int(dni) <= 999_999_999
+    return (
+        isinstance(dni, str)
+        and len(dni) == 8
+        and dni.isascii()
+        and dni.isdigit()
+        and dni != "00000000"
+    )
 
 
 def validar_edad_positiva(edad: int) -> bool:

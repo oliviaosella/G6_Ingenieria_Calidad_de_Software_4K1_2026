@@ -1,3 +1,5 @@
+import pytest
+
 from app.routers.inscripciones import validar_dni_participante
 from app.schemas import Actividad
 from inspect import signature
@@ -42,12 +44,12 @@ def test_validar_participante_acepta_argumentos_esperados() -> None:
 
 def test_validar_nombre() -> None:
     participante_01 = Visitante(nombre="", dni="12345678", edad=12)
-    participante_02 = Visitante(nombre=" ", dni="7434", edad=12)
-    participante_03 = Visitante(nombre="-", dni="78678", edad=12)
-    participante_04 = Visitante(nombre=". Luis", dni="3478", edad=12)
-    participante_05 = Visitante(nombre="123 - Yonaguni", dni="786334", edad=12)
-    participante_06 = Visitante(nombre="Luis", dni="9345", edad=12)
-    participante_07 = Visitante(nombre="Luis Yonaguni", dni="487", edad=12)
+    participante_02 = Visitante(nombre=" ", dni="00007434", edad=12)
+    participante_03 = Visitante(nombre="-", dni="00078678", edad=12)
+    participante_04 = Visitante(nombre=". Luis", dni="00003478", edad=12)
+    participante_05 = Visitante(nombre="123 - Yonaguni", dni="00786334", edad=12)
+    participante_06 = Visitante(nombre="Luis", dni="00009345", edad=12)
+    participante_07 = Visitante(nombre="Luis Yonaguni", dni="00000487", edad=12)
 
     assert validar_participante(participante_01) is False
     assert validar_participante(participante_02) is False
@@ -59,11 +61,11 @@ def test_validar_nombre() -> None:
 
 def test_validar_talles_vestimenta() -> None:
     participante_01 = Visitante(nombre="Pepe Bonaventura", dni="12345678", edad=28)
-    participante_02 = Visitante(nombre="Pepe Bonaventura", dni="4789", edad=28, talle_vestimenta="")
-    participante_03 = Visitante(nombre="Pepe Bonaventura", dni="416", edad=28, talle_vestimenta="De niño")
-    participante_04 = Visitante(nombre="Pepe Bonaventura", dni="789674", edad=28, talle_vestimenta="XXXL")
-    participante_05 = Visitante(nombre="Pepe Bonaventura", dni="45678", edad=28, talle_vestimenta="XL")
-    participante_06 = Visitante(nombre="Pepe Bonaventura", dni="67864", edad=28, talle_vestimenta="M")
+    participante_02 = Visitante(nombre="Pepe Bonaventura", dni="00004789", edad=28, talle_vestimenta="")
+    participante_03 = Visitante(nombre="Pepe Bonaventura", dni="00000416", edad=28, talle_vestimenta="De niño")
+    participante_04 = Visitante(nombre="Pepe Bonaventura", dni="00789674", edad=28, talle_vestimenta="XXXL")
+    participante_05 = Visitante(nombre="Pepe Bonaventura", dni="00045678", edad=28, talle_vestimenta="XL")
+    participante_06 = Visitante(nombre="Pepe Bonaventura", dni="00067864", edad=28, talle_vestimenta="M")
 
     assert validar_participante(participante_01) is True
     assert validar_participante(participante_02) is False
@@ -74,7 +76,7 @@ def test_validar_talles_vestimenta() -> None:
 
 def test_validar_cantidad_valida() -> None:
     participante_01 = crear_participante()
-    participante_02 = crear_participante(dni="6787")
+    participante_02 = crear_participante(dni="00006787")
 
     actividad_safari = Actividad.SAFARI
 
@@ -85,7 +87,7 @@ def test_validar_cantidad_valida() -> None:
 
 def test_validar_cantidad_con_participantes_ingresados() -> None:
     participante_01 = crear_participante()
-    participante_02 =crear_participante(dni="6777")
+    participante_02 =crear_participante(dni="00006777")
 
     actividad_safari = Actividad.SAFARI
 
@@ -109,8 +111,23 @@ def test_validar_actividad_segun_talle_requerido() -> None:
     assert validar_participantes(1, [participante], actividad_jardineria) is True
     assert validar_participantes(1, [participante], actividad_palestra) is True
 
-def test_validar_dni_participante() -> None:
-    assert validar_dni_participante("44444444") is True
+@pytest.mark.parametrize("dni, esperado", [
+    ("44444444", True),
+    ("01234567", True),
+    ("99999999", True),
+    ("00000000", False),
+    ("", False),
+    ("1234567", False),
+    ("123456789", False),
+    ("12.345.678", False),
+    ("1234 5678", False),
+    ("1234567A", False),
+    (" 12345678", False),
+    ("²", False),
+    ("²²²²²²²²", False),
+])
+def test_validar_dni_participante(dni: str, esperado: bool) -> None:
+    assert validar_dni_participante(dni) is esperado
 
 def test_validar_cantidad_no_supera_cupo_de_actividad() -> None:
     actividad_safari = Actividad.SAFARI

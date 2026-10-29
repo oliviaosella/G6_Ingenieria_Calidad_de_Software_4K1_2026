@@ -74,6 +74,18 @@ def test_validar_talles_vestimenta() -> None:
     assert validar_participante(participante_05) is True
     assert validar_participante(participante_06) is True
 
+@pytest.mark.parametrize("edad, esperado", [
+    (-1, False),
+    (0, False),
+    (1, True),
+    (99, True),
+    (100, True),
+    (101, False),
+])
+def test_validar_edad_participante(edad: int, esperado: bool) -> None:
+    assert validar_participante(crear_participante(edad=edad)) is esperado
+
+
 def test_validar_cantidad_valida() -> None:
     participante_01 = crear_participante()
     participante_02 = crear_participante(dni="00006787")

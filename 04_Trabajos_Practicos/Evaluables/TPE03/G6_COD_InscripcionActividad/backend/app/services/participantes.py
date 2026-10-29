@@ -70,4 +70,4 @@ def validar_dni_participante(dni: str) -> bool:
 
 
 def validar_edad_positiva(edad: int) -> bool:
-    return isinstance(edad, int) and not isinstance(edad, bool) and edad >= 0
+    return isinstance(edad, int) and not isinstance(edad, bool) and 0 < edad <= 100

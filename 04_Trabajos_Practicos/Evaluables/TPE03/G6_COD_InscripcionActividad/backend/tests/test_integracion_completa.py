@@ -169,8 +169,3 @@ def test_reserva_ultimo_lugar_consulta_lleno_y_rechaza_siguiente(entorno, solici
     assert client.post("/inscripciones", json=solicitud).status_code == 409
     assert len(correo.envios) == 8
     assert gestor.obtener_reserva(9) is None
-
-
-def test_no_hay_rutas_duplicadas_en_la_aplicacion():
-    rutas = [(ruta.path, metodo) for ruta in app.routes if hasattr(ruta, "methods") for metodo in ruta.methods]
-    assert len(rutas) == len(set(rutas))

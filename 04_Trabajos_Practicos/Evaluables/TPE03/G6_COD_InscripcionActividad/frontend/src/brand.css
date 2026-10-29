@@ -384,6 +384,6 @@ h1,h2,h3,.brand strong,.activity-card strong,.summary-content h3,.ticket-info st
 }
 .input-field small.field-error{color:#bc4749;font-weight:600;font-size:12px}
 .input-field input[aria-invalid="true"],.input-field select[aria-invalid="true"]{border-color:#bc4749}
-.input-field input.shake{animation:fieldShake .32s cubic-bezier(.36,.07,.19,.97);border-color:#bc4749}
+.input-field input.shake{animation:fieldShake .32s cubic-bezier(.36,.07,.19,.97)}
 @keyframes fieldShake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-3px)}40%,60%{transform:translateX(3px)}}
 @media(prefers-reduced-motion:reduce){.input-field input.shake{animation:none}}

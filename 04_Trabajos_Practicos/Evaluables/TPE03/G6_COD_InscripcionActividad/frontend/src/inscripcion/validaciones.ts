@@ -22,6 +22,7 @@ export const validarDni = (dni: string) => {
 
 export const validarEdad = (edad: string, edadMinima: number, actividad: string) => {
   if (!edad) return 'Ingresá la edad.'
+  if (Number(edad) <= 0 || Number(edad) > 100) return 'La edad debe estar entre 0-100 años.'
   if (Number(edad) < edadMinima) return `La edad mínima para ${actividad} es ${edadMinima} años.`
   return null
 }

@@ -43,7 +43,7 @@ export function InscripcionForm({ onActividadChange, onConfirmedChange }: { onAc
   useEffect(() => {
     if (step !== 2 || !draft.actividad) return
     let active = true
-    setTerminos(null)
+    queueMicrotask(() => { if (active) setTerminos(null) })
     consultarTerminos(draft.actividad).then((result) => { if (active) setTerminos(result) })
       .catch((issue) => { if (active) setError(issue instanceof Error ? issue.message : 'No se pudieron cargar las condiciones.') })
     return () => { active = false }

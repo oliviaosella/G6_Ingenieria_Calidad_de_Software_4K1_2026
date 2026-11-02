@@ -22,7 +22,7 @@ Antes de crear una Línea Base deben cumplirse todas las condiciones siguientes:
 
 7. **Aprobación:** el responsable del ítem y, al menos, otro integrante revisaron la versión.
 
-8. **Integración:** todos los archivos aprobados se encuentran en la rama `main` y el repositorio no presenta cambios locales pendientes.
+8. **Integración:** todos los archivos aprobados se encuentran en un único commit identificable. Para nuevas Líneas Base ese commit debe pertenecer a `main`. En una reconstrucción histórica de una entrega ya realizada se admite un commit de la rama remota de entrega, siempre que la rama, el commit y la excepción queden documentados en el Registro de Líneas Base.
 
 9. **Reproducibilidad:** cuando hay código, se documentan dependencias e instrucciones y la versión puede ejecutarse o compilarse.
 
@@ -42,6 +42,18 @@ Si una de estas condiciones no se cumple, el contenido permanece como borrador o
 | `LB_TPxx_final`    | Al finalizar cada Trabajo Práctico posterior, una vez incorporados, revisados y aprobados todos los ítems correspondientes. | Totalidad de los ítems asociados al Trabajo Práctico correspondiente.                        | Mantiene el mismo criterio de control y trazabilidad para todos los Trabajos Prácticos del proyecto.                               |
 
 No se establecen Líneas Base independientes por cada unidad, Parciales o componente de código; estos elementos se incorporan a la Línea Base del Trabajo Práctico correspondiente. De esta forma se evita una cantidad excesiva de etiquetas manteniendo un esquema sencillo, sin perder trazabilidad.
+
+### Fecha efectiva de una Línea Base reconstruida
+
+Cuando una Línea Base se registra después de que la entrega ya ocurrió, su **fecha efectiva** es la fecha del commit que incorporó o cerró el Trabajo Práctico. La fecha de creación de la etiqueta se conserva como fecha de publicación técnica y no reemplaza ni altera la fecha histórica de la entrega.
+
+La reconstrucción debe indicar:
+
+1. el commit exacto de la entrega;
+2. la fecha y hora de ese commit;
+3. la rama que lo contiene;
+4. el alcance congelado;
+5. cualquier archivo conocido que haya quedado en otra rama.
 
 
 ## 4. Identificación de las Líneas Base
@@ -71,6 +83,8 @@ Para los Trabajos Prácticos posteriores se mantiene el mismo criterio:
 El número del Trabajo Práctico debe utilizar dos dígitos para mantener una nomenclatura uniforme.
 
 La palabra `final` indica que se trata de la versión aprobada correspondiente al cierre de ese Trabajo Práctico.
+
+Para las Líneas Base reconstruidas, `final` identifica el último estado registrado de la entrega en el repositorio. No implica que se hayan corregido retrospectivamente defectos de nombrado, integración o documentación; esas observaciones deben constar en la ficha de la Línea Base.
 
 Las etiquetas de una Línea Base ya publicada son inmutables: no se eliminan, no se mueven a otro commit y no se reutilizan.
 

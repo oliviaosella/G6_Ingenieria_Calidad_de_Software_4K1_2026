@@ -6,28 +6,30 @@ El detalle individual de cada Línea Base — alcance completo, hallazgos de aud
 
 ## Índice de Líneas Base
 
-| Etiqueta | Fecha | Commit (hash corto) | Alcance | Propone | Aprueban (CCC) | Detalle |
+| Etiqueta | Fecha efectiva de entrega | Commit | Rama de referencia | Alcance | Estado de reconstrucción | Detalle |
 | --- | --- | --- | --- | --- | --- | --- |
-| `LB_INICIAL_V1.0` | *(pendiente)* | *(pendiente)* | Estructura de carpetas aprobada, README, reglas de nombrado e inventario inicial | *(a completar)* | *(a completar)* | `Registros/LB_INICIAL_V1.0.md` |
+| `LB_INICIAL` | 2026-08-25 00:20:39 -03:00 | `61be1f2` | `main` | Estructura inicial del repositorio | Etiqueta anotada preexistente; nombre legado | Etiqueta Git |
+| `LB_TP01_final` | 2026-08-25 00:32:48 -03:00 | `204d5fd` | `main` | Informe `G6_TPE01.pdf` | Reconstruida el 2026-11-02 | [`LB_TP01_final.md`](LB_TP01_final.md) |
+| `LB_TP02_final` | 2026-09-25 12:18:39 -03:00 | `5e18cdd` | `main` | Informe `G6_TPE02.pdf` | Reconstruida el 2026-11-02 | [`LB_TP02_final.md`](LB_TP02_final.md) |
+| `LB_TP03_final` | 2026-10-29 11:31:58 -03:00 | `95787c9` | `tdd/integracion-final` | Código integrado del TPE03 | Reconstruida el 2026-11-02 con observación de rama | [`LB_TP03_final.md`](LB_TP03_final.md) |
 
-> Fila de ejemplo. Reemplazar por los datos reales al momento de crear cada etiqueta; no dejar filas de Líneas Base ya publicadas sin sus datos completos, porque eso rompe la condición de trazabilidad exigida antes de integrar la siguiente.
+La etiqueta liviana preexistente `LB_TP06_final` no se considera una Línea Base válida: no es anotada, apunta a un commit de resúmenes y no cuenta con una ficha de alcance. Se conserva sin mover ni reutilizar para mantener la trazabilidad histórica.
 
 ## Cómo completar una fila
 
-1. **Etiqueta:** el identificador exacto creado con `git tag -a`, formato `LB_<HITO>_V<MAYOR>.<MENOR>`.
-2. **Fecha:** fecha en que se creó la etiqueta (no la fecha en que se propuso el hito).
+1. **Etiqueta:** el identificador exacto creado con `git tag -a`, formato `LB_TP<NUMERO>_final`.
+2. **Fecha efectiva de entrega:** fecha del commit que cerró o incorporó la entrega. La fecha técnica de creación de la etiqueta permanece en el objeto Git.
 3. **Commit:** los primeros 7-8 caracteres del hash sobre el que se ancló la etiqueta (`git rev-parse --short <tag>`).
 4. **Alcance:** qué ítems y carpetas quedan cubiertos por esta Línea Base, en una frase. Debe coincidir con lo que efectivamente audita el checklist de la ficha en `Registros/`.
-5. **Propone:** integrante responsable del conjunto (rol "Responsable del ítem" en la sección 8 del informe).
-6. **Aprueban:** integrante(s) que revisaron según el procedimiento de aprobación — para `LB_FINAL_V1.0` deben figurar los 15 integrantes.
-7. **Detalle:** enlace relativo al archivo de ficha individual dentro de `Registros/`.
+5. **Estado de reconstrucción:** indica cuándo se reconstruyó la referencia y si existe alguna excepción de rama o alcance.
+6. **Detalle:** enlace relativo al archivo de ficha individual dentro de `Registros/`.
 
 ## Comandos de referencia
 
 ```bash
-git tag -a LB_INICIAL_V1.0 -m "Linea Base inicial: estructura, normativa e items de catedra disponibles"
-git push origin LB_INICIAL_V1.0
-git rev-parse --short LB_INICIAL_V1.0
+git tag -a LB_TP01_final <COMMIT_DE_ENTREGA> -m "Linea Base del Trabajo Practico 01"
+git push origin LB_TP01_final
+git rev-parse --short LB_TP01_final
 ```
 
 ---

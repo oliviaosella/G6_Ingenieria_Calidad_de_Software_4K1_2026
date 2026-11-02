@@ -29,6 +29,8 @@ G6_Ingenieria_Calidad_de_Software_4K1_2026/
 │
 ├── 02_Catedra/
 │   ├── Clases_Grabadas/
+│   ├── Consignas/
+│   ├── Cronograma/
 │   ├── Libros/
 │   ├── Planificacion/
 │   ├── Templates/
@@ -86,19 +88,19 @@ Ningún archivo debe existir en más de una ubicación. Si un mismo contenido se
 | --- | --- | --- |
 | Criterios de Líneas Base | `G6_CRITERIOS_LINEAS_BASE.md` | `00_Gestion_Configuracion/` |
 | Actividad de clase | `G6_ACT<NUMERO>_<mm-dd>.jpg/pdf` | `01_Clase/Actividades/` |
-| Nota de Clase | `G6_NC_<AUTOR>_<FECHA>.pdf` | `01_Clase/Notas/` |
+| Nota de Clase | `G6_NC_<AUTOR>_<mm-dd>.pdf` o `G6_NC_<AUTOR>_ACUM_<DIA>.pdf` para apuntes acumulativos | `01_Clase/Notas/` |
 | Libro | `G6_LI_U<NRO_UNIDAD>_<LIBRO>.pdf` | `02_Catedra/Libros/` |
 | Registro de clases grabadas | `G6_CG.xlsx` | `02_Catedra/Clases_Grabadas/` |
 | Programa / Planificación | `G6_PL_<CONTENIDO>.pdf` | `02_Catedra/Planificacion/` |
 | Presentación de clase | `G6_PPT_<NRO>_<CONTENIDO>.pdf` | `02_Catedra/Material/` |
-| Template | `G6_TE_<TEMA>.pdf` | `02_Catedra/Templates/` |
+| Template | `G6_TE_<TEMA>.docx/.xlsx/.pdf` | `02_Catedra/Templates/` |
 | Código fuente / ejecutable | `G6_COD_<NOMBRE_COMPONENTE>.<EXTENSION>` | `03_Produccion_Propia/Codigo/` |
 | Ejercicio | `G6_EJ_<AUTOR>_<EJERCICIO>.pdf` | `03_Produccion_Propia/Ejercicios/` |
 | Minuta | `G6_MI_<TEMA>_<FECHA>.md` | `03_Produccion_Propia/Minutas/` |
-| Resumen | `G6_RE_<AUTOR>.pdf` | `03_Produccion_Propia/Resumenes/` |
-| Trabajo Práctico Evaluable | `G6_TPE<NUMERO>.pdf` | `04_Trabajos_Practicos/Evaluables/` |
+| Resumen | `G6_RE_P<PARCIAL>[_PRACTICO]_<AUTOR>.pdf` | `03_Produccion_Propia/Resumenes/` |
+| Trabajo Práctico Evaluable | `G6_TPE<NUMERO>.pdf` | `04_Trabajos_Practicos/Evaluables/TPE<NUMERO>/` |
 | Implementación de TP Evaluable | Carpeta `G6_COD_<NOMBRE_COMPONENTE>/`; sus archivos internos siguen las convenciones de cada lenguaje | `04_Trabajos_Practicos/Evaluables/TPE<NUMERO>/` |
-| Consigna TP Evaluable | `G6_CO_TPE<NUMERO>.pdf` | `04_Trabajos_Practicos/Evaluables/` |
+| Consigna o guía oficial | `G6_CO_<CONTENIDO>.pdf` | `02_Catedra/Consignas/` |
 | Trabajo de Investigación | `G6_TI<NUMERO>.pdf` | `04_Trabajos_Practicos/Investigacion/` |
 | Consigna de Investigación | `G6_CO_TPI<NUMERO>.pdf` | `04_Trabajos_Practicos/Investigacion/` |
 | Presentación de Investigación | `G6_PRE_TI<NUMERO>.pptx/.ppsx` | `04_Trabajos_Practicos/Investigacion/` |
@@ -106,7 +108,7 @@ Ningún archivo debe existir en más de una ubicación. Si un mismo contenido se
 | Trabajo Práctico No Evaluable | `G6_TPN<NUMERO>_<AUTOR>.pdf` | `04_Trabajos_Practicos/No_Evaluables/` |
 | Consigna TP No Evaluable | `G6_CO_TPNE<NUMERO>.pdf` | `04_Trabajos_Practicos/No_Evaluables/` |
 
-Esta tabla funciona como inventario operativo de tipos de Ítems de Configuración, convenciones y ubicaciones. No se mantiene un archivo `G6_INVENTARIO_IC.md` separado; el registro de las versiones congeladas se conserva en `00_Gestion_Configuracion/Lineas_Base/Registros/`.
+Esta tabla define los tipos, convenciones y ubicaciones. El inventario vigente de Ítems de Configuración se mantiene en `00_Gestion_Configuracion/Inventario_IC/G6_INVENTARIO_IC.md`; las versiones congeladas se registran en `00_Gestion_Configuracion/Lineas_Base/Registros/`.
 
 Ejemplos:
 
@@ -124,7 +126,7 @@ Ejemplos:
 
 - `G6_MI_ReunionTP01_08-21.md`
 
-- `G6_TPE01.pdf`
+- `04_Trabajos_Practicos/Evaluables/TPE01/G6_TPE01.pdf`
 
 - `G6_TPN02_PT.pdf`
 
@@ -136,19 +138,15 @@ Ejemplos:
 
 - `main` contiene el material revisado e integrado por el grupo.
 
-- Cada tarea o corrección se desarrolla en una rama creada a partir de `main`.
+- Los cambios se registran mediante commits descriptivos, pequeños y trazables.
 
-- Los cambios realizados se registran mediante commits descriptivos.
+- Para desarrollos de código o cambios que requieren revisión aislada se utiliza una rama corta creada desde `main` y se integra mediante Pull Request cuando hay un revisor disponible.
 
-- La rama de trabajo se publica en el repositorio remoto mediante `push`.
+- Las correcciones documentales y de mantenimiento del repositorio pueden incorporarse directamente en `main` si se validan antes del `push` y quedan registradas en commits separados.
 
-- Todo cambio destinado a incorporarse a `main` se integra mediante un Pull Request.
+- Las ramas ya integradas o descartadas se eliminan para que el remoto refleje únicamente trabajo activo.
 
-- El Pull Request debe ser revisado por, al menos, un integrante distinto del autor.
-
-- Una vez aprobado, el cambio se integra mediante `merge`.
-
-- La rama utilizada puede eliminarse una vez que los cambios hayan sido incorporados.
+- No se alteran fechas, autorías ni commits para simular actividad histórica. Una reconstrucción retrospectiva se documenta como tal y siempre referencia commits reales.
 
 - Los borradores o versiones todavía no aprobadas no se etiquetan como Líneas Base.
 
@@ -189,15 +187,15 @@ El detalle de las condiciones y del procedimiento para establecer una Línea Bas
 
 3. Comprobar la coherencia entre consignas, entregables, anexos, presentaciones y código cuando corresponda.
 
-4. Actualizar el inventario operativo de este README y el registro de cambios.
+4. Actualizar `G6_INVENTARIO_IC.md` y el registro de cambios.
 
-5. Obtener la aprobación del responsable del ítem y de, al menos, otro integrante.
+5. Registrar la revisión disponible; una Línea Base nueva requiere aprobación del responsable del ítem y de, al menos, otro integrante.
 
 6. Integrar la versión aprobada en `main`.
 
 7. Crear una etiqueta anotada de Git asociada al commit correspondiente.
 
-Para reconstrucciones históricas se utiliza el commit real de entrega y se documentan por separado la fecha histórica representada por la etiqueta y la fecha real en que se realizó la reconstrucción.
+Para reconstrucciones históricas se utiliza el commit real de entrega y se documentan por separado la fecha efectiva del contenido y la fecha real de reconstrucción. No se crean commits retroactivos.
 
 Ejemplo:
 
@@ -217,7 +215,7 @@ Una vez publicada una Línea Base, la etiqueta correspondiente no debe eliminars
 
 - Para el registro de clases grabadas se utiliza la extensión `.xlsx`.
 
-- Las consignas se almacenan dentro de `04_Trabajos_Practicos`, junto con el tipo de Trabajo Práctico al que corresponden.
+- Las consignas y guías oficiales se almacenan en `02_Catedra/Consignas`; los entregables del grupo se almacenan en `04_Trabajos_Practicos`.
 
 - Si la cátedra requiere modificar alguno de los criterios establecidos, la modificación deberá reflejarse en las reglas de nombrado, la estructura del repositorio y la documentación de Gestión de Configuración.
 

@@ -2,7 +2,8 @@
 
 - **Fecha efectiva de entrega:** 2026-10-29 11:31:58 -03:00
 - **Commit:** `95787c9e834ef93f23e9105515a0175ac71d18b7`
-- **Rama de referencia:** `tdd/integracion-final`
+- **Rama original de entrega:** `tdd/integracion-final`
+- **Integración en `main`:** commit de merge `500ad58fc94609dbcedb81b6f234e26b9715f2b8`, 2026-11-02
 - **Reconstrucción registrada:** 2026-11-02
 
 ## Alcance congelado
@@ -14,10 +15,10 @@ El commit seleccionado es la cabeza publicada de `origin/tdd/integracion-final` 
 
 ## Observaciones de integración
 
-- El commit no pertenece a `main`; se registra como reconstrucción histórica de la rama de entrega.
+- El commit se registró inicialmente como reconstrucción histórica de la rama de entrega y actualmente también es ancestro de `main` mediante el merge `500ad58`.
 - Las demás ramas `tdd/*`, salvo `tdd/frontend`, están contenidas en `tdd/integracion-final`.
 - `tdd/frontend` posee un commit exclusivo (`04d2682`) que agrega `G6_TPE03_Documentacion_TDD.docx` y un archivo temporal de Word. Esos archivos no forman parte de esta Línea Base porque no quedaron integrados en la rama final seleccionada.
-- La integración posterior del TPE03 en `main`, si se realiza, deberá registrarse como un cambio posterior y no debe mover esta etiqueta.
+- La integración en `main` no movió la etiqueta: `LB_TP03_final` continúa apuntando al commit histórico `95787c9`.
 
 ## Validación
 

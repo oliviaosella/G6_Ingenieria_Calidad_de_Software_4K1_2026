@@ -9,6 +9,7 @@ Si el cambio no toca ningún ítem incluido en una Línea Base, no es control de
 | ID | Fecha de solicitud | Ítem(s) afectado(s) | Línea Base de origen | Motivo | Impacto evaluado | Rama | Estado | Nueva Línea Base |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | CC-LB-001 | 2026-11-02 | `LB_TP01_final`, `LB_TP02_final`, `LB_TP03_final` | Etiquetas creadas el 2026-11-02 con fecha técnica actual | Corregir la fecha de los objetos de etiqueta para que coincida con la fecha real de cada entrega | No cambia los commits ni el contenido congelado; solo corrige la fecha técnica y elimina `LB_TP06_final`, que no correspondía a una entrega | `main` | Aprobado e integrado | Mismas tres etiquetas, recreadas una única vez antes de su formalización definitiva |
+| CC-LB-002 | 2026-11-02 | Contenido de `LB_TP03_final` | `LB_TP03_final` | Integrar en `main` la rama histórica `tdd/integracion-final` | Incorpora el código fuente y pruebas del TPE03; elimina bytecode Python versionado y agrega exclusiones para artefactos generados sin modificar el commit congelado | `tdd/integracion-final` → `main` | Aprobado e integrado mediante `500ad58` | No corresponde: la etiqueta original permanece inmutable |
 
 ## Cómo completar una fila
 

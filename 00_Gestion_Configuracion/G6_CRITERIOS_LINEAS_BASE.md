@@ -18,9 +18,9 @@ Antes de crear una Línea Base deben cumplirse todas las condiciones siguientes:
 
 5. **Coherencia:** consignas, entregables, anexos, presentaciones y código se corresponden entre sí.
 
-6. **Trazabilidad:** el inventario de ítems y el registro de cambios están actualizados.
+6. **Trazabilidad:** el inventario operativo del README y el registro de cambios están actualizados. El proyecto no mantiene un archivo de inventario separado: la tabla de tipos, nombres y ubicaciones del README es la fuente canónica.
 
-7. **Aprobación:** el responsable del ítem y, al menos, otro integrante revisaron la versión.
+7. **Aprobación:** para una Línea Base nueva, el responsable del ítem y, al menos, otro integrante revisaron la versión. Para una reconstrucción histórica, la existencia del commit de entrega y la auditoría documentada de su fecha, rama y alcance sustituyen únicamente esa aprobación retroactiva; no se inventan revisores que no estén registrados.
 
 8. **Integración:** todos los archivos aprobados se encuentran en un único commit identificable. Para nuevas Líneas Base ese commit debe pertenecer a `main`. En una reconstrucción histórica de una entrega ya realizada se admite un commit de la rama remota de entrega, siempre que la rama, el commit y la excepción queden documentados en el Registro de Líneas Base.
 
@@ -45,7 +45,7 @@ No se establecen Líneas Base independientes por cada unidad, Parciales o compon
 
 ### Fecha efectiva de una Línea Base reconstruida
 
-Cuando una Línea Base se registra después de que la entrega ya ocurrió, su **fecha efectiva** es la fecha del commit que incorporó o cerró el Trabajo Práctico. La fecha de creación de la etiqueta se conserva como fecha de publicación técnica y no reemplaza ni altera la fecha histórica de la entrega.
+Cuando una Línea Base se registra después de que la entrega ya ocurrió, su **fecha efectiva** es la fecha del commit que incorporó o cerró el Trabajo Práctico. Para que Git represente esa fecha histórica, la fecha del objeto de etiqueta anotada se fija a la misma fecha y hora del commit de entrega. El mensaje de la etiqueta y la ficha registran explícitamente la fecha real de reconstrucción para no presentar la operación como si hubiese ocurrido en el pasado.
 
 La reconstrucción debe indicar:
 
@@ -87,6 +87,8 @@ La palabra `final` indica que se trata de la versión aprobada correspondiente a
 Para las Líneas Base reconstruidas, `final` identifica el último estado registrado de la entrega en el repositorio. No implica que se hayan corregido retrospectivamente defectos de nombrado, integración o documentación; esas observaciones deben constar en la ficha de la Línea Base.
 
 Las etiquetas de una Línea Base ya publicada son inmutables: no se eliminan, no se mueven a otro commit y no se reutilizan.
+
+Si una corrección posterior modifica el contenido congelado, se crea una etiqueta nueva con el formato `LB_TP<NUMERO>_rev<REVISION>`, usando dos dígitos para la revisión. Por ejemplo: `LB_TP03_rev01`. La etiqueta `final` original permanece apuntando al commit de entrega.
 
 
 

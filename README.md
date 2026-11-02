@@ -84,7 +84,6 @@ Ningún archivo debe existir en más de una ubicación. Si un mismo contenido se
 
 | Ítem | Regla de nombrado | Ubicación |
 | --- | --- | --- |
-| Inventario de Ítems de Configuración | `G6_INVENTARIO_IC.md` | `00_Gestion_Configuracion/` |
 | Criterios de Líneas Base | `G6_CRITERIOS_LINEAS_BASE.md` | `00_Gestion_Configuracion/` |
 | Actividad de clase | `G6_ACT<NUMERO>_<mm-dd>.jpg/pdf` | `01_Clase/Actividades/` |
 | Nota de Clase | `G6_NC_<AUTOR>_<FECHA>.pdf` | `01_Clase/Notas/` |
@@ -105,6 +104,8 @@ Ningún archivo debe existir en más de una ubicación. Si un mismo contenido se
 | Lineamientos Generales | `G6_TI_LineamientosGenerales.pdf` | `04_Trabajos_Practicos/Investigacion/` |
 | Trabajo Práctico No Evaluable | `G6_TPN<NUMERO>_<AUTOR>.pdf` | `04_Trabajos_Practicos/No_Evaluables/` |
 | Consigna TP No Evaluable | `G6_CO_TPNE<NUMERO>.pdf` | `04_Trabajos_Practicos/No_Evaluables/` |
+
+Esta tabla funciona como inventario operativo de tipos de Ítems de Configuración, convenciones y ubicaciones. No se mantiene un archivo `G6_INVENTARIO_IC.md` separado; el registro de las versiones congeladas se conserva en `00_Gestion_Configuracion/Lineas_Base/Registros/`.
 
 Ejemplos:
 
@@ -158,6 +159,8 @@ Una Línea Base es una versión identificada, revisada y formalmente aprobada de
 
 No equivale a un commit común: se establece solamente cuando existe un hito verificable y el contenido cumple los criterios definidos para su aprobación.
 
+Las Líneas Base de TPE01, TPE02 y TPE03 fueron reconstruidas retrospectivamente a partir de los commits reales de entrega. En esos casos, la auditoría del commit, la fecha, la rama y el alcance reemplaza únicamente la aprobación retroactiva que no quedó documentada; la fecha real de reconstrucción permanece indicada en las fichas y en los mensajes de las etiquetas.
+
 Las Líneas Base definidas son:
 
 | Momento | Etiqueta |
@@ -185,13 +188,15 @@ El detalle de las condiciones y del procedimiento para establecer una Línea Bas
 
 3. Comprobar la coherencia entre consignas, entregables, anexos, presentaciones y código cuando corresponda.
 
-4. Actualizar el inventario de Ítems de Configuración y el registro de cambios.
+4. Actualizar el inventario operativo de este README y el registro de cambios.
 
 5. Obtener la aprobación del responsable del ítem y de, al menos, otro integrante.
 
 6. Integrar la versión aprobada en `main`.
 
 7. Crear una etiqueta anotada de Git asociada al commit correspondiente.
+
+Para reconstrucciones históricas se utiliza el commit real de entrega y se documentan por separado la fecha histórica representada por la etiqueta y la fecha real en que se realizó la reconstrucción.
 
 Ejemplo:
 
@@ -218,7 +223,5 @@ Una vez publicada una Línea Base, la etiqueta correspondiente no debe eliminars
 ## Documentación relacionada
 
 - Criterios de Línea Base: `00_Gestion_Configuracion/G6_CRITERIOS_LINEAS_BASE.md`
-
-- Inventario de Ítems de Configuración: `00_Gestion_Configuracion/G6_INVENTARIO_IC.md`
 
 - Informe del Trabajo Práctico 01: `G6_TPE01.pdf`

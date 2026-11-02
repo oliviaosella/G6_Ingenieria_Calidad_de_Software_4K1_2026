@@ -13,8 +13,8 @@ El commit seleccionado es la última modificación del informe TPE01 registrada 
 
 ## Observaciones
 
-La etiqueta se creó retrospectivamente. La fecha efectiva corresponde al commit de entrega y no a la fecha técnica de creación de la etiqueta.
+La etiqueta se reconstruyó retrospectivamente el 2026-11-02. Tanto su fecha técnica como su fecha efectiva representan el commit de entrega del 2026-08-25. El mensaje de la etiqueta conserva la fecha real de reconstrucción.
 
-## Aprobación formal
+## Validación
 
-Pendiente de registrar el responsable del ítem y el integrante revisor. La autoría del commit no se toma automáticamente como evidencia de aprobación.
+Se verificaron el historial del archivo, el commit objetivo, su pertenencia a `main` y las fechas de autor y confirmación. No se inventaron aprobadores retroactivos.

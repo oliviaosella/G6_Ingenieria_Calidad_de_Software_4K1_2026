@@ -8,20 +8,18 @@ Si el cambio no toca ningún ítem incluido en una Línea Base, no es control de
 
 | ID | Fecha de solicitud | Ítem(s) afectado(s) | Línea Base de origen | Motivo | Impacto evaluado | Rama | Estado | Nueva Línea Base |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| CC-001 | 2026-09-02 | `G6_CL02_U3.pdf` | `LB_INICIAL_V1.0` | La cátedra republicó el PDF con una corrección | Solo afecta este archivo; no impacta otros ICs | `fix/catedra-cl02` | Aprobado e integrado | `LB_INICIAL_V1.1` |
-
-> Fila de ejemplo para mostrar el formato. Borrarla al cargar el primer cambio real.
+| CC-LB-001 | 2026-11-02 | `LB_TP01_final`, `LB_TP02_final`, `LB_TP03_final` | Etiquetas creadas el 2026-11-02 con fecha técnica actual | Corregir la fecha de los objetos de etiqueta para que coincida con la fecha real de cada entrega | No cambia los commits ni el contenido congelado; solo corrige la fecha técnica y elimina `LB_TP06_final`, que no correspondía a una entrega | `main` | Aprobado e integrado | Mismas tres etiquetas, recreadas una única vez antes de su formalización definitiva |
 
 ## Cómo completar una fila
 
 1. **ID:** correlativo `CC-NNN`, no reutilizar.
-2. **Ítem(s) afectado(s):** nombre exacto del archivo, según `G6_INVENTARIO_IC.md`.
+2. **Ítem(s) afectado(s):** nombre exacto del archivo, según el inventario operativo y las reglas de nombrado del README.
 3. **Línea Base de origen:** la etiqueta bajo la cual ese ítem estaba congelado hasta ahora.
 4. **Motivo:** por qué se pide el cambio (una frase, no un párrafo).
 5. **Impacto evaluado:** qué otros documentos, código o entregables se ven afectados — si la respuesta es "ninguno", decirlo explícitamente, no dejar vacío.
 6. **Rama:** el cambio se implementa en una rama separada, nunca directo en `main` (regla del README y de la skill del repo).
 7. **Estado:** `Solicitado` → `En revisión` → `Aprobado e integrado` (o `Rechazado`). Solo pasa a integrado cuando el responsable del ítem *y* al menos otro integrante lo revisaron.
-8. **Nueva Línea Base:** completar solo si el cambio altera el contenido de referencia y por eso genera una nueva etiqueta (versión menor si no cambia el alcance, mayor si lo cambia — ver `G6_CRITERIOS_LINEAS_BASE.md` sección de identificación).
+8. **Nueva Línea Base:** completar solo si el cambio altera el contenido de referencia y por eso genera una etiqueta de revisión `LB_TP<NUMERO>_rev<REVISION>`. Una corrección puramente técnica de una etiqueta todavía no formalizada debe quedar documentada como excepción y no repetirse.
 
 ## Convención de commit asociada
 

@@ -34,9 +34,12 @@ export function HorarioSection({ actividad, fecha, hora, onFecha, onHora }: { ac
   useEffect(() => {
     if (!actividad) return
     let active = true
-    setRespuesta(null)
-    setLoading(true)
-    setError('')
+    queueMicrotask(() => {
+      if (!active) return
+      setRespuesta(null)
+      setLoading(true)
+      setError('')
+    })
     consultarCalendario(actividad).then((result) => { if (active) setRespuesta({ actividad, calendario: result }) })
       .catch((issue) => { if (active) setError(issue instanceof Error ? issue.message : 'No se pudo consultar el calendario.') })
       .finally(() => { if (active) setLoading(false) })

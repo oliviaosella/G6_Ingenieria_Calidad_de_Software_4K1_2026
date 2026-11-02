@@ -3,6 +3,7 @@ uvicorn[standard]
 pytest
 httpx
 httpx2
+opencv-python-headless
 qrcode[pil]
 email-validator
 python-dotenv

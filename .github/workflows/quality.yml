@@ -1,0 +1,47 @@
+name: Control de calidad
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  repository:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: python scripts/validate_repository.py
+
+  tpe03-backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 04_Trabajos_Practicos/Evaluables/TPE03/G6_COD_InscripcionActividad/backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: 04_Trabajos_Practicos/Evaluables/TPE03/G6_COD_InscripcionActividad/backend/requirements.txt
+      - run: python -m pip install -r requirements.txt
+      - run: python -m pytest -q
+
+  tpe03-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 04_Trabajos_Practicos/Evaluables/TPE03/G6_COD_InscripcionActividad/frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: 04_Trabajos_Practicos/Evaluables/TPE03/G6_COD_InscripcionActividad/frontend/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build

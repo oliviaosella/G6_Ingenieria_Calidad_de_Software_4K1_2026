@@ -18,7 +18,7 @@ Antes de crear una Línea Base deben cumplirse todas las condiciones siguientes:
 
 5. **Coherencia:** consignas, entregables, anexos, presentaciones y código se corresponden entre sí.
 
-6. **Trazabilidad:** el inventario operativo del README y el registro de cambios están actualizados. El proyecto no mantiene un archivo de inventario separado: la tabla de tipos, nombres y ubicaciones del README es la fuente canónica.
+6. **Trazabilidad:** el inventario `Inventario_IC/G6_INVENTARIO_IC.md`, el registro de cambios y la documentación de la Línea Base están actualizados. El README conserva las reglas; el inventario registra los ítems concretos.
 
 7. **Aprobación:** para una Línea Base nueva, el responsable del ítem y, al menos, otro integrante revisaron la versión. Para una reconstrucción histórica, la existencia del commit de entrega y la auditoría documentada de su fecha, rama y alcance sustituyen únicamente esa aprobación retroactiva; no se inventan revisores que no estén registrados.
 
@@ -45,7 +45,7 @@ No se establecen Líneas Base independientes por cada unidad, Parciales o compon
 
 ### Fecha efectiva de una Línea Base reconstruida
 
-Cuando una Línea Base se registra después de que la entrega ya ocurrió, su **fecha efectiva** es la fecha del commit que incorporó o cerró el Trabajo Práctico. Para que Git represente esa fecha histórica, la fecha del objeto de etiqueta anotada se fija a la misma fecha y hora del commit de entrega. El mensaje de la etiqueta y la ficha registran explícitamente la fecha real de reconstrucción para no presentar la operación como si hubiese ocurrido en el pasado.
+Cuando una Línea Base se registra después de que la entrega ya ocurrió, su **fecha efectiva** es la fecha del commit que incorporó o cerró el Trabajo Práctico. La fecha de creación técnica de la etiqueta debe ser la fecha real de la operación y la fecha efectiva se consigna en la ficha. Las etiquetas `LB_TP01_final`, `LB_TP02_final` y `LB_TP03_final` se reconstruyeron el 2026-11-02 usando excepcionalmente la fecha del commit como fecha técnica; la excepción quedó declarada en sus mensajes y fichas y no debe repetirse.
 
 La reconstrucción debe indicar:
 
@@ -102,7 +102,7 @@ Todo cambio solicitado sobre un ítem incluido en una Línea Base debe:
 
 3. Evaluar el impacto sobre otros documentos, código y entregables.
 
-4. Ser implementado en una rama separada.
+4. Ser implementado en una rama separada si modifica código o contenido funcional. Una corrección documental o de mantenimiento puede integrarse directamente en `main` si se valida y se registra explícitamente.
 
 5. Ser revisado antes de integrarse en `main`.
 

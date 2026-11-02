@@ -3,6 +3,8 @@
 **Estado:** pendiente de revisión y aprobación independiente.  
 **No existe todavía una etiqueta `LB_TP03_rev01`.**
 
+**Solicitud de revisión:** [Issue #6 — Revisión formal para establecer LB_TP03_rev01](https://github.com/oliviaosella/G6_Ingenieria_Calidad_de_Software_4K1_2026/issues/6), asignada a `LautaroCastill0` el 2026-11-02.
+
 ## Línea Base de origen
 
 - Etiqueta: `LB_TP03_final`

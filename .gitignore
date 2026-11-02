@@ -52,6 +52,17 @@ Icon?
 .opencode/
 copilot/
 
+# Python generated files and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Frontend generated files
+node_modules/
+dist/
+
 # Local-only AI instruction overrides
 AGENTS.local.md
 CLAUDE.local.md

@@ -22,8 +22,9 @@
 | IC-PP-003 | Resúmenes del segundo parcial | `03_Produccion_Propia/Resumenes/G6_RE_P2_*.pdf` | Autor indicado en el nombre | En evolución | Próxima Línea Base | Nombre, PDF y duplicados |
 | IC-TP-001 | Entregable TPE01 | `04_Trabajos_Practicos/Evaluables/TPE01/G6_TPE01.pdf` | Grupo 6 | Congelado | `LB_TP01_final` | Commit y etiqueta anotada |
 | IC-TP-002 | Entregable TPE02 | `04_Trabajos_Practicos/Evaluables/TPE02/G6_TPE02.pdf` | Grupo 6 | Congelado | `LB_TP02_final` | Commit y etiqueta anotada |
-| IC-TP-003 | Implementación TPE03 | `04_Trabajos_Practicos/Evaluables/TPE03/G6_COD_InscripcionActividad/` | Grupo 6 | Integrado en `main` | `LB_TP03_final` | 188 pruebas backend + build/lint frontend |
-| IC-TP-004 | Documentación final TDD de TPE03 | `04_Trabajos_Practicos/Evaluables/TPE03/G6_TPE03_Documentacion_TDD.pdf` | Grupo 6 | Integrado en `main` | Posterior a `LB_TP03_final` | PDF de 15 páginas revisado |
+| IC-TP-003 | Implementación TPE03 | `04_Trabajos_Practicos/Evaluables/TPE03/G6_COD_InscripcionActividad/` | Grupo 6 | Candidato a revisión | `LB_TP03_final`; cambios `CC-LB-002` y `CC-LB-005` candidatos a `LB_TP03_rev01` | 188 pruebas backend + build/lint frontend + CI |
+| IC-TP-004 | Documentación final TDD de TPE03 | `04_Trabajos_Practicos/Evaluables/TPE03/G6_TPE03_Documentacion_TDD.pdf` | Grupo 6 | Candidato a revisión | `CC-LB-004`, candidato a `LB_TP03_rev01` | PDF de 15 páginas revisado |
+| IC-GC-005 | Ficha candidata de revisión TPE03 | `00_Gestion_Configuracion/Lineas_Base/Registros/LB_TP03_rev01_CANDIDATA.md` | Grupo 6 | Pendiente de aprobación independiente | Candidata a `LB_TP03_rev01` | Checklist y evidencia de revisión |
 | IC-TP-005 | Trabajos prácticos no evaluables | `04_Trabajos_Practicos/No_Evaluables/G6_TPN*.pdf` | Autor indicado en el nombre | En evolución | Próxima Línea Base | Nombre, PDF y duplicados |
 
 ## Mantenimiento

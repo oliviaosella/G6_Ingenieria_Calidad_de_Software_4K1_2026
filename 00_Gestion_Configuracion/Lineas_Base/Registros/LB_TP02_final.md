@@ -14,3 +14,7 @@ El commit seleccionado es el que incorporó el informe TPE02 al repositorio.
 ## Observaciones
 
 La etiqueta se creó retrospectivamente. La fecha efectiva corresponde al commit de entrega y no a la fecha técnica de creación de la etiqueta.
+
+## Aprobación formal
+
+Pendiente de registrar el responsable del ítem y el integrante revisor. La autoría del commit no se toma automáticamente como evidencia de aprobación.

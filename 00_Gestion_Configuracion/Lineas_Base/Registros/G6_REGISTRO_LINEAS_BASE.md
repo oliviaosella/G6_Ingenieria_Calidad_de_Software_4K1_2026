@@ -12,6 +12,7 @@ El detalle individual de cada Línea Base — alcance, fecha, rama y hallazgos d
 | `LB_TP01_final` | 2026-08-25 00:32:48 -03:00 | `204d5fd` | `main` | Informe `G6_TPE01.pdf` | Commit y fecha auditados | 2026-11-02 | [`LB_TP01_final.md`](LB_TP01_final.md) |
 | `LB_TP02_final` | 2026-09-25 12:18:39 -03:00 | `5e18cdd` | `main` | Informe `G6_TPE02.pdf` | Commit y fecha auditados | 2026-11-02 | [`LB_TP02_final.md`](LB_TP02_final.md) |
 | `LB_TP03_final` | 2026-10-29 11:31:58 -03:00 | `95787c9` | `main` (origen: `tdd/integracion-final`) | Código integrado del TPE03 | Commit, fecha, rama original e integración auditados | 2026-11-02 | [`LB_TP03_final.md`](LB_TP03_final.md) |
+| `LB_TP05_final` | 2026-11-22 21:09:43 -03:00 | `412d9cf` | `main` | Informe `G6_TPE05.pdf`; `G6_TI01.pdf` ya incorporado | PDF validado; Pedro Torcivia y Juan Ignacio Fanfliet revisaron y aprobaron | No aplica | [`LB_TP05_final.md`](LB_TP05_final.md) |
 
 La etiqueta incorrecta `LB_TP06_final` fue eliminada durante la normalización del 2026-11-02 porque era liviana, apuntaba a un commit de resúmenes y no representaba una entrega TPE06.
 

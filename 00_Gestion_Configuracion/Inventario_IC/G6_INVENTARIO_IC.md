@@ -28,6 +28,7 @@
 | IC-TP-005 | Trabajos prácticos no evaluables | `04_Trabajos_Practicos/No_Evaluables/G6_TPN*.pdf` | Autor indicado en el nombre | En evolución | Próxima Línea Base | Nombre, PDF y duplicados |
 | IC-TP-006 | Entregable TPE05 | `04_Trabajos_Practicos/Evaluables/TPE05/G6_TPE05.pdf` | Grupo 6 | Congelado | `LB_TP05_final` | PDF de 8 páginas, revisión registrada y etiqueta anotada |
 | IC-TI-001 | Investigación grupal 1 | `04_Trabajos_Practicos/Investigacion/G6_TI01.pdf` | Grupo 6 | Incorporado | Próxima Línea Base | PDF de 13 páginas y commit de incorporación |
+| IC-TI-002 | Investigación grupal 2 | `04_Trabajos_Practicos/Investigacion/G6_TI02.pdf` | Grupo 6 | Incorporado | Próxima Línea Base | Póster PDF de una página A2 y commit de incorporación |
 
 ## Mantenimiento
 

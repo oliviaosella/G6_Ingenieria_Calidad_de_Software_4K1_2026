@@ -25,6 +25,11 @@ def main() -> int:
     files = tracked_files()
     errors: list[str] = []
 
+    root_files = {".gitattributes", ".gitignore", ".mailmap", "README.md"}
+    for path in files:
+        if "/" not in path and path not in root_files:
+            errors.append(f"ítem fuera de la estructura en la raíz: {path}")
+
     forbidden = re.compile(r"(^|/)(node_modules|dist|__pycache__|\.deps)(/|$)|\.pyc$|(^|/)~\$")
     for path in files:
         if forbidden.search(path):
@@ -63,10 +68,27 @@ def main() -> int:
         "04_Trabajos_Practicos/Evaluables/TPE01/G6_TPE01.pdf",
         "04_Trabajos_Practicos/Evaluables/TPE02/G6_TPE02.pdf",
         "04_Trabajos_Practicos/Evaluables/TPE03/G6_TPE03_Documentacion_TDD.pdf",
+        "04_Trabajos_Practicos/Evaluables/TPE04/G6_TPE04.pdf",
+        "04_Trabajos_Practicos/Evaluables/TPE05/G6_TPE05.pdf",
+        "04_Trabajos_Practicos/Investigacion/G6_TI01.pdf",
+        "04_Trabajos_Practicos/Investigacion/G6_TI02.pdf",
     ]
     for path in required:
         if path not in files:
             errors.append(f"ítem obligatorio ausente: {path}")
+
+    inventory = (ROOT / "00_Gestion_Configuracion/Inventario_IC/G6_INVENTARIO_IC.md").read_text(encoding="utf-8")
+    for path in required:
+        if path.startswith("04_Trabajos_Practicos/") and f"`{path}`" not in inventory:
+            errors.append(f"ítem sin entrada en el inventario: {path}")
+
+    records = ROOT / "00_Gestion_Configuracion/Lineas_Base/Registros"
+    index = (records / "G6_REGISTRO_LINEAS_BASE.md").read_text(encoding="utf-8")
+    for path in files:
+        if re.fullmatch(r"00_Gestion_Configuracion/Lineas_Base/Registros/LB_TP\d{2}_final\.md", path):
+            tag = Path(path).stem
+            if f"| `{tag}` |" not in index:
+                errors.append(f"ficha de línea base ausente del índice: {tag}")
 
     if errors:
         print("Validación del repositorio: FALLÓ", file=sys.stderr)

@@ -9,7 +9,7 @@
 | IC-GC-001 | Reglas generales del repositorio | `README.md` | Grupo 6 | Vigente | `LB_INICIAL` | Revisión documental + CI |
 | IC-GC-002 | Criterios de Líneas Base | `00_Gestion_Configuracion/G6_CRITERIOS_LINEAS_BASE.md` | Grupo 6 | Vigente | `LB_INICIAL` | Revisión documental |
 | IC-GC-003 | Registro de cambios | `00_Gestion_Configuracion/G6_REGISTRO_CAMBIOS.md` | Grupo 6 | Vigente | No aplica | Revisión documental |
-| IC-GC-004 | Registro y fichas de Líneas Base | `00_Gestion_Configuracion/Lineas_Base/Registros/` | Grupo 6 | Vigente | `LB_TP01_final` a `LB_TP03_final` | Etiquetas anotadas + commits registrados |
+| IC-GC-004 | Registro y fichas de Líneas Base | `00_Gestion_Configuracion/Lineas_Base/Registros/` | Grupo 6 | Vigente | `LB_TP01_final` a `LB_TP05_final` | Etiquetas anotadas + commits registrados; aprobación de TPE04 pendiente de acreditar |
 | IC-CL-001 | Actividades de clase | `01_Clase/Actividades/G6_ACT*.pdf` | Autor de cada actividad | En evolución | Próxima Línea Base | Nombre, formato y duplicados |
 | IC-CL-002 | Notas de clase individuales y acumulativas | `01_Clase/Notas/G6_NC_*.pdf` | Autor indicado en el nombre | En evolución | Próxima Línea Base | Nombre, PDF y duplicados |
 | IC-CA-001 | Consignas y guías oficiales | `02_Catedra/Consignas/G6_CO_*.pdf` | Cátedra / custodio Grupo 6 | Referencia | Próxima Línea Base | Ubicación, formato y duplicados |
@@ -25,8 +25,11 @@
 | IC-TP-003 | Implementación TPE03 | `04_Trabajos_Practicos/Evaluables/TPE03/G6_COD_InscripcionActividad/` | Grupo 6 | Candidato a revisión | `LB_TP03_final`; cambios `CC-LB-002` y `CC-LB-005` candidatos a `LB_TP03_rev01` | 188 pruebas backend + build/lint frontend + CI |
 | IC-TP-004 | Documentación final TDD de TPE03 | `04_Trabajos_Practicos/Evaluables/TPE03/G6_TPE03_Documentacion_TDD.pdf` | Grupo 6 | Candidato a revisión | `CC-LB-004`, candidato a `LB_TP03_rev01` | PDF de 15 páginas revisado |
 | IC-GC-005 | Ficha candidata de revisión TPE03 | `00_Gestion_Configuracion/Lineas_Base/Registros/LB_TP03_rev01_CANDIDATA.md` | Grupo 6 | Pendiente de aprobación independiente | Candidata a `LB_TP03_rev01` | Checklist y evidencia de revisión |
+| IC-GC-006 | Evidencia de operaciones SCM | `00_Gestion_Configuracion/Informe/G6_EVIDENCIA_OPERACIONES_SCM.md` | Grupo 6 | Vigente; brechas declaradas | No aplica | Commits y cuentas asociados en GitHub; Updates históricos sin acreditar |
 | IC-TP-005 | Trabajos prácticos no evaluables | `04_Trabajos_Practicos/No_Evaluables/G6_TPN*.pdf` | Autor indicado en el nombre | En evolución | Próxima Línea Base | Nombre, PDF y duplicados |
 | IC-TP-006 | Entregable TPE05 | `04_Trabajos_Practicos/Evaluables/TPE05/G6_TPE05.pdf` | Grupo 6 | Congelado | `LB_TP05_final` | PDF de 8 páginas, revisión registrada y etiqueta anotada |
+| IC-TP-007 | Entregable TPE04 | `04_Trabajos_Practicos/Evaluables/TPE04/G6_TPE04.pdf` | Grupo 6 | Congelado; aprobación no documentada | `LB_TP04_final` | PDF, commit y etiqueta anotada verificados |
+| IC-TP-008 | Borrador inicial de participantes TPE03 | `04_Trabajos_Practicos/Evaluables/TPE03/G6_TPE03_EspecificacionInicialParticipantes.md` | Grupo 6 | Histórico; no vigente | No incluido en `LB_TP03_final` | Ubicación y relación con bitácora vigente verificadas |
 | IC-TI-001 | Investigación grupal 1 | `04_Trabajos_Practicos/Investigacion/G6_TI01.pdf` | Grupo 6 | Incorporado | Próxima Línea Base | PDF de 13 páginas y commit de incorporación |
 | IC-TI-002 | Investigación grupal 2 | `04_Trabajos_Practicos/Investigacion/G6_TI02.pdf` | Grupo 6 | Incorporado | Próxima Línea Base | Póster PDF de una página A2 y commit de incorporación |
 

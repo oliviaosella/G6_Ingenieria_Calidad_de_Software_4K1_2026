@@ -1,5 +1,7 @@
 # Bitácora de Desarrollo TDD - Registro y Validación de Participantes
 
+> Borrador histórico de la interfaz inicial. La bitácora de evolución y las decisiones verificadas del módulo están en `G6_COD_InscripcionActividad/BITACORA_TDD_PARTICIPANTES.md`. Este borrador no describe por sí solo el estado final de TPE03.
+
 **Cátedra:** Ingeniería y Calidad de Software - Año 2026  
 **Institución:** Universidad Tecnológica Nacional – Facultad Regional Córdoba (UTN FRC)  
 **Curso:** 4K1  

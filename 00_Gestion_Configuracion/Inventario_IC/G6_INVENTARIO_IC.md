@@ -1,6 +1,6 @@
 # Inventario de Ítems de Configuración — G6
 
-**Estado del inventario:** 2026-11-02  
+**Estado del inventario:** 2026-11-22  
 **Fuente de verificación:** archivos versionados por Git en `main` (`git ls-files`).  
 **Criterio:** cada fila identifica un ítem individual o una familia homogénea administrada con la misma regla de ubicación, nombre y validación.
 
@@ -26,6 +26,8 @@
 | IC-TP-004 | Documentación final TDD de TPE03 | `04_Trabajos_Practicos/Evaluables/TPE03/G6_TPE03_Documentacion_TDD.pdf` | Grupo 6 | Candidato a revisión | `CC-LB-004`, candidato a `LB_TP03_rev01` | PDF de 15 páginas revisado |
 | IC-GC-005 | Ficha candidata de revisión TPE03 | `00_Gestion_Configuracion/Lineas_Base/Registros/LB_TP03_rev01_CANDIDATA.md` | Grupo 6 | Pendiente de aprobación independiente | Candidata a `LB_TP03_rev01` | Checklist y evidencia de revisión |
 | IC-TP-005 | Trabajos prácticos no evaluables | `04_Trabajos_Practicos/No_Evaluables/G6_TPN*.pdf` | Autor indicado en el nombre | En evolución | Próxima Línea Base | Nombre, PDF y duplicados |
+| IC-TP-006 | Entregable TPE05 | `04_Trabajos_Practicos/Evaluables/TPE05/G6_TPE05.pdf` | Grupo 6 | Congelado | `LB_TP05_final` | PDF de 8 páginas, revisión registrada y etiqueta anotada |
+| IC-TI-001 | Investigación grupal 1 | `04_Trabajos_Practicos/Investigacion/G6_TI01.pdf` | Grupo 6 | Incorporado | Próxima Línea Base | PDF de 13 páginas y commit de incorporación |
 
 ## Mantenimiento
 
